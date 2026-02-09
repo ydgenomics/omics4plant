@@ -19,8 +19,11 @@ SAW-ST-V8-makeRef使用
 3. 使用SAW-ST流程 https://cloud.stomics.tech/helpcenter/zh/tool/SAW-ST-V8.html#_3-2-3-%E6%AD%A5%E9%AA%A4%E4%B8%89-saw-st-v8%E5%88%86%E6%9E%90 对空转原始测序数据进行定量，拿到矩阵文件
 
 
-*DCS智能生信分析* 手把手教您时空转录组Stereo-seq数据分析（附操作视频）https://mp.weixin.qq.com/s/k-CqU7YtTAYP4L0cQeIOgg
-华大Stereo-seq分析终极教程，一篇文章全掌握 https://mp.weixin.qq.com/s/HGHdlXafod1M0TXE3uUZxg
+- *DCS智能生信分析* 手把手教您时空转录组Stereo-seq数据分析（附操作视频）https://mp.weixin.qq.com/s/k-CqU7YtTAYP4L0cQeIOgg
+- 华大Stereo-seq分析终极教程，一篇文章全掌握 https://mp.weixin.qq.com/s/HGHdlXafod1M0TXE3uUZxg
+- 空间转录组定性分析之数据质控和bin策略选择 https://mp.weixin.qq.com/s/W5n52LS72uhguvmI5erqOQ
+- stereoscope 读取与保存 Stereo-seq 华大空转数据 https://mp.weixin.qq.com/s/j8A4eleXigpO_-OdGZMeKQ
+- 
 
 
 SAW-ST使用说明 https://cloud.stomics.tech/helpcenter/zh/tool/SAW-ST-V8.html
@@ -209,4 +212,36 @@ cell_bins = segmentation.cell_bounds
 **总结**：Cell Square是技术限制下的产物，Cell Bin是更接近生物学真实的表示。选择哪种取决于你的技术平台、研究问题和分析目标。
 
 </details>
-空间转录组定性分析之数据质控和bin策略选择 https://mp.weixin.qq.com/s/W5n52LS72uhguvmI5erqOQ
+
+
+
+# 结果解读 SAW-ST-V8
+> EntityID = SS200000144TL_D6
+```mermaid
+flowchart LR
+0[WT202505210002729] --> 1[pipeline-logs] --> 1.1[/config.yaml/]
+1 --> 1.2[/log/]
+0 --> 2[STEREO_ANALYSIS_WORKFLOW_PROCESSING]
+2 --> 2.1[ANNOTATION] --> 2.1.1[/SS200000144TL_D6.Aligned.ortedByCoord.out.merge.q10.dedup.target.bam.summary.stat/]
+2.1 --> 2.1.2[/performance_anno/]
+2.1 --> 2.1.3[/anno_20250522_035835.log/]
+2.1 --> 2.1.4[/log_anno/]
+2 --> 2.2[IMAGE]
+2 --> 2.3[REPORT]
+2 --> 2.4[EXPRESSION_MATRIX]
+2 --> 2.5[ALIGNMENT]
+2 --> 2.6[ANALYSIS]
+0 --> 3[outs] --> 3.1[report]
+3 --> 3.2[feature_expression]
+3 --> 3.3[visualization]
+3 --> 3.4[bam]
+3 --> 3.5[image]
+3 --> 3.6[analysis]
+3 --> 3.7[/SS200000144TL_D6.report.html/]
+3 --> 3.8[/visualization.tar.gz/]
+3 --> 3.9[visualization.tar.gz.md5/]
+3 --> 3.10[/SS200000144TL_D6.report.tar.gz/]
+0 --> 4[/SS200000144TL_D6.statistics.json/]
+```
+
+## 查看report.html
