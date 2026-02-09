@@ -12,7 +12,7 @@ library(optparse)
 
 option_list <- list(
   make_option(c("--gene_csv"), type = "character", default = "/data/work/csv/combined.csv", help = "input the csv of leiden_0.5"),
-  make_option(c("--kegg_info_RData"), type = "character", default = "../kegg_info.RData", help = "Kegg info Rdata"),
+  make_option(c("--kegg_info_RData"), type = "character", default = "/omics4plant/WORKFLOW/Enrich/bin/kegg_info.RData", help = "Kegg info Rdata"),
   make_option(c("--dbTarGz"),type = "character", default = "/data/work/yita/org.Gspecies.eg.db.tar.gz",help = "Name of built db for enrich"),
   make_option(c("--minp"), type = "numeric", default = 0.05, help = "filter marker gene limited by min pvalue_adj")
 )
@@ -46,7 +46,7 @@ columns(db)
 
 markers <- read.csv(gene_csv, header = TRUE, stringsAsFactors = FALSE)
 
-source('../functions_yd.R')
+source('/omics4plant/WORKFLOW/Enrich/bin/functions_yd.R')
 
 markers <- checkTargetGeneSet_yd(markers, db, gene_csv)
 
