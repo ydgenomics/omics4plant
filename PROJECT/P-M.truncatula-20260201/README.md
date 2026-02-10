@@ -18,6 +18,8 @@ SAW-ST-V8-makeRef使用
 2. 使用SAW-ST-V8-makeRef流程 https://cloud.stomics.tech/helpcenter/zh/tool/SAW-ST-V8.html#_3-1-2-saw-st-v8-makeref%E4%BD%BF%E7%94%A8 拿到ReferenceIndex
 3. 使用SAW-ST流程 https://cloud.stomics.tech/helpcenter/zh/tool/SAW-ST-V8.html#_3-2-3-%E6%AD%A5%E9%AA%A4%E4%B8%89-saw-st-v8%E5%88%86%E6%9E%90 对空转原始测序数据进行定量，拿到矩阵文件
 
+SAW-A02102 PARSE ERROR using SAW 8.2.0 makeRef https://github.com/STOmics/SAW/issues/248
+STAR: logging error for genome size in genomeGenerate for small genomes https://github.com/alexdobin/STAR/issues/965
 
 - *DCS智能生信分析* 手把手教您时空转录组Stereo-seq数据分析（附操作视频）https://mp.weixin.qq.com/s/k-CqU7YtTAYP4L0cQeIOgg
 - 华大Stereo-seq分析终极教程，一篇文章全掌握 https://mp.weixin.qq.com/s/HGHdlXafod1M0TXE3uUZxg

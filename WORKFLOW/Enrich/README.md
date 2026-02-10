@@ -18,13 +18,7 @@ flowchart LR
 可视化要做好一点
 富集设置qvalueCutoff和pvalueCutoff为0.05，结果按p.dajust从小到大排序，然后对各个Ontology的p.dajust取前十小的条目进行柱状图可视化
 
-## Enrich-BuildOrgDb
-
-[eggnog-mapper](http://eggnog-mapper.embl.de/)
-
-如何投递eggnog-mapper，或者使用galaxy的eggnog-mapper
-云平台部署eggnog-mapper
-
+## Enrich-eggNOGmapper
 
 ```shell
 conda create -n eggnog -c conda-forge -c bioconda "eggnog-mapper>=2" python=3.10 diamond hmmer -y
@@ -43,6 +37,16 @@ nohup emapper.py -i Gene_longest.pep.fa -o ./output --cpu 30 &
 
 /opt/software/miniconda3/envs/eggnog/bin/emapper.py
 ```
+
+
+## Enrich-BuildOrgDb
+
+[eggnog-mapper](http://eggnog-mapper.embl.de/)
+
+如何投递eggnog-mapper，或者使用galaxy的eggnog-mapper
+云平台部署eggnog-mapper
+
+
 
 - 本地配置eggNOG-mapper并且进行任意物种的功能注释 https://mp.weixin.qq.com/s/mJpRBwPKiKoq9MT77M8yQg
 
