@@ -1,0 +1,2 @@
+workflow,input_info,machine_info,time
+Enrich-BuildOrgDb,emapper_xlsx:/data/work/yita/yita-anno.xlsx;ko_json:/omics4plant/WORKFLOW/Enrich/bin/ko00001.json;taxid:1111;genus:Genus;species:species,1CPU;4GB,00:10:00

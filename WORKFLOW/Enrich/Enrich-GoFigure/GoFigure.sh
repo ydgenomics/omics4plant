@@ -3,7 +3,7 @@
 # ----- input ------
 ic_tsv="/omics4plant/WORKFLOW/Enrich/bin/ic.tsv"
 relations_full_tsv="/omics4plant/WORKFLOW/Enrich/bin/relations_full.tsv"
-go_obo="go.obo"
+go_obo="/Scripts/go.obo"
 
 enrich_result=$1
 max_label=$2

@@ -8,7 +8,7 @@ awk 'FNR==1 && NR==1 {print $0 ",cluster"} FNR>1 {print $0 "," substr(FILENAME, 
 input_folder=$(find . -maxdepth 1 -type d -name "org.*.eg.db" | head -1)
 
 if [ -z "$input_folder" ]; then
-    echo "Error：Not found org.*.eg.db folder"
+    echo "Error: Not found org.*.eg.db folder"
     exit 1
 fi
 
