@@ -13,13 +13,5 @@ Multi-omic technologies empower plant researchs.
 
 ---
 
-## P-M.truncatula-20260201 center
-- SAW-ST-V8-makeRef
-
-## Dataget
-
-## Enrich
-
-## GRN(Gene regulation network)
-
-## DEA(Different genes analysis)
+## Workflows' tutorial content
+- [Enrich](./WORKFLOW/Enrich/README.md)
