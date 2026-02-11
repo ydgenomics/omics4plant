@@ -1,4 +1,4 @@
-# 基因富集流程：Enrich
+# Enrich
 
 - Enrich-eggNOGmapper: 云平台eggNOG-mapper对序列做功能条目注释
 - Enrich-BuildOrgDb：搭建特异物种富集用的库/包
@@ -8,10 +8,10 @@
 
 ```mermaid
 flowchart LR
-0[Enrich] === |搭建特异物种富集用的库/包| 1[Enrich-BuildOrgDb]
-0 === |对目标基因集中p_val_adj小于`minp`的基因做富集| 2[Enrich-TargetGeneSet]
+0[Enrich] === |构建富集用的库/包| 1[Enrich-BuildOrgDb]
+0 === |对基因集做富集| 2[Enrich-TargetGeneSet]
 0 === |条目语义相似性可视化|3[Enrich-GoFigure]
-0 === |云平台eggNOG-mapper对序列做功能条目注释|0.5[Enrich-eggNOGmapper] --> |option1|1
+0 === |序列做功能条目注释|0.5[Enrich-eggNOGmapper] --> |option1|1
 0.4[(Website: eggNOG-mapper)] --> |option2| 1
 1 --> 2
 1 --> 2.1([DCS/analysis])
