@@ -51,29 +51,16 @@ tar -zxvf mmseqs.tar.gz
 tar -zxvf pfam.tar.gz
 
 # How to run and example
-emapper.py \
---cpu 4 \
---mp_start_method forkserver \
---data_dir /data/work/Enrich/eggNOGmapper/db \
--o test \
+emapper.py --cpu 4 --mp_start_method forkserver \
+--data_dir /data/work/Enrich/eggNOGmapper/db -o test \
 --output_dir /data/work/Enrich/eggNOGmapper/output \
 --temp_dir /data/work/Enrich/eggNOGmapper/output \
---override \
--m diamond \
---dmnd_ignore_warnings \
+--override -m diamond --dmnd_ignore_warnings \
 -i /data/work/Enrich/TM-1_V2.1.gene.pep.fa \
---evalue 0.001 \
---score 60 \
---pident 40 \
---query_cover 20 \
---subject_cover 20 \
---itype proteins \
---tax_scope auto \
---target_orthologs all \
---go_evidence non-electronic \
---pfam_realign none \
---report_orthologs \
---decorate_gff yes \
+--evalue 0.001 --score 60 --pident 40 --query_cover 20 \
+--subject_cover 20 --itype proteins --tax_scope auto \
+--target_orthologs all --go_evidence non-electronic \
+--pfam_realign none --report_orthologs --decorate_gff yes \
 --excel
 ```
 
