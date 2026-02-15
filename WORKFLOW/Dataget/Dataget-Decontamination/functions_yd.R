@@ -28,7 +28,7 @@ runSoupx_yd <- function(raw_matrix, filter_matrix, meta, prefix, tfidfMin = 1) {
     sc <- setClusters(sc, setNames(meta$seurat_clusters, rownames(meta)))
     sc <- autoEstCont(sc, tfidfMin = tfidfMin, forceAccept = TRUE, doPlot=FALSE) # If you want mannually set rho, use setContaminationFraction(), but it is not recommended
     out <- adjustCounts(sc, roundToInt = TRUE)
-    DropletUtils::write10xCounts(paste0(prefix, "_", unique(sc$metaData$rho)), out, version="3")
+    DropletUtils::write10xCounts(paste0(prefix, "_soupx_", unique(sc$metaData$rho)), out, version="3")
     return(out)
 }
 
@@ -39,7 +39,7 @@ runDecontx_yd <- function(raw_matrix, filter_matrix, meta, prefix) {
     sce <- decontX(sce.filter, background = sce.raw)
     # seuratObj[["decontXcounts"]] <- CreateAssayObject(counts = decontXcounts(sce))
     out <- counts(sce)
-    DropletUtils::write10xCounts(paste0(prefix, "_"), out, version="3")
+    DropletUtils::write10xCounts(paste0(prefix, "_decontx"), out, version="3")
     return(out)
 }
 
