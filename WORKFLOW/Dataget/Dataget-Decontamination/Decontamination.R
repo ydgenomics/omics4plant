@@ -2,7 +2,17 @@
 options(warn = 1)  # 立即显示警告
 Sys.setenv("R_SIGNAL_HANDLER" = "0")  # 禁用信号处理
 
-lapply(c("Seurat","DropletUtils","SoupX", "optparse", "decontX", "FastCAR", "scCDC", "qlcMatrix", "Matrix", "scater"), library, character.only = T)
+# lapply(c("Seurat","DropletUtils","SoupX", "optparse", "decontX", "FastCAR", "scCDC", "qlcMatrix", "Matrix", "scater"), library, character.only = T)
+library(Seurat)
+library(DropletUtils)
+library(SoupX)
+library(optparse)
+library(decontX)
+library(FastCAR)
+library(scCDC)
+library(qlcMatrix)
+library(Matrix)
+library(scater)
 
 option_list <- list(
     make_option(c("-r", "--raw_matrix"), type = "character", default = "/data/work/Decontamination/raw_gene_bc_matrices/GRCh38", help = "String: Path to raw matrix", metavar = "character"),
