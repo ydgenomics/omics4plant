@@ -72,13 +72,13 @@ for (method in methods_list) {
         seu <- CreateSeuratObject(out)
         seu <- seuratPreprocess_yd(seu, mode = "lognormalize", input_mingenes = input_mingenes, resolution = 0.5)
         p <- DimPlot(seu, reduction = "umap", label = TRUE, label.size = 5) + NoLegend()
-        ggsave(filename = paste0(prefix, "_soupx.pdf"), plot = p)
+        ggsave(filename = paste0(prefix, "_decontx.pdf"), plot = p)
         saveRDS(seu, file = paste0(prefix, "_decontx.rds"))
     } else if (method == "sccdc") {
         seuratobj_corrected <- runSccdc_yd(filter_seu, meta = filter_seu@meta.data, prefix = prefix)
         seuratobj_corrected <- seuratPreprocess_yd(seuratobj_corrected, mode = "lognormalize", input_mingenes = input_mingenes, resolution = 0.5)
         p <- DimPlot(seuratobj_corrected, reduction = "umap", label = TRUE, label.size = 5) + NoLegend()
-        ggsave(filename = paste0(prefix, "_soupx.pdf"), plot = p)
+        ggsave(filename = paste0(prefix, "_sccdc.pdf"), plot = p)
         saveRDS(seuratobj_corrected, file = paste0(prefix, "_sccdc.rds"))
     } else {
         cat("Method not recognized. Please choose from 'soupx', 'decontx', or 'sccdc'.\n")
