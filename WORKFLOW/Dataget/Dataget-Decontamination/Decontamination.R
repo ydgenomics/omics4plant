@@ -1,3 +1,7 @@
+# 在脚本最开头设置（在任何其他代码之前）
+options(warn = 1)  # 立即显示警告
+Sys.setenv("R_SIGNAL_HANDLER" = "0")  # 禁用信号处理
+
 lapply(c("Seurat","DropletUtils","SoupX", "optparse", "decontX", "FastCAR", "scCDC", "qlcMatrix", "Matrix", "scater"), library, character.only = T)
 
 option_list <- list(
@@ -17,7 +21,7 @@ methods <- opt$methods
 input_mingenes <- opt$input_mingenes
 tfidfMin <- opt$tfidfMin
 
-source("/omics4planr/WORKFLOW/Dataget/Dataget-Decontamination/functions_yd.R")
+source("/omics4plant/WORKFLOW/Dataget/Dataget-Decontamination/functions_yd.R")
 
 filter_matrix <- Read10X(filter_matrix, gene.column=1)
 # Because CreateSeuratObject() will replace '_' as '-', in order to keep raw genes' name
