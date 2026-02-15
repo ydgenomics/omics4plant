@@ -1,7 +1,7 @@
 # RNA去污流程：Decontamination
 
 
-## DataGet-Decontamination
+## Dataget-Decontamination
 
 SoupX
 
