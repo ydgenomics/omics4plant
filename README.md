@@ -7,9 +7,9 @@ Multi-omic technologies empower plant researchs.
 > - [PLANT](./PLANT/): Diverse orgnanism about life tree of plant(taxonomy, evolution), cultivated species(rice, maize), model species(at) et al.
 > - [DATABASE](./DATABASE/): Genetic/evolutionary/morphological databases.
 > - [SOFTWARE](./SOFTWARE/): Softwares & Packages.
-> - [PROJECT](./PROJECT/): Projects, Works, Tasks, and Logs.
 > - [WORKFLOW](./WORKFLOW/): Analysis pipelines and buiding in DCS cloud.
 > - [CS](./CS/): Basic programing language and algorithm.
+> - ~~[PROJECT](./PROJECT/): Projects, Works, Tasks, and Logs.~~
 
 ---
 
