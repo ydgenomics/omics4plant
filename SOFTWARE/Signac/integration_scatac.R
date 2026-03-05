@@ -5,7 +5,6 @@
 suppressMessages({
     library(Signac)
     library(Seurat)
-    library(scDblFinder)
     library(ggplot2)
     library(ggraph)
     library(clustree)
@@ -13,9 +12,9 @@ suppressMessages({
 })
 
 option_list <- list(
-    make_option(c("--atac_rds"), type = "character", default = "/data/work/three_combined.rds_qc.rds",
+    make_option(c("--atac_rds"), type = "character", default = "/data/work/signac/rice_combined.rds_qc.rds",
                             help = "Path to input ATAC RDS file [default: %default]"),
-    make_option(c("--prefix"), type = "character", default = "three",
+    make_option(c("--prefix"), type = "character", default = "rice",
                             help = "Prefix for output files [default: %default]"),
     make_option(c("--batch_key"), type = "character", default = "sample",
                             help = "Metadata column for batch [default: %default]"),
@@ -27,13 +26,13 @@ option_list <- list(
 
 opt <- parse_args(OptionParser(option_list = option_list))
 
-ATAC_rds <- opt$atac_rds
+atac_rds <- opt$atac_rds
 prefix <- opt$prefix
 batch_key <- opt$batch_key
 debatch_method <- opt$debatch_method
 resolution <- opt$resolution
 
-pbmc <- readRDS(ATAC_rds)
+pbmc <- readRDS(atac_rds)
 
 DefaultAssay(pbmc) <- "peaks"
 
@@ -51,11 +50,12 @@ anchors <- FindIntegrationAnchors(
 pbmc <- IntegrateEmbeddings(
     anchorset = anchors,
     reductions = pbmc[["lsi"]],
-    new.reduction.name = paste0(debatch_method, "_integrated_lsi"),
+    new.reduction.name = paste0(debatch_method, "_lsi"),
     dims.to.integrate = 1:30
 )
 
-pbmc <- FindNeighbors(object = pbmc, reduction = paste0(debatch_method, "_integrated_lsi"), dims = 2:30)
+
+pbmc <- FindNeighbors(object = pbmc, reduction = paste0(debatch_method, "_lsi"), dims = 2:30)
 
 pbmc.temp <- pbmc
 for (res in c(seq(0.01, 0.1, by = 0.01), seq(0.1, 1, by = 0.1))){
@@ -71,14 +71,34 @@ rm(pbmc.temp)
 pbmc <- FindClusters(pbmc, resolution = resolution, algorithm = 3, verbose = FALSE)
 
 # create a new UMAP using the integrated embeddings
-pbmc <- RunUMAP(pbmc, reduction = paste0(debatch_method, "_integrated_lsi"), dims = 2:30, verbose = FALSE)
+pbmc <- RunUMAP(pbmc, reduction = paste0(debatch_method, "_lsi"), reduction.name = paste0(debatch_method, "_umap"), dims = 2:30, verbose = FALSE)
 
 pdf(paste0(prefix, "_umap.pdf"))
 for (group_key in c(batch_key, "scDblFinder.class", "seurat_clusters")) {
-  p <- DimPlot(object = pbmc, group.by = group_key, label = TRUE) + NoLegend()
+  p <- DimPlot(object = pbmc, group.by = group_key, reduction.name = paste0(debatch_method, "_umap"), label = TRUE) + NoLegend()
   print(p)
 }
-FeaturePlot(pbmc, features = "scDblFinder.score")
+FeaturePlot(pbmc, features = "scDblFinder.score", reduction.name = paste0(debatch_method, "_umap"))
 dev.off()
+
+# -------------------- harmony ------------------
+library(harmony)
+pbmc <- RunHarmony(
+    object = pbmc,
+    group.by.vars = c("sample"),
+    assay.use = 'peaks',
+    reduction.use = "lsi",
+    project.dim=FALSE
+)
+
+pbmc <- FindNeighbors(object = pbmc, reduction = "harmony", dims = 2:30)
+# pbmc <- FindClusters(pbmc, resolution = resolution, algorithm = 3, verbose = FALSE)
+pbmc <- RunUMAP(pbmc, reduction = "harmony", reduction.name = "harmony_umap", dims = 2:30, verbose = FALSE)
+
+DimPlot(object = pbmc, group.by = "sample", reduction = "harmony_umap", label = TRUE) + NoLegend()
+dev.off()
+
+
+
 
 saveRDS(pbmc, file = paste0(prefix, "_integrated.rds"))

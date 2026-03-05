@@ -221,6 +221,11 @@ for (i in 1:n_samples) {
     meta.data = md
   )
 
+  # 过滤非细胞条形码
+  cat("  过滤非细胞条形码...\n")
+  seurat_obj <- subset(seurat_obj, subset = is_cell_barcode == 1)
+  cat(sprintf("    过滤非细胞条形码后细胞数: %d\n", ncol(seurat_obj)))
+
   # remove doblets -- scDblFinder
   sce <- as.SingleCellExperiment(seurat_obj)
 

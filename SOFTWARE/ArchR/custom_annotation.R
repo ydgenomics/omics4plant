@@ -1,0 +1,89 @@
+library(AnnotationForge)
+library(AnnotationDbi)
+library(rtracklayer)
+library(txdbmaker)
+
+txdb <- makeTxDbFromGFF(file = "~{gtf}", organism = "~{species}")
+
+txdb
+
+createGeneAnnotation(
+  genome = NULL,
+  TxDb = NULL,
+  OrgDb = NULL,
+  genes = NULL,
+  exons = NULL,
+  TSS = NULL,
+  annoStyle = NULL,
+  singleStrand = TRUE
+)
+
+
+create_anno_from_gtf <- function(gtf_file) {
+  library(GenomicFeatures)
+  library(GenomicRanges)
+  library(rtracklayer)
+  
+  message("Reading GTF file...")
+  gtf <- import(gtf_file)
+  
+  # 1. 创建 genes GRanges
+  message("Creating genes...")
+  # 按 gene_id 合并外显子范围得到基因范围
+  genes <- reduce(split(gtf[gtf$type == "exon"], gtf$gene_id))
+  genes <- unlist(genes)
+  
+  # 添加 symbol 列（优先使用 gene_name，如果没有则用 gene_id）
+  if("gene_name" %in% colnames(mcols(gtf))) {
+    gene_info <- unique(gtf[, c("gene_id", "gene_name")])
+    mcols(genes)$symbol <- gene_info$gene_name[match(names(genes), gene_info$gene_id)]
+  } else {
+    mcols(genes)$symbol <- names(genes)
+  }
+  names(genes) <- NULL
+  
+  # 2. 创建 exons GRanges
+  message("Creating exons...")
+  exons <- gtf[gtf$type == "exon"]
+  
+  # 添加 symbol 列
+  if("gene_name" %in% colnames(mcols(gtf))) {
+    mcols(exons)$symbol <- gtf$gene_name[gtf$type == "exon"]
+  } else {
+    mcols(exons)$symbol <- gtf$gene_id[gtf$type == "exon"]
+  }
+  
+  # 清理不必要的列
+  keep_cols <- c("gene_id", "symbol", "transcript_id", "exon_id")
+  keep_cols <- intersect(keep_cols, colnames(mcols(exons)))
+  mcols(exons) <- mcols(exons)[, keep_cols]
+  
+  # 3. 创建 TSS GRanges
+  message("Creating TSS...")
+  transcripts <- gtf[gtf$type == "transcript"]
+  
+  # TSS 位置：正链用 start，负链用 end
+  tss <- transcripts
+  start(tss) <- ifelse(strand(tss) == "+", start(transcripts), end(transcripts))
+  end(tss) <- start(tss)
+  
+  # 添加 symbol 列
+  if("gene_name" %in% colnames(mcols(gtf))) {
+    mcols(tss)$symbol <- gtf$gene_name[gtf$type == "transcript"]
+  } else {
+    mcols(tss)$symbol <- gtf$gene_id[gtf$type == "transcript"]
+  }
+  
+  # 返回结果
+  list(
+    genes = sort(genes),
+    exons = sort(exons),
+    TSS = sort(unique(tss))
+  )
+}
+
+# 使用示例
+anno <- create_anno_from_gtf("your_annotation.gtf")
+genes <- anno$genes
+exons <- anno$exons
+TSS <- anno$TSS

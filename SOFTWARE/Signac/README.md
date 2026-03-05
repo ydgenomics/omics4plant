@@ -101,9 +101,14 @@ rds之后再通过signac standard进行可视化
 如果有响应的scRNA数据，非同一细胞（自测/数据库），对ATAC进行注释，整合。同一细胞(multiome)，另外有专门的算法解决
 疑问，不同处理scATAC数据，有没有去批次整合呢？
 
-- [Signac_matrix2rds_scDblFinder_merge.R](./Signac_matrix2rds_scDblFinder_merge.R): 构建一致的peaks列表（基于长度范围过滤peak：`min_peak_width` - `max_peak_width`），每个样本构建为一个seurat对象（基于fragments数量过滤细胞：`min_passed_filters`），并使用scDblFinder识别doublet，添加`scDblFinder.class`和`scDblFinder.score`信息，添加`groupX_key`、`groupX_value`信息于meta.data，然后`merge()`所有样本为一个对象，输出.rds文件。
+- [Signac_matrix2rds_scDblFinder_merge.R](./Signac_matrix2rds_scDblFinder_merge.R): 构建一致的peaks列表（`reduce`模式合并peak，基于长度范围过滤peak：`min_peak_width` - `max_peak_width`），每个样本构建为一个seurat对象，仅保留`is_cell_barcode=1`的细胞，再基于fragments数量过滤细胞`min_passed_filters`，并使用scDblFinder识别doublet，添加`scDblFinder.class`和`scDblFinder.score`信息，添加`groupX_key`、`groupX_value`信息于meta.data，然后`merge()`所有样本为一个对象，输出.rds文件。
 - [Signac_QC_plot.R](Signac_QC_plot.R)：读取.rds文件，收集核小体信号和TSS富集信号，基于`gtf_path`添加基因annotation，过滤细胞（`min_nCount_peaks`、 `max_nCount_peaks`、`min_pct_reads_in_peaks`、`max_nucleosome_signal`、`min_TSS_enrichment`），数据标准化、降维聚类、构建基因活性矩阵，然后保存.rds文件，可视化.pdf。
-- [integration_multiple_scATAC.R](./integration_multiple_scATAC.R)：基于批次键`batch_key`做去批次。clustree可视化不同分辨率下分群关系。
+- [integration_multiple_scATAC.R](./integration_multiple_scATAC.R)：基于peak矩阵对批次键`batch_key`做去批次。clustree可视化不同分辨率下分群关系。
+  - harmony
+  - cca: Canonical correlation analysis
+  - rpca: Reciprocal PCA
+  - jpca: Joint PCA
+  - rlsi: Reciprocal LSI
 
 - Signac tutorial
   - peak calling https://stuartlab.org/signac/articles/peak_calling
@@ -126,6 +131,7 @@ rds之后再通过signac standard进行可视化
 - 多样本/批次/模态整合
   > - 未配对和配对单细胞RNA-seq和ATAC-seq数据联合整合的基准算法 https://mp.weixin.qq.com/s/gMZnxy6pNi1dSfBkO3tAkA
   > - Nat Methods | scMultiBench: 单细胞多组学整合方法的多任务基准测试 https://mp.weixin.qq.com/s/VoEASFyG2CyLxBIyNFTkSw
+  > - 算法赋能：使用GLUE等算法破解表观与转录组的调控密码 [wechat](https://mp.weixin.qq.com/s/4rTiQ-o75-gFxFx96KzziA)
 - 全网最全最新：ATAC-seq最佳实践和数据分析 https://mp.weixin.qq.com/s/QFWt0w-Q-Dq_JrB6PXq-PQ
 - human|ATAC-seq Data Standards and Processing Pipelinehttps://www.encodeproject.org/atac-seq/ 
 - 基于Signac学习scATAC分析流程 https://mp.weixin.qq.com/s/4X8xCQfGWlQcUBo3TDqheA

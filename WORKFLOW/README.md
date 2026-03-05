@@ -1,7 +1,35 @@
 # WORKFLOW
 
-## [Enrich](./Enrich/)
+---
 
-## [Dataget](./Dataget/)
+## [Dataget](./Dataget/) :arrow_up: 
 
-## [GRN](./GRN/)
+---
+
+## [Cluster](./Cluster/) :arrow_up: 
+
+---
+
+## [MetaNeighbor](./MetaNeighbor/) :arrow_up: 
+
+---
+
+## [Annotation](./Annotation/) (optional)
+
+---
+
+## [Enrich](./Enrich/) (optional)
+
+---
+
+## [Integration](./Integration/)
+
+---
+
+## [DEA](./DEA/) :arrow_down: 
+
+## [GRN](./GRN/) :arrow_down: 
+
+## [CEA](./CEA/) :arrow_down: 
+
+## [Trajectory](./Trajectory/) :arrow_down: 
