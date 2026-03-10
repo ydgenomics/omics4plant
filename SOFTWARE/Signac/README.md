@@ -119,6 +119,25 @@ rds之后再通过signac standard进行可视化
 - tips:
   - You need to set `fast=FALSE` if you want to make the TSS plot `TSSPlot()` afterwards, the default is `fast=TRUE`
 
+环境配置
+```shell
+source /opt/software/miniconda3/bin/activate
+conda activate signac
+conda config --remove-key channels
+conda config --add channels conda-forge
+conda install bioconda::bioconductor-ensembldb -y
+conda install bioconda::bioconductor-annotationhub -y
+conda install bioconda::bioconductor-txdbmaker -y
+conda install conda-forge::r-remotes -y
+conda install conda-forge::r-readxl -y
+conda install bioconda::bioconductor-scdblfinder -y
+conda install conda-forge::r-clustree -y
+conda install conda-forge::r-harmony -y
+conda install conda-forge::r-r.utils -y
+# conda install bioconda::bioconductor-bsgenome -y
+# conda install bioconda::bioconductor-bsgenomeforge -y
+```
+
 ---
 
 ## 4. Reference

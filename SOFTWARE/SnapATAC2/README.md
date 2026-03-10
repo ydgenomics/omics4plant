@@ -18,9 +18,17 @@ GLUE
 scJoint https://github.com/SydneyBioX/scJoint
 
 ```shell
-pip install anndata==0.9.2
+source /opt/software/miniconda3/bin/activate
+conda create -n snapatac2 python=3.10 -y
+conda activate snapatac2
+conda install bioconda::snapatac2 -y
+conda install conda-forge::ipykernel -y
+conda install conda-forge::nbformat -y
+conda install -c conda-forge -c bioconda scglue -y
+conda install bioconda::scib -y
 pip install scFountain
-pip install scib
+pip install anndata==0.9.2
+pip install harmonypy
 ```
 
 ## Ref

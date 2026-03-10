@@ -23,6 +23,9 @@ grep -c 'transcript_id' $targetGTF | head -5
 echo -e "\n染色体列表:"
 cut -f1 $targetGTF | sort -u
 
+# 查看染色体名称
+grep "^>" /data/input/Files/yuantingting/zimia/merge.fasta
+
 
 # 使用awk查看所有问题行
 awk 'NR==102157 || NR==102160 || NR==137141 || NR==137144 || NR==240466 || NR==240471 || NR==291476 || NR==291479 || NR==297604 || NR==297607 || NR==451942 || NR==451945 || NR==828153 || NR==828156 || NR==1014402 || NR==1014405' "$targetGTF" | nl -v102157
@@ -53,3 +56,8 @@ awk '$1=="MtrunA17Chr2" && $4 <= 13350628 && $5 >= 13350732' $targetGTF
 # 对于重复序列：通常建议在RNA-seq分析中移除重复序列注释
 
 # 对于完全重叠的基因：需要根据生物学意义决定保留哪个
+
+
+# 将transcript类别改为gene类别
+# 修改后保存为新文件
+sed '/\ttranscript\t/s/\ttranscript\t/\tgene\t/' /data/input/Files/User/yinzhanhao/index/rice/osa1_r7.all_models.gtf > /data/input/Files/User/yinzhanhao/index/rice/osa1_r7.all_models.gene.gtf

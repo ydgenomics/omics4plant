@@ -10,6 +10,7 @@ Multi-omic technologies empower plant researchs.
 > - [WORKFLOW](./WORKFLOW/): Analysis pipelines and buiding in DCS cloud.
 > - [CS](./CS/): Basic programing language and algorithm.
 > - ~~[PROJECT](./PROJECT/): Projects, Works, Tasks, and Logs.~~
+> - [PROJECT-open](./PROJECT-open/): Opened project, friendly source.
 
 ---
 

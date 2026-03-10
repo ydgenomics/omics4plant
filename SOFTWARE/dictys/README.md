@@ -12,7 +12,12 @@
 - gene.bed
 
 ```shell
-- ./data
+# - ./data
 
+source /opt/software/miniconda3/bin/activate
+conda create -y -n dictys -c conda-forge python=3.9 mamba
+conda activate dictys
+conda config --set channel_priority flexible
+mamba install -y -c lingfeiwang -c bioconda -c conda-forge -c pytorch dictys pytorch torchvision torchaudio cpuonly
 
 ```
