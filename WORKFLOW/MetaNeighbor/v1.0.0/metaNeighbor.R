@@ -1,4 +1,4 @@
-# Date: 251210
+# Date: 260310
 # Image: metaNeighbor-R--04 /opt/conda/bin/R
 # Reference: https://mp.weixin.qq.com/s/tVxalBWsxLn58RJkpb-PaQ
 # 基于RNA@counts做分析
@@ -15,11 +15,11 @@ library(optparse)
 
 option_list <- list(
   make_option(c("-i", "--input_file"),
-    type = "character", default = "/data/work/scline/results/group1.hr.rds /data/work/scline/results/group2.hr.rds",
+    type = "character", default = "/data/work/Dataget/output/GM.rds",
     help = "Path to input file"
   ),
   make_option(c("-o", "--output_name"),
-    type = "character", default = "test",
+    type = "character", default = "GM_meta",
     help = "Output file prefix name"
   ),
   make_option(c("-b", "--batch_key"),
@@ -65,8 +65,13 @@ if (length(input_file) > 1) {
         merged_data <- merge(merged_data, temp_data)
     }
 }
-print(merged_data$RNA@counts[1:5,1:5])
-print(merged_data$RNA@data[1:5,1:5])
+
+
+tryCatch({
+    print(merged_data$RNA@counts[1:5,1:5])
+}, error = function(e) {
+    print(merged_data$RNA$counts[1:5,1:5])
+})
 print(colnames(merged_data@meta.data))
 
 sdata <- as.SingleCellExperiment(merged_data, assay = "RNA", slot = "counts")

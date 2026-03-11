@@ -1,4 +1,6 @@
 # Using multi-methods do Integration and Eliminate batch effects then benchmarking different methods
+对存在批次的数据进行去批次整合，获得去批次的reduction，基于这个reduction进行聚类、可视化，保存rds/h5ad文件，保存reduction的csv文件，便于后续scib-metrics读入。
+
 - **Brief:** 先对h5ad对象做整合加新键biosample，然后以biosample作为批次键值做去批次，最后可视化感兴趣的键
 - **Fature**
 - **Log:**

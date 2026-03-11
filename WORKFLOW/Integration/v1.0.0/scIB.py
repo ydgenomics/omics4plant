@@ -15,15 +15,13 @@ import shutil
 @click.command()
 @click.option("--unintegrated_h5ad", type=str)
 @click.option('--integrated_file', type=str, default=None, help="NULL")
-@click.option('--methods_file', type=str, default=None, help="NULL")
-@click.option('--pcas_file', type=str, default=None, help="NULL")
 @click.option('--deals_file', type=str, default="N N N N N N", help="NULL")
 @click.option('--tests_file', type=str, default="true true true true true true true true true true", help="NULL")
 @click.option('--batch_key', type=str, default=None, help="Batch key")
 @click.option('--label_key', type=str, default="biosample", help="Storying the information of biological cell name")
 @click.option('--n_jobs', type=int, default=4, help="Number of jobs to use for parallelization of neighbor search")
 @click.option("--prefix", type=str, default="zimia")
-def main(unintegrated_h5ad, integrated_file, methods_file, pcas_file, deals_file, tests_file, batch_key, label_key, n_jobs, prefix):
+def main(unintegrated_h5ad, integrated_file, deals_file, tests_file, batch_key, label_key, n_jobs, prefix):
     # split
     files = integrated_file.strip().split(' ')
     print(len(files));print(files)

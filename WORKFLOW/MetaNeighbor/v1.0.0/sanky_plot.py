@@ -1,4 +1,4 @@
-### Date: 251121
+### Date: 260310
 
 import pandas as pd
 import sys
@@ -10,7 +10,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description="Generate a Sankey plot from metaNeighbor results.")
 parser.add_argument('--path', type=str, default="/data/work/Single-Cell-Pipeline/output/Similarity/cotton_metaNeighbor.csv", help='Path to the metaNeighbor CSV file')
-parser.add_argument('--seq', type=str, default="/data/work/Single-Cell-Pipeline/output/Similarity/seq.txt", help='Path to the sequence file')
+parser.add_argument('--seq', type=str, default="s1,s2", help='Order split with ,')
 parser.add_argument('--slimit', type=float, default=0.8, help='Similarity limit threshold')
 
 args = parser.parse_args()
@@ -23,7 +23,7 @@ MT = pd.read_table(path, sep=',', header=0)
 MT.head()
 
 def sanky_plot(MT,seq,limit):
-    sequences = seq.split('|')
+    sequences = seq.split(',')
     # with open(seq, 'r') as f:
     #     for line in f:
     #         sequences.extend(line.strip('\n').split('|'))
