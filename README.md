@@ -17,3 +17,10 @@ Multi-omic technologies empower plant researchs.
 ## Workflows' tutorial content
 > [workflow list]()
 - [Enrich](./WORKFLOW/Enrich/README.md)
+
+
+<details> <summary> Tips </summary>
+
+多提问，善于提问
+
+</details>

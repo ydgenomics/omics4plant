@@ -1,0 +1,19 @@
+Package: BSgenome.rice.test
+Title: Full genome sequences for rice
+Description: Full genome sequences for rice.
+Version: 1.0.0
+organism: Oryza sativa
+common_name: Oryza
+provider: rice
+provider_version:
+release_date:
+release_name:
+source_url:
+organism_biocview: Oryza_sativa
+BSgenomeObjname: Osativa
+circ_seqs:
+seqnames: paste("Chr", c(1:12), sep="")
+SrcDataFiles: osa1_r7.asm.chrs.fa
+PkgExamples:
+seqs_srcdir: /data/work/Rice/BSgenome/splite
+ondisk_seq_format: rda

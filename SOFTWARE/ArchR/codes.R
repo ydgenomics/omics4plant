@@ -107,6 +107,16 @@ create_anno_from_gtf <- function(gtf_file) {
 # 使用示例
 anno <- create_anno_from_gtf("/data/input/Files/User/yinzhanhao/index/rice/osa1_r7.all_models.gtf")
 
+# anno$TSS$transcript_id <- gsub('_','-', anno$TSS$transcript_id)
+# anno$TSS$gene_id <- gsub('_','-', anno$TSS$gene_id)
+# anno$TSS$symbol <- gsub('_','-', anno$TSS$symbol)
+
+# anno$exons$transcript_id <- gsub('_','-', anno$exons$transcript_id)
+# anno$exons$gene_id <- gsub('_','-', anno$exons$gene_id)
+# anno$exons$symbol <- gsub('_','-', anno$exons$symbol)
+
+# anno$genes$symbol <- gsub('_','-', anno$genes$symbol)
+
 ArrowFiles <- createArrowFiles(
   inputFiles = inputFiles,
   genomeAnnotation = genomeAnnotation,

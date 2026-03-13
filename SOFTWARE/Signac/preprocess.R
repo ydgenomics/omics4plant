@@ -1,6 +1,5 @@
 # 260227 https://stuartlab.org/signac/articles/merging
-# /opt/software/miniconda3/envs/signac/bin/Rscript GetRdsOrMerge.R
-# 说明：
+# /opt/software/miniconda3/envs/signac/bin/Rscript
 
 # 加载必要的库
 library(Signac)
@@ -13,37 +12,22 @@ library(Matrix)
 # 解析命令行参数
 option_list <- list(
   # 样本相关参数
-  make_option(c("--sample_paths"), type="character", default=NULL,
-              help="样本路径列表，用逗号分隔，例如：/path1/,/path2/,/path3/"),
-  make_option(c("--output_dir"), type="character", default="./",
-              help="输出目录 [default: %default]"),
-  make_option(c("--output_prefix"), type="character", default="merged",
-              help="输出文件前缀 [default: %default]"),
-  make_option(c("--group1_key"), type="character", default="sample",
-              help="Seurat对象中用于标识样本的元数据列名 [default: %default]"),
-  make_option(c("--group1_value"), type="character", default=NULL,
-              help="样本名称列表，用逗号分隔，例如：sample1,sample2,sample3"),
-  make_option(c("--group2_key"), type="character", default="time",
-              help="Seurat对象中用于标识样本的元数据列名 [default: %default]"),
-  make_option(c("--group2_value"), type="character", default=NULL,
-              help="样本名称列表，用逗号分隔，例如：sample1,sample2,sample3"),
-  make_option(c("--group3_key"), type="character", default="species",
-              help="Seurat对象中用于标识样本的元数据列名 [default: %default]"),
-  make_option(c("--group3_value"), type="character", default=NULL,
-              help="样本名称列表，用逗号分隔，例如：sample1,sample2,sample3"),
+  make_option(c("--sample_paths"), type="character", default=NULL)
+  make_option(c("--output_dir"), type="character", default="./"),
+  make_option(c("--output_prefix"), type="character", default="merged"),
+  make_option(c("--group1_key"), type="character", default="sample"),
+  make_option(c("--group1_value"), type="character", default=NULL),
+  make_option(c("--group2_key"), type="character", default="time"),
+  make_option(c("--group2_value"), type="character", default=NULL),
+  make_option(c("--group3_key"), type="character", default="species"),
+  make_option(c("--group3_value"), type="character", default=NULL),
   # 阈值参数
-  make_option(c("--min_passed_filters"), type="integer", default=500,
-              help="细胞过滤的最小passed_filters阈值 [default: %default]"),
-  make_option(c("--min_peak_width"), type="integer", default=20,
-              help="最小peak宽度 [default: %default]"),
-  make_option(c("--max_peak_width"), type="integer", default=10000,
-              help="最大peak宽度 [default: %default]"),
-  
+  make_option(c("--min_passed_filters"), type="integer", default=500),
+  make_option(c("--min_peak_width"), type="integer", default=20),
+  make_option(c("--max_peak_width"), type="integer", default=10000),
   # 计算资源参数
-  make_option(c("--n_cores"), type="integer", default=4,
-              help="使用的CPU核心数 [default: %default]"),
-  make_option(c("--max_ram"), type="integer", default=50,
-              help="最大RAM (GB) [default: %default]")
+  make_option(c("--n_cores"), type="integer", default=4),
+  make_option(c("--max_ram"), type="integer", default=50)
 )
 
 opt_parser <- OptionParser(option_list=option_list)

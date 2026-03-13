@@ -1,6 +1,7 @@
 buildGenome <- function(gtf_path='/data/input/Files/User/yinzhanhao/index/rice/osa1_r7.all_models.gtf'){
   # https://stuartlab.org/signac/articles/faq.html#an-annotation-or-genome-sequence-for-my-organism-is-not-available-on-bioconductor-what-do-i-do
   ## Annotation must have `gene_name`, `gene_id`, `gene_biotype` and `type`.
+  library(GenomicRanges)
   gtf <- rtracklayer::import(gtf_path)
   # # 2. 只保留转录本（因为 Signac 主要用转录本信息）
   # tx_only <- gtf[gtf$type == "transcript"]
