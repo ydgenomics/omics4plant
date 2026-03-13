@@ -12,7 +12,7 @@ library(Matrix)
 # 解析命令行参数
 option_list <- list(
   # 样本相关参数
-  make_option(c("--sample_paths"), type="character", default=NULL)
+  make_option(c("--sample_paths"), type="character", default=NULL),
   make_option(c("--output_dir"), type="character", default="./"),
   make_option(c("--output_prefix"), type="character", default="merged"),
   make_option(c("--group1_key"), type="character", default="sample"),
@@ -34,14 +34,20 @@ opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
 
 sample_paths <- opt$sample_paths
-output_dir <- opt$output_dir
-output_prefix <- opt$output_prefix
+
+sample_key <- opt$sample_key
+batch_key <- opt$batch_key
 group1_key <- opt$group1_key
-group1_value <- opt$group1_value
 group2_key <- opt$group2_key
-group2_value <- opt$group2_value
 group3_key <- opt$group3_key
-group3_value <- opt$group3_value
+
+sample_value <- strsplit(opt$sample_value, ",")[[1]]
+group1_value <- strsplit(opt$group1_value, ',')[[1]]
+group2_value <- strsplit(opt$group2_value, ",")[[1]]
+group3_value <- strsplit(opt$group3_value, ',')[[1]]
+
+prefix <- opt$prefix
+
 min_passed_filters <- opt$min_passed_filters
 min_peak_width <- opt$min_peak_width
 max_peak_width <- opt$max_peak_width
@@ -59,6 +65,41 @@ max_ram <- opt$max_ram
 sample_paths <- strsplit(sample_paths, ",")[[1]]
 
 n_samples <- length(sample_paths)
+
+checkInput <- function(
+  sample_paths = opt$sample_paths,
+  sample_key = opt$sample_key,
+  batch_key = opt$batch_key,
+  group1_key = opt$group1_key,
+  group2_key = opt$group2_key,
+  group3_key = opt$group3_key,
+  sample_value = opt$sample_value,
+  group1_value = opt$group1_value,
+  group2_value = opt$group2_value,
+  group3_value = opt$group3_value,
+  prefix = opt$prefix,
+  min_passed_filters = opt$min_passed_filters,
+  min_peak_width = opt$min_peak_width,
+  max_peak_width = opt$max_peak_width,
+  n_cores = opt$n_cores,
+  max_ram = opt$max_ram
+){
+  messgae('[checkInput] ...')
+
+
+}
+
+getCommonPeaks <- function(){
+
+}
+
+getSeuratObject <- function(){
+
+}
+
+# -- merge --
+
+
 
 # 处理样本标签
 if(is.null(group1_value)) {
