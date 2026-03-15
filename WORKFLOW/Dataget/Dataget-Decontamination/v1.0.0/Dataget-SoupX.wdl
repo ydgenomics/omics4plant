@@ -5,17 +5,23 @@ workflow Dataget_Decontamination{
     Array[File] rawMatrix
     Array[File] filterMatrix
     Array[String] prefix
-    String methods = "soupx"
+    Int min_genes=100
+    Int min_cells=3
+    Float tfidfMin=1
+    Boolean roundToInt = true
     Int mem_Decontamination = 16
   }
-  Int jobn = length(filterMatrix)
+  Int jobn = length(rawMatrix)
   scatter(index in range(jobn)){
     call Decontamination{
       input:
       raw_matrix=rawMatrix[index],
       filter_matrix=filterMatrix[index],
       prefix=prefix[index],
-      methods=methods,
+      min_genes=min_genes,
+      min_cells=min_cells,
+      tfidfMin=tfidfMin,
+      roundToInt=roundToInt,
       mem = mem_Decontamination,
     }
   }
@@ -28,18 +34,20 @@ task Decontamination{
     File raw_matrix
     File filter_matrix
     String prefix
-    String methods
+    Int min_genes
+    Int min_cells
+    Float tfidfMin
+    Boolean roundToInt
     Int mem
   }
   command {
-    mkdir ~{prefix}
-    cd ~{prefix}
-    
-    /opt/software/miniconda3/envs/R4.3/bin/Rscript /omics4plant/WORKFLOW/Dataget/Dataget-Decontamination/Decontamination.R \
+    mkdir ~{prefix} && cd ~{prefix}
+    /opt/software/miniconda3/envs/R4.3/bin/Rscript /omics4plant/WORKFLOW/Dataget/Dataget-Decontamination/v1.0.0/decontamination.R \
     --raw_matrix ~{raw_matrix} --filter_matrix ~{filter_matrix} --prefix ~{prefix} \
-    --methods "~{methods}" --input_mingenes 100 --tfidfMin 1
+    --min_genes ~{min_genes} --min_cells ~{min_cells} --tfidfMin ~{tfidfMin} --roundToInt ~{roundToInt}
   }
   runtime {
+    # 
     docker_url: "stereonote_hpc/yangdong_2c4c0a3bf7a5463c804597191e5675db_private:latest"
     req_cpu: 4
     req_memory: "~{mem}Gi"

@@ -37,11 +37,12 @@ sample_paths <- opt$sample_paths
 
 sample_key <- opt$sample_key
 batch_key <- opt$batch_key
+sample_value <- strsplit(opt$sample_value, ",")[[1]]
+batch_value <- strsplit(opt$batch_value, ",")[[1]]
+
 group1_key <- opt$group1_key
 group2_key <- opt$group2_key
 group3_key <- opt$group3_key
-
-sample_value <- strsplit(opt$sample_value, ",")[[1]]
 group1_value <- strsplit(opt$group1_value, ',')[[1]]
 group2_value <- strsplit(opt$group2_value, ",")[[1]]
 group3_value <- strsplit(opt$group3_value, ',')[[1]]

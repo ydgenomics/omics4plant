@@ -1,0 +1,1 @@
+# Projects staying open source

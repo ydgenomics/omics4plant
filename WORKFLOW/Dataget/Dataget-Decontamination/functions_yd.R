@@ -1,10 +1,10 @@
-seuratPreprocess_yd <- function(seu, mode = "lognormalize", input_mingenes = 100, resolution = 0.5) {
+seuratPreprocess_yd <- function(seu, mode = "lognormalize", min_genes = 100, resolution = 0.5) {
     # https://satijalab.org/seurat/articles/pbmc3k_tutorial
-    seu <- subset(seu, subset = nFeature_RNA > input_mingenes)
+    seu <- subset(seu, subset = nFeature_RNA > min_genes)
     if (mode == "sctransform") {
         # run sctransform
         # seu <- SCTransform(seu, vars.to.regress = "percent.mt", verbose = FALSE)
-        seu <- SCTransform(seu, vars.to.regress = "percent.mt", verbose = FALSE)
+        seu <- SCTransform(seu, verbose = FALSE)
     } else if (mode == "lognormalize") {
         seu <- NormalizeData(seu, normalization.method = "LogNormalize", scale.factor = 10000)
         seu <- FindVariableFeatures(seu, selection.method = "vst", nfeatures = 3000)

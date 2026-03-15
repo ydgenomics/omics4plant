@@ -1,12 +1,18 @@
-library(dplyr)
+
 library(Seurat)
 library(patchwork)
+library(dplyr)
 
 filter_matrix
-splice_matrix
+
+sample_key
+batch_key
+
 sample_value
+batch_value
+
 min_cells=3
-min_features=200
+min_genes=100
 nfeatures=2000
 dims=1:10
 algorithm=1
@@ -23,7 +29,7 @@ for (i in seq_along(filter_matrix)) {
     pbmc.data <- CreateSeuratObject(
         counts = pbmc.data, 
         min.cells = min_cells,
-        min.features = min_features
+        min.features = min_genes
     )
 
     colnames(pbmc.data) <- paste0(sample_value, "_", colnames(pbmc.data))
