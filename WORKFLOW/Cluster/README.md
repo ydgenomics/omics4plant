@@ -1,5 +1,5 @@
 ```shell
-
+conda install conda-forge::r-clustree -y
 
 ```
 
@@ -13,6 +13,7 @@
 - chooseR | 单细胞细胞测序到底聚多少类比较好——如何回复审稿人和代码分享 https://mp.weixin.qq.com/s/gMzR8bR3OVgnLo3gqC9ZTA
 - CHOIR | Nature Genetics  | CHOIR：迭代随机森林+置换检验，破解单细胞聚类难题 https://mp.weixin.qq.com/s/mEvOnk3qx0ilUJFA4FSmug
 - scSHC | Nature Methods | 细胞分群还在跑常规流程吗？分层聚类+显著性检验，这个顶刊算法让你不在苦苦为分辨率而发愁！
+- SCCAF（Single Cell Clustering Assessment Framework）和 ROGUE指标 [wechat](https://mp.weixin.qq.com/s/DK91JN-hsYSZW0BaMeetxw)
 
 # Reference & Citation
 > [Nature Genetics｜解决你单细胞不知道聚多少类的问题——可以说这应该是近期最好的一篇内容了](https://mp.weixin.qq.com/s/Zgy0F5-vGNRACDmWt7Wz4A)

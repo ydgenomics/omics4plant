@@ -1,26 +1,5 @@
 # 260314
 
-# cd /data/work/Dataget/output
-# prefix="GM"
-# filter_matrix="/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202511200036845/Copy-scRNA-seq_v3.1.5/04.Matrix/FilterMatrix,/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202511180016437/Copy-scRNA-seq_v3.1.5/04.Matrix/FilterMatrix,/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202511190010233/Copy-scRNA-seq_v3.1.5/04.Matrix/FilterMatrix,/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202511190010384/Copy-scRNA-seq_v3.1.5/04.Matrix/FilterMatrix,/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202512120033562/Copy-scRNA-seq_v3.1.5/04.Matrix/FilterMatrix"
-# velocity_matrix="/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202511200036845/Copy-scRNA-seq_v3.1.5/04.Matrix/RNAVelocityMatrix,/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202511180016437/Copy-scRNA-seq_v3.1.5/04.Matrix/RNAVelocityMatrix,/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202511190010233/Copy-scRNA-seq_v3.1.5/04.Matrix/RNAVelocityMatrix,/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202511190010384/Copy-scRNA-seq_v3.1.5/04.Matrix/RNAVelocityMatrix,/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202512120033562/Copy-scRNA-seq_v3.1.5/04.Matrix/RNAVelocityMatrix"
-# group1_key="sample"
-# group1_value="yes1,yes2,yes3,yes4,no1"
-# group2_key="biosample"
-# group2_value="yes,yes,yes,yes,no"
-# group3_key="species"
-# group3_value="GM,GM,GM,GM,GM"
-# min_genes=100
-# min_cells=3
-# doublet_threshold=0.3
-# n_hvg=3000
-# rlst="0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0"
-# python /data/work/Dataget/scanpy_scrublet.py \
-# --prefix $prefix --filter_matrix $filter_matrix --velocity_matrix $velocity_matrix \
-# --group1_key $group1_key --group1_value $group1_value --group2_key $group2_key --group2_value $group2_value \
-# --group3_key $group3_key --group3_value $group3_value --min_genes $min_genes \
-# --min_cells $min_cells --doublet_threshold $doublet_threshold --n_hvg $n_hvg --rlst $rlst
-
 def _read_10x_manual(file_path, matrix_file='matrix.mtx.gz'):
     """
     https://mp.weixin.qq.com/s/9R0DhoYgAKmWQJqZ12qZNw?search_click_id=17690539601344542995-1772761833447-2354261425
@@ -37,7 +16,7 @@ def _read_10x_manual(file_path, matrix_file='matrix.mtx.gz'):
         barcodes = [line.strip() for line in f]
     # read genes
     with gzip.open(os.path.join(sample_dir, 'features.tsv.gz'), 'rt') as f:
-        features = [line.strip() for line in f]
+        features = [line.strip().split('\t')[0] for line in f]
     # read matrix
     with gzip.open(os.path.join(sample_dir, matrix_file), 'rt') as f:
         matrix = scipy.io.mmread(f).tocsr()
@@ -108,7 +87,7 @@ def match_matrix(adata, adata_splice, adata_unsplice):
     genes_splice = set(adata_splice.var_names)
     genes_unsplice = set(adata_unsplice.var_names)
     if len(genes_filter & genes_splice) < 5000:
-        gene_filter = gene_filter.replace('-', '_')
+        genes_filter = {gene.replace('-', '_') for gene in genes_filter}
     all_genes = genes_filter.union(genes_splice).union(genes_unsplice)
     print(f"genes in matrix/splice/unsplice/union: {len(genes_filter)}/{len(genes_splice)}/{len(genes_unsplice)}/{len(all_genes)}")
     adata = complete_genes(adata, all_genes)
@@ -130,6 +109,7 @@ def match_matrix(adata, adata_splice, adata_unsplice):
 def checkInput(
     filter_matrix,
     velocity_matrix,
+    # group_list,
     sample_key,
     batch_key
 ):
@@ -140,6 +120,9 @@ def checkInput(
     else:
         print(f"> Error: Input files is unpaired")
         sys.exit(1)
+    # if sample_key not in group_list or batch_key not in group_list:
+    #     print("Error: sample_key or batch_key don't match with group_list")
+    #     sys.exit(1)
     print(f"> Sample key is: {sample_key}")
     print(f"> Batch key is: {batch_key}")
 
@@ -163,7 +146,7 @@ class AnalysisReporter:
 
 
 
-def concatAnndata(filter_matrix, velocity_matrix, sample_key, batch_key, sample_value, batch_value, group1_key, group2_key, group3_key, group1_value, group2_value, group3_value):
+def concatAnndata(filter_matrix, velocity_matrix, sample_key, batch_key, sample_value, batch_value):
     print(f"[concatAnndata] Concat multiple anndata and add group info.")
     adatas = {}
     for i in range(len(filter_matrix)): 
@@ -178,17 +161,11 @@ def concatAnndata(filter_matrix, velocity_matrix, sample_key, batch_key, sample_
             adata = match_matrix(adata, adata_splice, adata_unsplice)
         adata.obs[sample_key] = sample_value[i]
         adata.obs[batch_key] = batch_value[i]
-        if group1_key != "NULL":
-            adata.obs[group1_key] = group1_value[i]
-        if group2_key != "NULL":
-            adata.obs[group2_key] = group2_value[i]
-        if group3_key != "NULL":
-            adata.obs[group3_key] = group3_value[i]
         # Rename cells to include sample key
         adata.obs_names = [f"{key}_{cell_name}" for cell_name in adata.obs_names]
         print(adata.obs_names[:10])
         adatas[key] = adata
-    adata = ad.concat(adatas, label=sample_key, join="outer")
+    adata = ad.concat(adatas, label=None, join="outer")
     reporter.add("Raw Cells of All", adata.n_obs)
     reporter.add("Raw Genes of All", adata.n_vars)
     del adatas
@@ -245,7 +222,7 @@ def process(adata, sample_key, n_hvg, resolution=0.5):
     sc.pp.neighbors(adata)
     sc.tl.umap(adata)
     # sc.pl.umap(adata, color=group_key, size=2, save="_batch.pdf")
-    sc.tl.leiden(adata, resolution=resolution)
+    sc.tl.leiden(adata, key_added=f"leiden_res_{resolution:4.2f}", resolution=resolution)
     return adata
 
 
@@ -260,6 +237,7 @@ def clusterMarker(adata, rlst, prefix):
     # Cluster
     for res in rlst:
         sc.tl.leiden(adata, key_added=f"leiden_res_{res:4.2f}", resolution=res)
+    resolutions.append('leiden_res_0.50')
     # umap
     sc.pl.umap(adata, color=resolutions, wspace=0.3, ncols=2, legend_loc="right margin", show=False)
     plt.savefig(prefix + '_leiden.pdf', dpi=300, bbox_inches='tight')
@@ -336,19 +314,13 @@ parser.add_argument('--velocity_matrix', type=str,
                     default="/data/input/Files/xianyishan/yita/data-v3.1.5/output/W202511200036845/Copy-scRNA-seq_v3.1.5/04.Matrix/RNAVelocityMatrix", 
                     help='Path to splice file list')
 
+
 parser.add_argument('--sample_key', type=str, default="sample", help="")
 parser.add_argument('--batch_key', type=str, default="biosample", help="")
-parser.add_argument('--sample_value', type=str, default="sample", help="")
-parser.add_argument('--batch_value', type=str, default="biosample", help="")
+parser.add_argument('--sample_value', type=str, default="yes1", help="")
+parser.add_argument('--batch_value', type=str, default="yes", help="")
 
 parser.add_argument('--prefix', type=str, default='yita', help='Species name')
-
-parser.add_argument('--group1_key', type=str, default="NULL", help="")
-parser.add_argument('--group2_key', type=str, default="NULL", help="")
-parser.add_argument('--group3_key', type=str, default="NULL", help="")
-parser.add_argument('--group1_value', type=str, default="NULL", help="")
-parser.add_argument('--group2_value', type=str, default="NULL", help="")
-parser.add_argument('--group3_value', type=str, default="NULL", help="")
 
 parser.add_argument('--min_genes', type=int, default=100, help='Minimum number of genes per cell to filter cell')
 parser.add_argument('--min_cells', type=int, default=3, help='Minimum number of cells per gene to filter gene')
@@ -361,19 +333,13 @@ args = parser.parse_args()
 filter_matrix = args.filter_matrix.split(",")
 velocity_matrix = args.velocity_matrix.split(",")
 
+
 sample_key = args.sample_key
 batch_key = args.batch_key
-sample_value = args.sample_value.split(',')
-batch_value = args.batch_value.split(',')
+sample_value = args.sample_value.split(",")
+batch_value = args.batch_value.split(",")
 
 prefix = args.prefix
-
-group1_key = args.group1_key
-group2_key = args.group2_key
-group3_key = args.group3_key
-group1_value = args.group1_value.split(",")
-group2_value = args.group2_value.split(",")
-group3_value = args.group3_value.split(",")
 
 min_genes = args.min_genes
 min_cells = args.min_cells
@@ -385,16 +351,10 @@ def main(
     filter_matrix,
     velocity_matrix,
     sample_key,
-    batch_key,
     sample_value,
+    batch_key,
     batch_value,
     prefix,
-    group1_key="NULL",
-    group2_key="NULL",
-    group3_key="NULL",
-    group1_value="NULL",
-    group2_value="NULL",
-    group3_value="NULL",
     min_genes=100,
     min_cells=3,
     doublet_threshold=0.3,
@@ -416,14 +376,8 @@ def main(
         批次列名
     sample_value : str
         样本值
-    batch_value : str
-        批次值
     prefix : str
         输出文件前缀
-    group1_key, group2_key, group3_key : str, optional
-        分组键名，默认为"NULL"
-    group1_value, group2_value, group3_value : str, optional
-        分组值
     min_genes : int, default=100
         最小基因数
     min_cells : int, default=3
@@ -435,24 +389,18 @@ def main(
     rlst : list, optional
     """
     key_list = [sample_key, batch_key]
-    group_keys = [group1_key, group2_key, group3_key]
-    for key in group_keys:
-        if key != "NULL":
-            key_list.append(key)
 
-    checkInput(filter_matrix = filter_matrix, velocity_matrix = velocity_matrix, sample_key = sample_key, batch_key = batch_key,)
 
-    adata = concatAnndata(
-        filter_matrix, velocity_matrix, sample_key, batch_key, sample_value, batch_value, 
-        group1_key, group2_key, group3_key, group1_value, group2_value, group3_value
-    )
+    checkInput(filter_matrix = filter_matrix, velocity_matrix = velocity_matrix, sample_key = sample_key, batch_key = batch_key)
+
+    adata = concatAnndata(filter_matrix, velocity_matrix, sample_key, batch_key, sample_value, batch_value)
 
     adata = qc(adata, sample_key=sample_key, prefix=prefix, min_genes=min_genes, min_cells=min_cells, doublet_threshold=doublet_threshold)
 
     adata.layers["counts"] = adata.X.copy()
 
     adata = process(adata, sample_key=sample_key, n_hvg=n_hvg, resolution=0.5)
-    color_list = key_list + ["leiden", "log1p_n_genes_by_counts", "predicted_doublet", "doublet_score"]
+    color_list = key_list + ["leiden_res_0.50", "log1p_n_genes_by_counts", "predicted_doublet", "doublet_score"]
     p = sc.pl.umap(
         adata, 
         color=color_list,
@@ -470,7 +418,7 @@ def main(
     adata.X = adata.layers['counts'].copy()
     adata = process(adata, sample_key=sample_key, n_hvg=n_hvg, resolution=0.5)
 
-    color_list = key_list + ["leiden", "log1p_n_genes_by_counts", "doublet_score"]
+    color_list = key_list + ["leiden_res_0.50", "log1p_n_genes_by_counts", "doublet_score"]
     p = sc.pl.umap(
         adata, 
         color=color_list,
@@ -507,15 +455,9 @@ main(
     velocity_matrix=velocity_matrix, 
     sample_key=sample_key, 
     batch_key=batch_key, 
-    sample_value=sample_value, 
+    sample_value=sample_value,
     batch_value=batch_value,
     prefix=prefix,
-    group1_key=group1_key,
-    group2_key=group2_key,
-    group3_key=group3_key,
-    group1_value=group1_value,
-    group2_value=group2_value,
-    group3_value=group3_value,
     min_genes=min_genes,
     min_cells=min_cells,
     doublet_threshold=doublet_threshold,

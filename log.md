@@ -3,6 +3,9 @@
 - **One question** one meeting
 - **Ten hours** reading
 
+# 260316-2603
+- Article: 2025|Cell *An Arabidopsis single-nucleus atlas decodes leaf senescence and nutrient allocation*
+
 # 20260309-20260313
 - Article: 2026|Molecular Plant *PlantscRNAdb 4.0: Improved marker identification  and annotation under a cell-type uniformity for  plants*
 - Question: Pangenome with comparative genomes
