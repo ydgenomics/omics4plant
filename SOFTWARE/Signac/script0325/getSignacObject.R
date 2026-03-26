@@ -10,10 +10,9 @@ library(Matrix)
 option_list <- list(
   make_option(c("--sample_paths"), type="character", default="/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA2/EFH-0d-0114-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA3/EFH-0d-0114-DNA3/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-2d-0115-DNA1/EFH-2d-0115-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-2d-0115-DNA2/EFH-2d-0115-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-2d-0115-DNA3/EFH-2d-0115-DNA3/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-8d-1229-DNA/EFH-8d-1229-DNA/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-0d-0114-DNA1/EFL-0d-0114-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-0d-0114-DNA2/EFL-0d-0114-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-0d-0114-DNA3/EFL-0d-0114-DNA3/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-2d-0115-DNA1/EFL-2d-0115-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-2d-0115-DNA2/EFL-2d-0115-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-2d-0115-DNA3/EFL-2d-0115-DNA3/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-4d-1224-DNA/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-8d-1229-DNA/EFL-8d-1229-DNA/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-0d-0114-DNA1/ZHH-0d-0114-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-0d-0114-DNA2/ZHH-0d-0114-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-0d-0114-DNA3/ZHH-0d-0114-DNA3/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-2d-0115-DNA1/ZHH-2d-0115-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-2d-0115-DNA2/ZHH-2d-0115-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-2d-0115-DNA3/ZHH-2d-0115-DNA3/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/W202601130036788/ZHH-4d-1225-DNA/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-8d-1229-DNA/ZHH-8d-1229-DNA/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-0d-0114-DNA1/ZHL-0d-0114-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-0d-0114-DNA2/ZHL-0d-0114-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-0d-0114-DNA3/ZHL-0d-0114-DNA3/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-2d-0115-DNA1/ZHL-2d-0115-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-2d-0115-DNA2/ZHL-2d-0115-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-2d-0115-DNA3/ZHL-2d-0115-DNA3/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/W202601130036789/ZHL-4d-1225-DNA/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-8d-1229-DNA/ZHL-8d-1229-DNA/output/"),
   make_option(c("--sample_values"), type="character", default="EFH-0d-0114-DNA1,EFH-0d-0114-DNA2,EFH-0d-0114-DNA3,EFH-2d-0115-DNA1,EFH-2d-0115-DNA2,EFH-2d-0115-DNA3,EFH-8d-1229-DNA,EFL-0d-0114-DNA1,EFL-0d-0114-DNA2,EFL-0d-0114-DNA3,EFL-2d-0115-DNA1,EFL-2d-0115-DNA2,EFL-2d-0115-DNA3,EFL-4d-1224-DNA,EFL-8d-1229-DNA,ZHH-0d-0114-DNA1,ZHH-0d-0114-DNA2,ZHH-0d-0114-DNA3,ZHH-2d-0115-DNA1,ZHH-2d-0115-DNA2,ZHH-2d-0115-DNA3,ZHH-4d-1225-DNA,ZHH-8d-1229-DNA,ZHL-0d-0114-DNA1,ZHL-0d-0114-DNA2,ZHL-0d-0114-DNA3,ZHL-2d-0115-DNA1,ZHL-2d-0115-DNA2,ZHL-2d-0115-DNA3,ZHL-4d-1225-DNA,ZHL-8d-1229-DNA"),
+  make_option(c("--combined_peaks"), type="character", default="rice"),
   make_option(c("--prefix"), type="character", default="rice"),
-  make_option(c("--min_passed_filters"), type="integer", default=500),
-  make_option(c("--min_peak_width"), type="integer", default=20),
-  make_option(c("--max_peak_width"), type="integer", default=10000)
+  make_option(c("--min_passed_filters"), type="integer", default=500)
 )
 
 opt_parser <- OptionParser(option_list=option_list)
@@ -21,46 +20,33 @@ opt <- parse_args(opt_parser)
 
 sample_paths <- strsplit(opt$sample_paths, ",")[[1]]
 sample_values <- strsplit(opt$sample_values, ",")[[1]]
+combined_peaks <- opt$combined_peaks
 prefix <- opt$prefix
 min_passed_filters <- opt$min_passed_filters
-min_peak_width <- opt$min_peak_width
-max_peak_width <- opt$max_peak_width
 
+load(combined_peaks)
 
-getCommonPeaks <- function(sample_paths, min_peak_width=20, max_peak_width=10000){
-  all_peaks_gr <- list()
-  for (i in 1:length(sample_paths)) {
-    sample_path <- sample_paths[i]
-    sample_name <- basename(sample_path)
-    # 读取peak文件
-    peak_file <- file.path(sample_path, "filter_peak_matrix", "peaks.bed.gz")
-    cat(sprintf("  读取样本 %s 的peak文件: %s\n", sample_name, peak_file))
-    peaks_df <- read.table(file = peak_file, col.names = c("chr", "start", "end"))
-    # 转换为GRanges
-    gr <- makeGRangesFromDataFrame(peaks_df)
-    all_peaks_gr[[sample_name]] <- gr
-    cat(sprintf("    包含 %d 个peak\n", length(gr)))
+getAnnotation <- function(gtf_path){
+  if (!file.exists(gtf_path)) {
+    stop("GTF file does not exist: ", gtf_path)
   }
-  # 创建统一的peak集合
-  cat("\n步骤2: 创建统一的peak集合...\n")
-  # 先将列表中的所有GRanges对象合并成一个GRanges对象
-  all_peaks_gr <- do.call(c, unname(all_peaks_gr))
-  cat(sprintf("  合并前总peak数量: %d\n", length(all_peaks_gr)))
-  combined_peaks <- reduce(all_peaks_gr)
-  cat(sprintf("  去重合并后peak数量: %d\n", length(combined_peaks)))
-  # 根据长度过滤peak
-  peak_widths <- width(combined_peaks)
-  combined_peaks <- combined_peaks[
-    peak_widths < max_peak_width & peak_widths > min_peak_width
-  ]
-  cat(sprintf("  过滤后peak数量: %d (宽度在 %d-%d bp之间)\n", 
-              length(combined_peaks), min_peak_width, max_peak_width))
-  return(combined_peaks)
+  gtf <- rtracklayer::import(gtf_path)
+
+  # 补充字段
+  if (!"gene_name" %in% names(mcols(gtf))) {
+    mcols(gtf)$gene_name <- mcols(gtf)$gene_id
+  }
+  if (!"gene_biotype" %in% names(mcols(gtf))) {
+    mcols(gtf)$gene_biotype <- "protein_coding"
+  }
+  if ("transcript_id" %in% names(mcols(gtf)) && !"tx_id" %in% names(mcols(gtf))) {
+    mcols(gtf)$tx_id <- mcols(gtf)$transcript_id
+  }
+  return(gtf)
 }
+gtf <- getAnnotation('/data/work/rice/ref/osa1_r7.all_models.gtf')
 
-# save(combined_peaks, 'combined_peaks.Rdata')
-
-getSignacObject <- function(sample_paths, sample_values, combined_peaks, min_passed_filters){
+getSignacObject <- function(sample_paths, sample_values, gtf, combined_peaks, min_passed_filters=500){
   for (i in 1:length(sample_paths)) {
     sample_name <- sample_values[i]
     sample_path <- sample_paths[i]
@@ -108,22 +94,26 @@ getSignacObject <- function(sample_paths, sample_values, combined_peaks, min_pas
     cat("  过滤非细胞条形码...\n")
     seurat_obj <- subset(seurat_obj, subset = is_cell_barcode == 1)
     cat(sprintf("    过滤非细胞条形码后细胞数: %d\n", ncol(seurat_obj)))
-    # remove doblets -- scDblFinder
-    sce <- as.SingleCellExperiment(seurat_obj)
-    sce <- scDblFinder::scDblFinder(
-        sce,
-        artificialDoublets = 1,
-        aggregateFeatures = TRUE,
-        nfeatures = 25,
-        processing = "normFeatures"
-    )
-    seurat_obj$scDblFinder.class <- sce$scDblFinder.class
-    seurat_obj$scDblFinder.score <- sce$scDblFinder.score
+    # # remove doblets -- scDblFinder
+    # sce <- as.SingleCellExperiment(seurat_obj)
+    # sce <- scDblFinder::scDblFinder(
+    #     sce,
+    #     artificialDoublets = 1,
+    #     aggregateFeatures = TRUE,
+    #     nfeatures = 25,
+    #     processing = "normFeatures"
+    # )
+    # seurat_obj$scDblFinder.class <- sce$scDblFinder.class
+    # seurat_obj$scDblFinder.score <- sce$scDblFinder.score
     # seurat_obj <- subset(seurat_obj, subset = scDblFinder_doublet == "singlet")
     # cat(sprintf("    双重过滤后细胞数: %d\n", ncol(seurat_obj)))
     # 添加数据集标识
     seurat_obj$sample <- sample_name
-    colnames(seurat_obj) <- paste0(sample_name, '_', colnames(seurat_obj))
+    Annotation(seurat_obj) <- gtf
+    gene.activities <- GeneActivity(seurat_obj)
+    # add gene activities as a new assay
+    seurat_obj[["ACTIVITY"]] <- CreateAssayObject(counts = gene.activities)
+    colnames(seurat_obj) <- paste0(sample_name, '_', colnames(seurat_obj)) # 改了细胞名就无法matchfragment
     # seurat_objects[[sample_name]] <- seurat_obj
     # # 可选：保存单个样本的中间结果
     # saveRDS(seurat_obj, paste0(sample_name, "_raw.rds"))
@@ -135,3 +125,6 @@ getSignacObject <- function(sample_paths, sample_values, combined_peaks, min_pas
   }
   return(combined_rds)
 }
+
+combined_rds <- getSignacObject(sample_paths, sample_values, gtf, combined_peaks, min_passed_filters)
+saveRDS(combined_rds, paste0(prefix, '_signac.rds'))

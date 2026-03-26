@@ -1,25 +1,43 @@
 # https://satijalab.org/seurat/articles/seurat5_atacseq_integration_vignette
 # Integrating scRNA-seq and scATAC-seq data
 
-library(Seurat)
-library(Signac)
-library(ggplot2)
-library(cowplot)
+suppressMessages({
+  library(Signac)
+  library(Seurat)
+  library(GenomicRanges)
+  library(ggplot2)
+  library(cowplot)
+  library(patchwork)
+  library(AnnotationDbi)
+  library(rtracklayer)
+})
 
-rna_rds="/data"
-atac_rds="/data"
+args <- commandArgs(trailingOnly = TRUE)
+input_file <- args[1]
+rna_rds="/data/work/rice/Seurat/EFH-0d.rds"
+atac_rds="/data/work/rice/Signac/output/EFH-0d_signac.rds"
 anno_key="sctype_new"
 key_list="Omics,Species,Stim,Time,Sample"
-cluster_atac="Cluster_Harmony"
-
+cluster_atac="seurat_clusters"
+resolution=0.8
+metadata_csv='/data/work/rice/Signac/output/EFH-0d.metadata.csv'
+prefix='EFH-0d'
 
 key_list <- strsplit(key_list, ",")[[1]]
 key_list <- c(key_list, anno_key)
 
 
 # --- load both modalities ----
-pbmc.rna <- readRDS(rna_rds)
-pbmc.atac <- readRDS(atac_rds)
+pbmc.rna <- readRDS(rna_rds); print(pbmc.rna)
+pbmc.atac <- readRDS(atac_rds); print(pbmc.atac)
+pbmc.rna$omics <- 'RNA'
+pbmc.atac$omics <- 'ATAC'
+
+
+data <- read.csv(metadata_csv)
+data$X <- gsub("#", "_", data$X)
+common_cells <- intersect(colnames(pbmc.atac), data$X) # 找出共同的细胞
+pbmc.atac <- pbmc.atac[, common_cells] # 过滤
 
 
 pbmc.rna[["RNA"]] <- as(pbmc.rna[["RNA"]], Class = "Assay5")
@@ -32,23 +50,21 @@ pbmc.rna <- RunPCA(pbmc.rna)
 pbmc.rna <- RunUMAP(pbmc.rna, dims = 1:30)
 
 # We exclude the first dimension as this is typically correlated with sequencing depth
+DefaultAssay(pbmc.atac) <- 'peaks'
 pbmc.atac <- RunTFIDF(pbmc.atac)
 pbmc.atac <- FindTopFeatures(pbmc.atac, min.cutoff = "q0")
 pbmc.atac <- RunSVD(pbmc.atac)
 pbmc.atac <- RunUMAP(pbmc.atac, reduction = "lsi", dims = 2:30, reduction.name = "umap.atac", reduction.key = "atacUMAP_")
+pbmc.atac <- FindNeighbors(object = pbmc.atac, reduction = 'lsi', dims = 2:30)
+pbmc.atac <- FindClusters(object = pbmc.atac, verbose = FALSE, algorithm = 3, resolution = resolution)
 
 
 p1 <- DimPlot(pbmc.rna, group.by = anno_key, label = TRUE) + NoLegend() + ggtitle("RNA")
 p2 <- DimPlot(pbmc.atac, group.by = cluster_atac, label = FALSE) + NoLegend() + ggtitle("ATAC")
 p1 + p2
+dev.off()
 
 # ---- Identifying anchors between scRNA-seq and scATAC-seq datasets ----
-# quantify gene activity
-gene.activities <- GeneActivity(pbmc.atac, features = VariableFeatures(pbmc.rna))
-
-# add gene activities as a new assay
-pbmc.atac[["ACTIVITY"]] <- CreateAssayObject(counts = gene.activities)
-
 # normalize gene activities
 DefaultAssay(pbmc.atac) <- "ACTIVITY"
 pbmc.atac <- NormalizeData(pbmc.atac)
@@ -115,4 +131,17 @@ coembed <- ScaleData(coembed, features = genes.use, do.scale = FALSE)
 coembed <- RunPCA(coembed, features = genes.use, verbose = FALSE)
 coembed <- RunUMAP(coembed, dims = 1:30)
 
-DimPlot(coembed, group.by = c("orig.ident", "seurat_annotations"))
+
+saveRDS(pbmc.atac, paste0(paste0(prefix, '_predict.rds')))
+saveRDS(coembed, paste0(paste0(prefix, '_coembed.rds')))
+
+
+pdf(paste0(prefix, '_umap.pdf'), height=8, width=10)
+DimPlot(coembed, group.by = "omics")
+DimPlot(pbmc.atac, group.by = "sample")
+DimPlot(pbmc.atac, group.by = "seurat_clusters")
+DimPlot(pbmc.atac, group.by = "predicted.id")
+pbmc.atac[["confidence"]] <- pbmc.atac$prediction.score.max
+FeaturePlot(pbmc.atac, features = "confidence")
+DimPlot(pbmc.rna, group.by = "sctype_new")
+dev.off()

@@ -36,9 +36,7 @@ inputFiles <- get_input("/data/work/archr/filter")
 print(names(inputFiles))  # 应该显示 "EFH-0d-0114-DNA1"
 print(class(inputFiles))  # 应该显示 "character"
 
-library(BSgenome.rice.test)
 
-genomeAnnotation <- createGenomeAnnotation(genome = BSgenome.rice.test)
 
 
 create_anno_from_gtf <- function(gtf_file) {

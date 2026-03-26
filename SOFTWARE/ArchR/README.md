@@ -1,4 +1,15 @@
 
+
+```shell
+source
+conda config --add channels defaults
+conda config --add channels conda-forge
+conda config --add channels bioconda
+mamba create -n archr r-base=4.4 -y
+conda activate archr
+mamba install bioconda::r-archr -y
+```
+
 ```R
 # install ArchR
 # try setting locking = TRUE at the beginning of your project (before Arrow File generation).

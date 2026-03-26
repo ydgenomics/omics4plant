@@ -34,6 +34,9 @@ awk 'NR==102157 || NR==102160 || NR==137141 || NR==137144 || NR==240466 || NR==2
     printf "原始行号: %-8d 内容: %s\n", NR, $0
 }' "$targetGTF"
 
+# 或查找所有特征（包括 gene, transcript, exon）
+grep "MtrunA17_Chr5g0419752" /data/input/Files/yangdong/M.truncatula/MtrunA17r5.0-ANR-EGN-r1.9.fix.gtf
+
 # 删除102157 137141 240466 291476 297604 451942 828153 1014402
 sed -i '102157d;137141d;240466d;291476d;297604d;451942d;828153d;1014402d' "$targetGTF"
 

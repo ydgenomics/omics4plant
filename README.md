@@ -21,6 +21,8 @@ Multi-omic technologies empower plant researchs.
 
 <details> <summary> Tips </summary>
 
-多提问，善于提问
+> 多提问，善于提问
+- 每周看一篇英文文献
+- 每周文献提问尝试提一个有意义的问题
 
 </details>
