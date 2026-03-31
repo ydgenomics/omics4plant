@@ -1,4 +1,22 @@
+# 水稻种子项目
 
+
+## Preparation
+- 基因组 japonica
+- motif
+
+
+## References
+- Single_Cell_Multiomics_in_Rice [github](https://github.com/dongwei-2023/Single_Cell_Multiomics_in_Rice/tree/v1.0)
+
+
+```R
+addGroupCoverages()
+addReproduciblePeakSet()
+```
+- Motif enrichment 
+  - 在R语言中的 ATACseq 数据分析全流程实战（七）：Motif分析 [wechat](https://mp.weixin.qq.com/s/hMho_EUBv32XK-DKy9J5RA)
+- 
 
 ```shell
 source

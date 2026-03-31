@@ -15,12 +15,12 @@ gene_sets_prepare <- function(path_to_db_file, cell_type){
   list(gs_positive = gs, gs_negative = gs2)
 }
 
-archr_project='/data/work/rice/ArchR/work/Save-ZHH-0d-0114-DNA1'
+archr_project='/data/work/rice/ArchR/work/Save-EFH-0d-0114-DNA1'
 marker_csv='/data/work/rice/ArchR/seed_marker_selectedfinal-0109V19-2.csv'
 cluster_key='Clusters'
 outputDirectory='/data/work/rice/ArchR/work'
 output_prefix=basename(archr_project)
-threads=8
+threads=4
 
 
 
