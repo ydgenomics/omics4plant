@@ -11,4 +11,18 @@ RNA和ATAC数据准备，准备gtf文件为ATAC添加信息，分别对原始数
   - Construct graph
 - Model Training
 - Regulatory Inference
-- 
+
+
+```shell
+source /opt/software/miniconda3/bin/activate
+conda create -n glue python=3.10 -y
+conda activate glue
+conda install -c conda-forge -c bioconda scglue pytorch-gpu -y
+conda install conda-forge::scikit-misc -y
+conda install conda-forge::ipykernel -y
+# 上面装了不报依赖错，可不跑下面的代码
+pip uninstall torch torchvision torchaudio -y
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+pip install numpy==1.24.4
+python -c "import numpy; print(numpy.__version__)"
+```

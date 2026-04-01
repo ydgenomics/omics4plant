@@ -15,7 +15,7 @@ gene_sets_prepare <- function(path_to_db_file, cell_type){
   list(gs_positive = gs, gs_negative = gs2)
 }
 
-archr_project='/data/work/rice/ArchR/work/Save-EFH-0d-0114-DNA1'
+archr_project='/data/work/rice/ArchR/work/Save-EFH-0d'
 marker_csv='/data/work/rice/ArchR/seed_marker_selectedfinal-0109V19-2.csv'
 cluster_key='Clusters'
 outputDirectory='/data/work/rice/ArchR/work'
@@ -88,24 +88,26 @@ for (i in seq_along(features)) {
 markerGenes <- unique(markerGenes)
 head(markerGenes)
 
-heatmapGS <- plotMarkerHeatmap(
+# 1. 先获取热图矩阵（不画图）
+heatmapMatrix <- plotMarkerHeatmap(
     seMarker = markersGS,
     cutOff = "FDR <= 0.01 & Log2FC >= 1.25",
     labelMarkers = markerGenes,
-    transpose = TRUE
+    transpose = TRUE,
+    returnMatrix = TRUE  # 只返回矩阵，不画图
 )
-
+# 2. 对行进行聚类（获取聚类顺序）
+rowOrder <- hclust(dist(heatmapMatrix))$order; rowOrder <- c(rowOrder)
+# 
 heatmapGS <- plotMarkerHeatmap(
-    seMarker = markersGS,
-    cutOff = "FDR <= 0.01 & Log2FC >= 1.25",
-    labelMarkers = 'Chr1:LOC-Os01g01070',
-    transpose = TRUE
+  seMarker = markersGS, 
+  cutOff = "FDR <= 0.01 & Log2FC >= 1.25", 
+  labelMarkers = markerGenes,
+  transpose = TRUE
 )
-
-# heatmapGS@row_order <- c(1,2,3,21,22,7,8,9,4,5,15,16,17,18,19,20,12,13,14,24,25,6,10,11,23)
-
-# ComplexHeatmap::draw(heatmapGS, heatmap_legend_side = "bot", annotation_legend_side = "bot")
-
+# 3. 重新排序矩阵
+heatmapGS@row_order <- rowOrder
+heatmapGS <- ComplexHeatmap::draw(heatmapGS, heatmap_legend_side = "bot", annotation_legend_side = "bot")
 plotPDF(heatmapGS, name = "GeneScores-Marker-Heatmap", width = 8, height = 6, ArchRProj = projHeme2, addDOC = FALSE)
 
 # markerGenes - umap
@@ -119,6 +121,9 @@ p <- plotEmbedding(
 )
 
 plotPDF(plotList = p, name = "Plot-UMAP-Marker-Genes-WO-Imputation", ArchRProj = projHeme2, addDOC = FALSE, width = 5, height = 5)
+
+# use MAGIC to impute gene scores by smoothing signal across nearby cells
+projHeme2 <- addImputeWeights(projHeme2)
 
 # markerGenes - imputation
 p <- plotEmbedding(
@@ -138,6 +143,12 @@ plotPDF(
     height = 5
 )
 
+# ----------------- module score annotation -----------------
+# 清理 names(features) - 替换空格为下划线
+clean_names <- gsub(" ", "_", names(features))
+# 重命名 features 列表
+names(features) <- clean_names
+
 projHeme2 <- addModuleScore(
     ArchRProj = projHeme2,
     useMatrix = "GeneScoreMatrix",
@@ -145,6 +156,8 @@ projHeme2 <- addModuleScore(
     features = features
 )
 
+directory <- paste0(getOutputDirectory(projHeme2), "/Plots/")
+pdf(paste0(directory, "Plot-Modules.pdf"), width = 5, height = 5)
 for (i in seq_along(names(features))) {
     p <- plotEmbedding(
         ArchRProj = projHeme2,
@@ -152,9 +165,9 @@ for (i in seq_along(names(features))) {
         colorBy = "cellColData",
         name = paste0("Module.", names(features)[i]),
         imputeWeights = getImputeWeights(projHeme2)
-    )
-    plotPDF(p, name = paste0("Plot-Module.", names(features)[i],".pdf"), width = 5, height = 5, ArchRProj = projHeme2, addDOC = FALSE)
+    ); print(p)
 }
+dev.off()
 
 # Track plotting
 p <- plotBrowserTrack(
@@ -166,84 +179,6 @@ p <- plotBrowserTrack(
 )
 plotPDF(p, name = "Plot-Tracks-Marker-Genes", width = 5, height = 5, ArchRProj = projHeme2, addDOC = FALSE)
 
-# [15] "Module.Plumule"                 "Module.Seed_coat1"             
-# [17] "Module.Seed_coat2"              "Module.Scutellum1"             
-# [19] "Module.Scutellum2"              "Module.Coleoptile_L1_epidermis"
-# [21] "Module.Aleurone1"               "Module.Aleurone2"              
-# [23] "Module.Endosperm"  
 
-p1 <- plotEmbedding(
-    ArchRProj = projHeme2,
-    embedding = "UMAP",
-    colorBy = "cellColData",
-    name = "Module.Plumule",
-    imputeWeights = getImputeWeights(projHeme2)
-)
 
-p2 <- plotEmbedding(
-    ArchRProj = projHeme2,
-    embedding = "UMAP",
-    colorBy = "cellColData",
-    name = "Module.Seed_coat1",
-    imputeWeights = getImputeWeights(projHeme2)
-)
-
-p3 <- plotEmbedding(
-    ArchRProj = projHeme2,
-    embedding = "UMAP",
-    colorBy = "cellColData",
-    name = "Module.Seed_coat2",
-    imputeWeights = getImputeWeights(projHeme2)
-)
-
-p4 <- plotEmbedding(
-    ArchRProj = projHeme2,
-    embedding = "UMAP",
-    colorBy = "cellColData",
-    name = "Module.Scutellum1",
-    imputeWeights = getImputeWeights(projHeme2)
-)
-
-p5 <- plotEmbedding(
-    ArchRProj = projHeme2,
-    embedding = "UMAP",
-    colorBy = "cellColData",
-    name = "Module.Scutellum2",
-    imputeWeights = getImputeWeights(projHeme2)
-)
-
-p6 <- plotEmbedding(
-    ArchRProj = projHeme2,
-    embedding = "UMAP",
-    colorBy = "cellColData",
-    name = "Module.Coleoptile_L1_epidermis",
-    imputeWeights = getImputeWeights(projHeme2)
-)
-
-p7 <- plotEmbedding(
-    ArchRProj = projHeme2,
-    embedding = "UMAP",
-    colorBy = "cellColData",
-    name = "Module.Aleurone1",
-    imputeWeights = getImputeWeights(projHeme2)
-)
-
-p8 <- plotEmbedding(
-    ArchRProj = projHeme2,
-    embedding = "UMAP",
-    colorBy = "cellColData",
-    name = "Module.Aleurone2",
-    imputeWeights = getImputeWeights(projHeme2)
-)
-
-p9 <- plotEmbedding(
-    ArchRProj = projHeme2,
-    embedding = "UMAP",
-    colorBy = "cellColData",
-    name = "Module.Endosperm",
-    imputeWeights = getImputeWeights(projHeme2)
-)
-
-plotPDF(ggAlignPlots(p1,p2,p3,p4,p5,p6,p7,p8,p9,draw=F,type="h"))
-plotPDF(ggAlignPlots(p1,p2,p3,p4,p5,p6,p7,p8,p9,draw=F,type="h"), name = "Plot-Module.pdf", width = 36, height = 4, ArchRProj = projHeme2, addDOC = FALSE)
-# ggAlignPlots(p_list, type = "h", draw=TRUE)
+saveArchRProject(projHeme2)

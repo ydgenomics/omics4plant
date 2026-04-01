@@ -1,23 +1,35 @@
 # 260331
-# sed -i 's/gene_id "LOC_Os/gene_id "LOC-Os/g; s/transcript_id "LOC_Os/transcript_id "LOC-Os/g' /data/work/rice/ref/osa1_r7.all_models.gtf
-
 library(ArchR)
 set.seed(1)
 
-genomeAnnotation_Rdata="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
-geneAnnotation_Rdata="/data/work/rice/ArchR/rice_geneAnnotation.Rdata"
-input_folder="/data/work/archr/filter"
+args <- commandArgs(trailingOnly = TRUE)
+input_file <- args[1]
 
-outputDirectory='/data/work/rice/ArchR/output'
-workDirectory='/data/work/rice/ArchR/work'
-output_prefix='rice'
+args <- commandArgs(trailingOnly = TRUE)
+# -- input --
+input_folder <- args[1]
+genomeAnnotation_Rdata <- args[2]
+geneAnnotation_Rdata <- args[3]
+# -- output --
+output_prefix <- args[4]
+# -- threads --
+minTSS <- as.numeric(args[5])
+minFrags <- as.integer(args[6])
+resolution <- as.numeric(args[7])
+threads <- as.integer(args[8])
+outputDirectory <- args[9]
+workDirectory <- args[10]
 
-batch_key='Species'
-
-minTSS=1
-minFrags=500
-threads=8
-resolution=0.8
+# input_folder="/data/work/rice/ArchR/EFH-0d"
+# genomeAnnotation_Rdata="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
+# geneAnnotation_Rdata="/data/work/rice/ArchR/rice_geneAnnotation.Rdata"
+# output_prefix='rice'
+# minTSS=1
+# minFrags=500
+# resolution=0.8
+# threads=8
+# outputDirectory='/data/work/rice/ArchR/output'
+# workDirectory='/data/work/rice/ArchR/work'
 
 addArchRThreads(threads = threads)
 dir.create(outputDirectory, recursive = TRUE, showWarnings = FALSE)
@@ -27,12 +39,20 @@ setwd(workDirectory)
 get_input <- function(folder){
     file_list <- list.files(folder)
     file_list <- c(file.path(folder, file_list))
-    # 从 file_list 中提取所有 .gz 文件（排除 .tbi 索引文件）
-    gz_files <- file_list[grepl("\\.gz$", file_list) & !grepl("\\.tbi$", file_list)]
-    # 使用正则提取样本名（提取 "EFH-0d-0114-DNA1" 这样的部分）
-    sample_names <- gsub(".*/([^/]+)fragments_filtered\\.tsv\\.gz$", "\\1", gz_files)
-    # 创建命名的 inputFiles 向量
-    inputFiles <- setNames(gz_files, sample_names)
+    # 检查是否有任何 .gz 文件
+    if (any(grepl("\\.gz$", file_list))){
+        print('[get_input] create arrow from fragments...')
+        # 从 file_list 中提取所有 .gz 文件（排除 .tbi 索引文件）
+        gz_files <- file_list[grepl("\\.gz$", file_list) & !grepl("\\.tbi$", file_list)]
+        # 使用正则提取样本名（提取 "EFH-0d-0114-DNA1" 这样的部分）
+        sample_names <- gsub(".*/([^/]+)fragments_filtered\\.tsv\\.gz$", "\\1", gz_files)
+        # 创建命名的 inputFiles 向量
+        inputFiles <- setNames(gz_files, sample_names)
+    } else {
+        print('[get_input] directly get arrow files...')
+        sample_names <- gsub('.arrow', '', basename(file_list))
+        inputFiles <- setNames(file_list, sample_names)
+    }
     return(inputFiles)
 }
 inputFiles <- get_input(input_folder)
@@ -156,45 +176,6 @@ projHeme1 <- addIterativeLSI(
     force = TRUE
 )
 
-
-library(dplyr)
-library(tidyr)
-# 将 proj 的细胞元数据转为 data.frame 处理
-cell_metadata <- as.data.frame(projHeme1@cellColData)
-# 从 Sample 列提取信息
-cell_metadata <- cell_metadata %>%
-  mutate(
-    # 提取 Species: 前两个字符
-    Species = substr(Sample, 1, 2),
-    # 提取 Stim: 第三个字符
-    Stim = substr(Sample, 3, 3),
-    # 提取 Time: 匹配 "-Xd-" 模式
-    Time = stringr::str_extract(Sample, "-[0-9]+d-") %>%
-      stringr::str_replace_all("-", "")  # 去掉两边的横线
-  )
-# 将提取的信息添加回 proj 对象
-projHeme1 <- addCellColData(
-  ArchRProj = projHeme1,
-  data = cell_metadata$Species,
-  name = "Species",
-  cells = rownames(cell_metadata),
-  force = TRUE
-)
-projHeme1 <- addCellColData(
-  ArchRProj = projHeme1,
-  data = cell_metadata$Stim,
-  name = "Stim",
-  cells = rownames(cell_metadata),
-  force = TRUE
-)
-projHeme1 <- addCellColData(
-  ArchRProj = projHeme1,
-  data = cell_metadata$Time,
-  name = "Time",
-  cells = rownames(cell_metadata),
-  force = TRUE
-)
-
 # # If you see downstream that you have subtle batch effects, 
 # # another option is to add more LSI iterations and to start from a lower intial clustering resolution as shown below. 
 # # Additionally the number of variable features can be lowered to increase focus on the more variable features.
@@ -212,14 +193,14 @@ projHeme1 <- addCellColData(
 #     dimsToUse = 1:30
 # )
 
-# Harmony
-projHeme1 <- addHarmony(
-    ArchRProj = projHeme1,
-    reducedDims = "IterativeLSI",
-    name = "Harmony",
-    groupBy = batch_key,
-    force = TRUE
-)
+# # Harmony
+# projHeme1 <- addHarmony(
+#     ArchRProj = projHeme1,
+#     reducedDims = "IterativeLSI",
+#     name = "Harmony",
+#     groupBy = batch_key,
+#     force = TRUE
+# )
 
 # Cluster
 projHeme1 <- addClusters(
@@ -232,15 +213,15 @@ projHeme1 <- addClusters(
 )
 print(table(projHeme1$Clusters))
 
-projHeme1 <- addClusters(
-    input = projHeme1,
-    reducedDims = "Harmony",
-    method = "Seurat",
-    name = "Clusters_Harmony",
-    resolution = resolution,
-    force = TRUE
-)
-print(table(projHeme1$Clusters_Harmony))
+# projHeme1 <- addClusters(
+#     input = projHeme1,
+#     reducedDims = "IterativeLSI",
+#     method = "Seurat",
+#     name = "Clusters_Harmony",
+#     resolution = resolution,
+#     force = TRUE
+# )
+# print(table(projHeme1$Clusters_Harmony))
 
 # Uniform Manifold Approximation and Projection (UMAP)
 projHeme1 <- addUMAP(
@@ -253,15 +234,18 @@ projHeme1 <- addUMAP(
     force = TRUE
 )
 
-projHeme1 <- addUMAP(
-    ArchRProj = projHeme1,
-    reducedDims = 'Harmony',
-    name = "UMAP_Harmony",
-    nNeighbors = 30,
-    minDist = 0.5,
-    metric = 'cosine',
-    force = TRUE
-)
+# projHeme1 <- addUMAP(
+#     ArchRProj = projHeme1,
+#     reducedDims = 'Harmony',
+#     name = "UMAP_Harmony",
+#     nNeighbors = 30,
+#     minDist = 0.5,
+#     metric = 'cosine',
+#     force = TRUE
+# )
+
+# use MAGIC to impute gene scores by smoothing signal across nearby cells
+projHeme1 <- addImputeWeights(projHeme1)
 
 # save and load
 projHeme1 <- saveArchRProject(ArchRProj = projHeme1, outputDirectory = paste0("Save-", output_prefix), load = TRUE)
@@ -276,21 +260,19 @@ p <- pheatmap::pheatmap(
   color = paletteContinuous("whiteBlue"),
   border_color = 'black'
 )
-pdf('heatmap_Clusters.pdf')
-print(p)
-dev.off()
+plotPDF(p, name = paste0(output_prefix, "_heatmap_Clusters_vs_Sample.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
 
-cM <- confusionMatrix(paste0(projHeme1$Clusters_Harmony), paste0(projHeme1$Sample))
-cM
-cM <- cM / Matrix::rowSums(cM)
-p <- pheatmap::pheatmap(
-  mat = as.matrix(cM),
-  color = paletteContinuous("whiteBlue"),
-  border_color = 'black'
-)
-pdf('heatmap_Clusters_Harmony.pdf')
-print(p)
-dev.off()
+# cM <- confusionMatrix(paste0(projHeme1$Clusters_Harmony), paste0(projHeme1$Sample))
+# cM
+# cM <- cM / Matrix::rowSums(cM)
+# p <- pheatmap::pheatmap(
+#   mat = as.matrix(cM),
+#   color = paletteContinuous("whiteBlue"),
+#   border_color = 'black'
+# )
+# pdf('heatmap_Clusters_Harmony.pdf')
+# print(p)
+# dev.off()
 
 projHeme1@embeddings
 p1 <- plotEmbedding(
@@ -308,21 +290,21 @@ p2 <- plotEmbedding(
     embedding = 'UMAP',
     force = TRUE
 )
-plotPDF(p1,p2, name = "Plot-UMAP-Sample-Clusters.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
-p1 <- plotEmbedding(
-    ArchRProj = projHeme1,
-    colorBy = 'cellColData',
-    name = 'Sample',
-    embedding = 'UMAP_Harmony',
-    force = TRUE
-)
+plotPDF(p1,p2, name = paste0(output_prefix, "_Plot-UMAP-Sample-Clusters.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
+# p1 <- plotEmbedding(
+#     ArchRProj = projHeme1,
+#     colorBy = 'cellColData',
+#     name = 'Sample',
+#     embedding = 'UMAP_Harmony',
+#     force = TRUE
+# )
 
-p2 <- plotEmbedding(
-    ArchRProj = projHeme1,
-    colorBy = 'cellColData',
-    name = 'Clusters_Harmony',
-    embedding = 'UMAP_Harmony',
-    force = TRUE
-)
+# p2 <- plotEmbedding(
+#     ArchRProj = projHeme1,
+#     colorBy = 'cellColData',
+#     name = 'Clusters_Harmony',
+#     embedding = 'UMAP_Harmony',
+#     force = TRUE
+# )
 
-plotPDF(p1,p2, name = "Plot-UMAP_Harmony-Sample-Clusters.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
+# plotPDF(p1,p2, name = "Plot-UMAP_Harmony-Sample-Clusters.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
