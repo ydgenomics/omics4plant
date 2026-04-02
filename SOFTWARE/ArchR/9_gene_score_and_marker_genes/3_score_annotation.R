@@ -1,7 +1,15 @@
-# 260304 https://mp.weixin.qq.com/s/qHgm4ksKQ7v7kBo2Sgsugg
+# 260402 https://mp.weixin.qq.com/s/qHgm4ksKQ7v7kBo2Sgsugg
 
 library(ArchR)
 set.seed(1)
+
+args <- commandArgs(trailingOnly = TRUE)
+archr_project <- args[1]
+marker_csv <- args[2]
+cluster_key <- args[3]
+workDirectory <- args[4]
+threads <- as.integer(args[5])
+
 
 gene_sets_prepare <- function(path_to_db_file, cell_type){
   #cell_markers = openxlsx::read.xlsx(path_to_db_file)
@@ -15,18 +23,17 @@ gene_sets_prepare <- function(path_to_db_file, cell_type){
   list(gs_positive = gs, gs_negative = gs2)
 }
 
-archr_project='/data/work/rice/ArchR/work/Save-EFH-0d'
-marker_csv='/data/work/rice/ArchR/seed_marker_selectedfinal-0109V19-2.csv'
-cluster_key='Clusters'
-outputDirectory='/data/work/rice/ArchR/work'
-output_prefix=basename(archr_project)
-threads=4
-
-
+# archr_project='/data/work/rice/ArchR/work/Save-EFH-0d'
+# marker_csv='/data/work/rice/ArchR/seed_marker_selectedfinal-0109V19-2.csv'
+# cluster_key='Clusters'
+# workDirectory='/data/work/rice/ArchR/work'
+# threads=4
 
 addArchRThreads(threads = threads)
-dir.create(outputDirectory, recursive = TRUE, showWarnings = FALSE)
-setwd(outputDirectory)
+dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
+setwd(workDirectory)
+
+output_prefix=basename(archr_project)
 
 projHeme2 <- loadArchRProject(archr_project)
 

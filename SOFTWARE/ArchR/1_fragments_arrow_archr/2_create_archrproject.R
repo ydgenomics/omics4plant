@@ -1,4 +1,4 @@
-# 260331
+# 260402
 library(ArchR)
 set.seed(1)
 
@@ -36,7 +36,10 @@ dir.create(outputDirectory, recursive = TRUE, showWarnings = FALSE)
 dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
 setwd(workDirectory)
 
-get_input <- function(folder){
+load(genomeAnnotation_Rdata); genomeAnnotation
+load(geneAnnotation_Rdata); geneAnnotation
+
+get_input <- function(folder, genomeAnnotation, geneAnnotation, minTSS=1, minFrags=500){
     file_list <- list.files(folder)
     file_list <- c(file.path(folder, file_list))
     # 检查是否有任何 .gz 文件
@@ -48,32 +51,37 @@ get_input <- function(folder){
         sample_names <- gsub(".*/([^/]+)fragments_filtered\\.tsv\\.gz$", "\\1", gz_files)
         # 创建命名的 inputFiles 向量
         inputFiles <- setNames(gz_files, sample_names)
+        message('[get_input] create arrow from fragments, inputFiles:')
+        print(inputFiles)
+        ArrowFiles <- createArrowFiles(
+            inputFiles = inputFiles,
+            genomeAnnotation = genomeAnnotation,
+            geneAnnotation = geneAnnotation,
+            sampleNames = names(inputFiles),
+            minTSS = minTSS, #Dont set this too high because you can always increase later
+            minFrags = minFrags, 
+            addTileMat = TRUE,
+            addGeneScoreMat = TRUE
+        )
+        print(ArrowFiles)
     } else {
         print('[get_input] directly get arrow files...')
         sample_names <- gsub('.arrow', '', basename(file_list))
-        inputFiles <- setNames(file_list, sample_names)
+        ArrowFiles <- setNames(file_list, sample_names)
+        # 为每个样本创建 QualityControl 子目录
+        for(sample in sample_names) {
+            qc_dir <- file.path("QualityControl", sample)
+            dir.create(qc_dir, recursive = TRUE, showWarnings = FALSE)
+        }
+        message('[get_input] directly get arrow files, ArrowFiles:')
+        print(ArrowFiles)
+        # print(names(inputFiles))  # 应该显示 "EFH-0d-0114-DNA1"
+        # print(class(inputFiles))  # 应该显示 "character"
     }
-    return(inputFiles)
+    return(ArrowFiles)
 }
-inputFiles <- get_input(input_folder)
+ArrowFiles <- get_input(input_folder, genomeAnnotation, geneAnnotation, minTSS, minFrags)
 
-# 验证
-print(names(inputFiles))  # 应该显示 "EFH-0d-0114-DNA1"
-print(class(inputFiles))  # 应该显示 "character"
-
-load(genomeAnnotation_Rdata); genomeAnnotation
-load(geneAnnotation_Rdata); geneAnnotation
-
-ArrowFiles <- createArrowFiles(
-  inputFiles = inputFiles,
-  genomeAnnotation = genomeAnnotation,
-  geneAnnotation = geneAnnotation,
-  sampleNames = names(inputFiles),
-  minTSS = minTSS, #Dont set this too high because you can always increase later
-  minFrags = minFrags, 
-  addTileMat = TRUE,
-  addGeneScoreMat = TRUE
-)
 
 doubScores <- addDoubletScores(
     input = ArrowFiles,
@@ -244,8 +252,8 @@ projHeme1 <- addUMAP(
 #     force = TRUE
 # )
 
-# use MAGIC to impute gene scores by smoothing signal across nearby cells
-projHeme1 <- addImputeWeights(projHeme1)
+# # use MAGIC to impute gene scores by smoothing signal across nearby cells
+# projHeme1 <- addImputeWeights(projHeme1)
 
 # save and load
 projHeme1 <- saveArchRProject(ArchRProj = projHeme1, outputDirectory = paste0("Save-", output_prefix), load = TRUE)
