@@ -12,8 +12,15 @@ optDNTRA.py -h
 
 ## Run
 ```shell
+swiss_prot=
+pfam_hmm=
+busco_lineage=
+Omark
 export PATH=~/optDNTRA:$PATH
 source /opt/software/miniconda3/bin/activate && conda activate optdntra
+optDNTRA.py -h
+mkdir -p db
+cp 
 optDNTRA.py \
  --config /data/work/optDNTRA/defaults.yml \
  --transcript /data/work/optDNTRA/test_data/trinity.fasta \
@@ -22,7 +29,55 @@ optDNTRA.py \
  --outDir /data/work/optDNTRA_out \
  --trim \
  --qc \
- --threads 4
+ --buscoAsmt \
+ --omarkAsmt \
+ --emapperAnno \
+ --threads 8
+
+omamer search \
+--db /data/input/Files/yangdong/SOFTWARE/OMArk/LUCA.h5 \
+--query /data/work/optDNTRA_out/results/02-optimization/03-transEvidence/transcript.flt.final.pep \
+--out query.omamer \
+--nthreads 8
+
+# 1. 下载 NCBI 分类数据库压缩包
+wget https://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+
+# 2. 解压到指定目录，例如 /path/to/your/taxonomy/
+mkdir -p /data/work/taxonomy/
+tar -xzf taxdump.tar.gz -C /data/work/taxonomy/
+
+# 设置环境变量，让 ETE3 知道去哪里找数据库，禁止其联网更新
+export ETE_NCBI_TAXDUMP_DIR=/data/work/taxonomy/
+export ETE_NCBI_TAXDUMP_VERSION=latest
+export ETE_NO_AUTO_UPDATE=1
+
+# 运行 OMArk
+omark \
+--file query.omamer \
+--database /data/input/Files/yangdong/SOFTWARE/OMArk/LUCA.h5 \
+--outputFolder omark_output \
+--taxid 4530  # 关键：必须提供你的物种的taxid
+
+
+
+omark \
+--file query.omamer \
+--database /data/input/Files/yangdong/SOFTWARE/OMArk/LUCA.h5 \
+--outputFolder omark_output
+
+#  # 1. 解锁目录（必须执行）
+# snakemake \
+#   --snakefile /home/stereonote/optDNTRA/workflow/Snakefile \
+#   --unlock
+
+# # 2. 清理残留锁文件（双重保险）
+# rm -rf /data/work/.snakemake/locks/*
+# rm -rf /data/work/optDNTRA_out/.snakemake/locks/*
+
+# # 3. 检查是否有其他 Snakemake 进程在运行
+# ps aux | grep snakemake | grep -v grep
+
 ```
 
 
