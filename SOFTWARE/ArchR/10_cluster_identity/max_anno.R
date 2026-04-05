@@ -8,7 +8,9 @@ max_anno <- function(proj, atac_key = 'Clusters', predict_key = 'predicted.id') 
     proj <- addCellColData(
         ArchRProj = proj,
         data = cca_max[paste0(proj@cellColData[[atac_key]])],
-        name = "cca_max_annotation",
+        name = paste0(predict_key, "_max"),
         cells = proj$cellNames
     )
+    return(proj)
 }
+projHeme2 <- max_anno(projHeme2, atac_key = 'Clusters', predict_key = 'predictedGroup_Un')

@@ -39,6 +39,7 @@ T_ALL_Setup_SCENICPlus_BMP_TSpec.ipynb：设置 SCENIC+ 的 Jupyter Notebook 环
 BigWig 是一种用于存储和展示基因组数据（如测序覆盖度、信号强度）的二进制索引文件格式，由 UCSC Genome Browser 开发。
 
 ```shell
+# tyc_SCENIC+ 云平台现有镜像
 source /opt/software/miniconda3/bin/activate
 mamba create --name scenicplus python=3.11 -y
 conda activate scenicplus
@@ -57,6 +58,7 @@ sed -i '/pysam==0.22.0/d' requirements.txt 2>/dev/null || true
 sed -i 's/requires-python = ">=3.8,<=3.11.8"/requires-python = ">=3.8,<=3.13.5"/' pyproject.toml
 pip install .
 ```
+
 
 https://github.com/aertslab/scenicplus/issues/101
 ```shell

@@ -1,5 +1,11 @@
-[optDNTRA](https://github.com/zywu2002/optDNTRA)
+# [optDNTRA](https://github.com/zywu2002/optDNTRA)
 
+
+## Project
+杨同学，我们问了，现在我们是有Sp（伴矿景天，就是我们现在在测的超富集型的景天）和Sa（东南景天，不富集型的景天）的转录组测序的原始数据，现成的那个Trinity.fasta文件是把这两个测序数据合并之后组装出来的（意思可能是把Sa和Sp所有的数据合在一起当成是一个物种，拿trinity组装了一个出来），那这样的话这个Trinity.fasta我们能用不，是不是应该重新装一个只有Sp的Trinity.fasta
+
+
+## Run
 ```shell
 git clone https://github.com/ydgenomics/omics4plant.git
 git clone https://github.com/zywu2002/optDNTRA.git
