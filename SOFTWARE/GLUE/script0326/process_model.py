@@ -1,7 +1,5 @@
-# 260326
+# 260319
 # Data preprocessing
-# 只需要输入两个.h5ad的.X是原始文件即可，rna_key是rna的注释键，atac_key是atac单独分群的待注释的键
-# 输出的metadata.csv便于后面添加到ArchRProject对象里面去
 
 import os
 os.environ['PATH'] = "/opt/software/miniconda3/envs/glue/bin:" + os.environ['PATH']
@@ -201,7 +199,7 @@ def transforLable(rna, atac, rna_key='sctype_new', atac_key='seurat_clusters', p
 
 
 atac = transforLable(rna, atac, rna_key, atac_key, prefix=prefix)
-data = adata.obs[['glue_predict', 'glue_confidence', 'seurat_clusters_anno']]
+data = atac.obs[['glue_predict', 'glue_confidence', 'seurat_clusters_anno']]
 data.to_csv(f'{prefix}_metadata.csv')
 
 anno_key = atac_key + '_anno'

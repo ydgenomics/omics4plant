@@ -14,12 +14,11 @@ library(ggrastr)
 library(ggrepel)
 library(ggpubr)
 library(corrplot)
-library(pheatmap)
 
-archr_project="/data/work/rice/ArchR/work/Save-EFH-0d"
-rna_rds="/data/users/huangpeilin/huangpeilin_8df4002b47a24d2fb0abdaf8ca6e3534/online/sctype/0402-re-annotated/EFH-0d_annotated.rds"
-atac_key="glue_predict_max"
-rna_key="sctype"
+archr_project="/data/work/rice/ArchR/work/Save-ZHH-0d"
+rna_rds="/data/work/rice/Seurat/ZHH-0d.rds"
+atac_key="Clusters"
+rna_key="sctype_new"
 threads=8
 
 
@@ -51,30 +50,8 @@ corrplot(
     tl.cex = 0.6,
     is.corr = F,
     col = rev(COL2("RdBu", 100)),
-    order = "hclust", col.lim = c(-1, 1)
+    order = "original", col.lim = c(-1, 1)
 )
-cor_matrix <- corM[celltypes, celltypes]
-pheatmap(
-    cor_matrix,
-    color = rev(COL2("RdBu", 100)),
-    cluster_rows = TRUE,
-    cluster_cols = TRUE,
-    clustering_method = "ward.D2",
-    #treeheight_row = 30,      # 行聚类树高度
-    #treeheight_col = 30,      # 列聚类树高度
-    display_numbers = FALSE,
-    fontsize_row = 8,
-    fontsize_col = 8,
-    main = paste0("RNA Correlation Matrix: ", prefix),
-    #cutree_rows = 3,          # 行聚类数（可选）
-    #cutree_cols = 3,          # 列聚类数（可选）
-    border_color = NA,        # 边框颜色
-    angle_col = 45,           # 列标签角度
-    cellwidth = 12,           # 单元格宽度
-    cellheight = 12,          # 单元格高度
-    legend_title = "Correlation"
-)
-
 dev.off()
 
 proj <- loadArchRProject(archr_project)
@@ -88,9 +65,8 @@ peak_names <- paste0(seqnames(peak_ranges), ":", start(peak_ranges), "-", end(pe
 rownames(counts) <- peak_names
 metadata <- colData(se)
 atac_seurat <- CreateSeuratObject(counts = counts, meta.data = as.data.frame(metadata))
-# saveRDS(atac_seurat, file = paste0(prefix, "_atac_seurat.rds"))
 # atac_seurat <- RunTFIDF(atac_seurat)
-# atac_seurat <- FindTopFeatures(atac_seurat, min.cutoff = "q0")
+# pbmc.atac <- FindTopFeatures(pbmc.atac, min.cutoff = "q0")
 
 peaks <-
     parallel::mclapply(unique(atac_seurat@meta.data[[atac_key]]), function(x) {
@@ -126,37 +102,16 @@ rice.sub.atac.avg <- AverageExpression(atac_seurat,
 )
 corATAC <- cor(rice.sub.atac.avg$RNA, method = "pearson")
 celltypes <- unique(colnames(rice.sub.atac.avg$RNA))
-pdf(paste0(prefix, "_ATAC.correaltion.pdf"), width = 9, height = 9)
+pdf("ATAC.correaltion.pdf", width = 9, height = 9)
 corrplot(
     corATAC[celltypes, celltypes],
     method = "square",
-    type = "upper",
+    type = "lower",
     tl.col = "black",
     tl.cex = 0.6,
     is.corr = F,
     col = rev(COL2("RdBu", 100)),
-    order = "hclust", col.lim = c(-1, 1)
-)
-
-pheatmap(
-    corATAC[celltypes, celltypes],
-    color = rev(COL2("RdBu", 100)),
-    cluster_rows = TRUE,
-    cluster_cols = TRUE,
-    clustering_method = "ward.D2",
-    #treeheight_row = 30,      # 行聚类树高度
-    #treeheight_col = 30,      # 列聚类树高度
-    display_numbers = FALSE,
-    fontsize_row = 8,
-    fontsize_col = 8,
-    main = paste0("RNA Correlation Matrix: ", prefix),
-    #cutree_rows = 3,          # 行聚类数（可选）
-    #cutree_cols = 3,          # 列聚类数（可选）
-    border_color = NA,        # 边框颜色
-    angle_col = 45,           # 列标签角度
-    cellwidth = 12,           # 单元格宽度
-    cellheight = 12,          # 单元格高度
-    legend_title = "Correlation"
+    order = "original", col.lim = c(-1, 1)
 )
 dev.off()
 

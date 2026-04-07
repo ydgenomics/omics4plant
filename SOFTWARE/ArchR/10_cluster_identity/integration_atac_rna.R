@@ -1,4 +1,4 @@
-# 260402
+# 260407
 
 library(ArchR)
 library(pheatmap)
@@ -24,13 +24,13 @@ dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
 setwd(workDirectory)
 prefix=basename(archr_project)
 
-directory <- paste0(getOutputDirectory(projHeme2), "/Plots/")
-
 seRNA <- readRDS(rna_input); print(seRNA)
 print(table(seRNA@meta.data[[rna_key]]))
 
 projHeme2 <- loadArchRProject(archr_project); print(projHeme2)
 print(table(projHeme2@cellColData[[atac_key]]))
+
+directory <- paste0(getOutputDirectory(projHeme2), "/Plots/")
 
 projHeme2 <- addGeneIntegrationMatrix(
     ArchRProj = projHeme2, 
@@ -56,11 +56,13 @@ max_anno <- function(proj, atac_key = 'Clusters', predict_key = 'predicted.id') 
         ArchRProj = proj,
         data = cca_max[paste0(proj@cellColData[[atac_key]])],
         name = paste0(predict_key, "_max"),
-        cells = proj$cellNames
+        cells = proj$cellNames,
+        force = TRUE
     )
     return(proj)
 }
-projHeme2 <- max_anno(projHeme2, atac_key = 'Clusters', predict_key = 'predictedGroup_Un')
+
+projHeme2 <- max_anno(projHeme2, atac_key = atac_key, predict_key = 'predictedGroup_Un')
 
 cM <- confusionMatrix(paste0(projHeme2@cellColData[[atac_key]]), paste0(projHeme2@cellColData$predictedGroup_Un)); print(cM)
 cM <- cM / Matrix::rowSums(cM)
