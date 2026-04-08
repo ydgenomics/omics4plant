@@ -1,4 +1,7 @@
-# 水稻种子项目
+# ArchR
+
+peak co-accessibility to predict regulatory interactions, or analyses that integrate scRNA-seq data such as prediction of enhancer activity through peak-to-gene linkage analysis
+peak co-accessibility, peak-to-gene linkage, and for other linkage analyses
 
 
 ## Preparation

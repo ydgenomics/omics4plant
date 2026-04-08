@@ -5,7 +5,7 @@
 杨同学，我们问了，现在我们是有Sp（伴矿景天，就是我们现在在测的超富集型的景天）和Sa（东南景天，不富集型的景天）的转录组测序的原始数据，现成的那个Trinity.fasta文件是把这两个测序数据合并之后组装出来的（意思可能是把Sa和Sp所有的数据合在一起当成是一个物种，拿trinity组装了一个出来），那这样的话这个Trinity.fasta我们能用不，是不是应该重新装一个只有Sp的Trinity.fasta
 
 
-## Run
+## Env
 ```shell
 git clone https://github.com/ydgenomics/omics4plant.git
 git clone https://github.com/zywu2002/optDNTRA.git
@@ -18,27 +18,55 @@ optDNTRA.py -h
 
 ## Run
 ```shell
+transcript_fa=
+left_fq=
+right_fq=
+
 swiss_prot=
 pfam_hmm=
 busco_lineage=
-Omark
+omark_database=
+emapper_database=
+
+
+mkdir -p db
+cp $swiss_prot db
+cp $pfam_hmm db
+tar -zxvf $busco_lineage -C ./db
+cp $omark_database db
+cp $emapper_database db
+
+
 export PATH=~/optDNTRA:$PATH
 source /opt/software/miniconda3/bin/activate && conda activate optdntra
 optDNTRA.py -h
-mkdir -p db
-cp 
+
+
+
+optDNTRA.py \
+ --config /data/WORKFLOW/optDNTRA/defaults.yml \
+ --transcript $transcript_fa \
+ --left $left_fq \
+ --right $right_fq \
+ --outDir optDNTRA_out \
+ --trim \
+ --qc \
+ --buscoAsmt \
+ --emapperAnno \
+ --threads 8
+
 optDNTRA.py \
  --config /data/work/optDNTRA/defaults.yml \
  --transcript /data/work/optDNTRA/test_data/trinity.fasta \
  --left /data/work/optDNTRA/test_data/reads_1.fq.gz \
  --right /data/work/optDNTRA/test_data/reads_2.fq.gz \
- --outDir /data/work/optDNTRA_out \
+ --outDir /data/work/optDNTRA_out1 \
  --trim \
  --qc \
- --buscoAsmt \
- --omarkAsmt \
- --emapperAnno \
  --threads 8
+
+# https://busco-data.ezlab.org/v5/data/lineages/eukaryota_odb10.2024-01-08.tar.gz
+# busco --download eukaryota_odb10
 
 omamer search \
 --db /data/input/Files/yangdong/SOFTWARE/OMArk/LUCA.h5 \
@@ -73,13 +101,13 @@ omark \
 --outputFolder omark_output
 
 #  # 1. 解锁目录（必须执行）
-# snakemake \
-#   --snakefile /home/stereonote/optDNTRA/workflow/Snakefile \
-#   --unlock
+snakemake \
+  --snakefile /home/stereonote/optDNTRA/workflow/Snakefile \
+  --unlock
 
 # # 2. 清理残留锁文件（双重保险）
-# rm -rf /data/work/.snakemake/locks/*
-# rm -rf /data/work/optDNTRA_out/.snakemake/locks/*
+rm -rf /data/work/.snakemake/locks/*
+rm -rf /data/work/optDNTRA_out/.snakemake/locks/*
 
 # # 3. 检查是否有其他 Snakemake 进程在运行
 # ps aux | grep snakemake | grep -v grep
