@@ -5,3 +5,7 @@
 - IReNA 2022 iScience 时序调控网络
 - scMultiSim [wechat](https://mp.weixin.qq.com/s/lr77gwPgs8rYClrJvB2VKQ)
 - scMultiomeGRN [wechat](https://mp.weixin.qq.com/s/7QTETVHenEranjbHPzhDFw)
+
+
+## References
+- [single-cell-best-practices/GRN](https://www.sc-best-practices.org/chromatin_accessibility/gene_regulatory_networks_atac.html#gene-regulatory-networks)

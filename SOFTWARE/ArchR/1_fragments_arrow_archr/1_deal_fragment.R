@@ -1,4 +1,4 @@
-# 260331
+# 260409
 
 library(data.table)
 library(Rsamtools)
@@ -93,15 +93,11 @@ for (i in 1:length(sample_list)){
       col.names = FALSE
     )
 
-    # 使用 bgzip 压缩（Rsamtools 的包装函数）
     bgzip(paste0(prefix, "fragments_filtered.tsv"), dest = paste0(prefix, "fragments_filtered.tsv.gz"))
     
-    # ⚠️ 关键：确保文件系统同步，添加短暂延迟
-    Sys.sleep(0.5)  # 确保时间戳正确
+    Sys.sleep(0.5)  # 添加短暂延迟
 
-    # 建立索引
     indexTabix(paste0(prefix, "fragments_filtered.tsv.gz"), format = "bed")
 
-    # 删除中间的临时文件
     file.remove(paste0(prefix, "fragments_filtered.tsv"))
 }

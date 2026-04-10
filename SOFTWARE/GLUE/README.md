@@ -12,7 +12,10 @@ RNA和ATAC数据准备，准备gtf文件为ATAC添加信息，分别对原始数
 - Model Training
 - Regulatory Inference
 
+`scglue.data.transfer_labels`
+Model training on partially paired data [https://scglue.readthedocs.io/en/latest/paired.html#Extra:-Model-training-on-partially-paired-data]
 
+## Env
 ```shell
 source /opt/software/miniconda3/bin/activate
 conda create -n glue python=3.10 -y
@@ -26,3 +29,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install numpy==1.24.4
 python -c "import numpy; print(numpy.__version__)"
 ```
+
+## References
+- [CIMA/Multiomics_integration](https://github.com/CIMA-Project/CIMA/blob/main/Multiomics_integration/single_cell_integration_and_cell_type_transfer.py)
+- 

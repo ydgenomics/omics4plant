@@ -1,9 +1,7 @@
-# 260402
+# 260409
+
 library(ArchR)
 set.seed(1)
-
-args <- commandArgs(trailingOnly = TRUE)
-input_file <- args[1]
 
 args <- commandArgs(trailingOnly = TRUE)
 # -- input --
@@ -17,8 +15,7 @@ minTSS <- as.numeric(args[5])
 minFrags <- as.integer(args[6])
 resolution <- as.numeric(args[7])
 threads <- as.integer(args[8])
-outputDirectory <- args[9]
-workDirectory <- args[10]
+workDirectory <- args[9]
 
 # input_folder="/data/work/rice/ArchR/EFH-0d"
 # genomeAnnotation_Rdata="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
@@ -94,19 +91,9 @@ projHeme1 <- ArchRProject(
   ArrowFiles = ArrowFiles,
   genomeAnnotation = genomeAnnotation,
   geneAnnotation = geneAnnotation,
-  outputDirectory = outputDirectory,
+  outputDirectory = output_prefix,
   copyArrows = TRUE
 )
-
-# projHeme1 <- loadArchRProject('/data/work/archr/output/Save-EFH-0d')
-# ArrowFiles <- getArrowFiles(projHeme1); ArrowFiles
-# projHeme1 <- ArchRProject(
-#   ArrowFiles = ArrowFiles,
-#   genomeAnnotation = genomeAnnotation,
-#   geneAnnotation = geneAnnotation,
-#   outputDirectory = outputDirectory,
-#   copyArrows = TRUE
-# )
 
 paste0("Memory Size = ", round(object.size(projHeme1) / 10^6, 3), " MB")
 
@@ -157,12 +144,12 @@ p4 <- plotGroups(
     baseSize = 10,
   addBoxPlot = TRUE
 )
-plotPDF(p1,p2,p3,p4, name = paste0(output_prefix, "_QC-Sample-Statistics.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 10, height = 10)
+plotPDF(p1,p2,p3,p4, name = "QC-Sample-Statistics.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 10, height = 10)
 
 # Plotting Sample Fragment Size Distribution and TSS Enrichment Profiles
 p1 <- plotFragmentSizes(ArchRProj = projHeme1)
 p2 <- plotTSSEnrichment(ArchRProj = projHeme1)
-plotPDF(p1,p2, name = paste0(output_prefix, "_QC-Sample-FragSizes-TSSProfile.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 10, height = 10)
+plotPDF(p1,p2, name = "QC-Sample-FragSizes-TSSProfile.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 10, height = 10)
 
 # Filtering Doublets from an ArchRProject
 projHeme1 <- filterDoublets(projHeme1)
@@ -255,64 +242,22 @@ projHeme1 <- addUMAP(
 # # use MAGIC to impute gene scores by smoothing signal across nearby cells
 # projHeme1 <- addImputeWeights(projHeme1)
 
-# save and load
-projHeme1 <- saveArchRProject(ArchRProj = projHeme1, outputDirectory = paste0("Save-", output_prefix), load = TRUE)
-# list.files(path = "./Save-ProjHeme1")
-
 library(pheatmap)
-cM <- confusionMatrix(paste0(projHeme1$Clusters), paste0(projHeme1$Sample))
-cM
+cM <- confusionMatrix(paste0(projHeme1$Clusters), paste0(projHeme1$Sample)); print(cM)
 cM <- cM / Matrix::rowSums(cM)
 p <- pheatmap::pheatmap(
   mat = as.matrix(cM),
   color = paletteContinuous("whiteBlue"),
   border_color = 'black'
 )
-plotPDF(p, name = paste0(output_prefix, "_heatmap_Clusters_vs_Sample.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
+plotPDF(p, name = "heatmap_Clusters_vs_Sample.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
 
-# cM <- confusionMatrix(paste0(projHeme1$Clusters_Harmony), paste0(projHeme1$Sample))
-# cM
-# cM <- cM / Matrix::rowSums(cM)
-# p <- pheatmap::pheatmap(
-#   mat = as.matrix(cM),
-#   color = paletteContinuous("whiteBlue"),
-#   border_color = 'black'
-# )
-# pdf('heatmap_Clusters_Harmony.pdf')
-# print(p)
-# dev.off()
 
 projHeme1@embeddings
-p1 <- plotEmbedding(
-    ArchRProj = projHeme1,
-    colorBy = 'cellColData',
-    name = 'Sample',
-    embedding = 'UMAP',
-    force = TRUE
-)
+p1 <- plotEmbedding(projHeme1, colorBy = 'cellColData', name = 'Sample', embedding = 'UMAP', force = TRUE)
 
-p2 <- plotEmbedding(
-    ArchRProj = projHeme1,
-    colorBy = 'cellColData',
-    name = 'Clusters',
-    embedding = 'UMAP',
-    force = TRUE
-)
-plotPDF(p1,p2, name = paste0(output_prefix, "_Plot-UMAP-Sample-Clusters.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
-# p1 <- plotEmbedding(
-#     ArchRProj = projHeme1,
-#     colorBy = 'cellColData',
-#     name = 'Sample',
-#     embedding = 'UMAP_Harmony',
-#     force = TRUE
-# )
+p2 <- plotEmbedding(projHeme1, colorBy = 'cellColData', name = 'Clusters', embedding = 'UMAP', force = TRUE)
 
-# p2 <- plotEmbedding(
-#     ArchRProj = projHeme1,
-#     colorBy = 'cellColData',
-#     name = 'Clusters_Harmony',
-#     embedding = 'UMAP_Harmony',
-#     force = TRUE
-# )
+plotPDF(p1,p2, name = "Plot-UMAP-Sample-Clusters.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
 
-# plotPDF(p1,p2, name = "Plot-UMAP_Harmony-Sample-Clusters.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
+projHeme1 <- saveArchRProject(ArchRProj = projHeme1)
