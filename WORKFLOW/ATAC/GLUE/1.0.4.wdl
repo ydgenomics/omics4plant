@@ -5,10 +5,9 @@ workflow GLUE{
   input{
     File rna_rds="/Files/User/yangdong/WDL/scATAC-anno/EFH-0d.rds"
     File atac_rds="/Files/User/yangdong/WDL/scATAC-anno/rice_peaks.rds"
-    File gtf
-    String gtf_by
-    String rna_key
-    String atac_key
+    File gtf="/Files/User/yangdong/rice/osa1_r7.all_models_4glue.gtf"
+    String gtf_by="gene_id"
+    String rna_key="sctype_new"
     File prefix="EFH-0d"
     Int mem_getH5ad=16
   }
@@ -40,7 +39,6 @@ workflow GLUE{
     gtf=gtf,
     gtf_by=gtf_by,
     rna_key=rna_key,
-    atac_key=atac_key,
     repo=wdl.result,
   }
   output{
@@ -56,14 +54,12 @@ task glue{
     File gtf
     String gtf_by
     String rna_key
-    String atac_key
     File repo
   }
   command {
     tar -zxvf ~{repo} -C .
     /opt/software/miniconda3/envs/glue/bin/python ./omics4plant/WORKFLOW/ATAC/GLUE/process_model.py \
-    --rna_h5ad ${rna_h5ad} --atac_h5ad ${atac_h5ad} --prefix ${prefix} \
-    --gtf ${gtf} --gtf_by ${gtf_by} --rna_key ${rna_key} --atac_key ${atac_key}
+    --rna_h5ad ${rna_h5ad} --atac_h5ad ${atac_h5ad} --prefix ${prefix} --gtf ${gtf} --gtf_by ${gtf_by} --rna_key ${rna_key}
   }
   runtime {
       docker_url: "public-library/yangdong_d2188a845440499fa241e84d51022e42_public:latest"
