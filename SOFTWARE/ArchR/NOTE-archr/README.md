@@ -32,7 +32,8 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-1[(merged ArchRProject)] ==> 2[/add cellColData/] ==> 3[/Harmony/] ==> 4[/call peanks by celltypes/] ==> 5[/cell-specific peaks/] ==> 6[/motif enrichment or deviation/]
+1[(merged ArchRProject)] ==> 2[/add cellColData/] ==> 1.1[(Annotated ArchRProject)] ==> 3[/Harmony/] ==> 4[/call peanks by celltypes/] ==> 5[/cell-specific peaks/] ==> 6[/motif enrichment or deviation/]
+9[/cell proportion/] --> 1.1
 5 ==> 7[/peaks-link-genes/]
 4 ==> 8[/DARs/] ==> 6
 8 ==> 7

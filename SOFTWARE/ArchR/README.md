@@ -4,6 +4,13 @@ peak co-accessibility to predict regulatory interactions, or analyses that integ
 peak co-accessibility, peak-to-gene linkage, and for other linkage analyses
 
 
+## ATAC多证据注释流程
+- marker基因
+- 差异peak的motif富集,peakLinkGene的展示，peaklinkGene的富集
+- ArchR-CCA & GLUE
+- 两个数据的correlation和细胞类型组成
+
+
 ## Preparation
 - 基因组 japonica
 - motif

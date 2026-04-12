@@ -1,8 +1,6 @@
 ```shell
 #  # 1. 解锁目录（必须执行）
-snakemake \
-  --snakefile /home/stereonote/optDNTRA/workflow/Snakefile \
-  --unlock
+snakemake --snakefile /home/stereonote/optDNTRA/workflow/Snakefile --unlock
 
 # # 2. 清理残留锁文件（双重保险）
 rm -rf /data/work/.snakemake/locks/*

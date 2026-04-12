@@ -1,4 +1,4 @@
-# 260410
+# 260412
 
 library(ArchR)
 set.seed(1)
@@ -145,12 +145,12 @@ p4 <- plotGroups(
     baseSize = 10,
   addBoxPlot = TRUE
 )
-plotPDF(p1,p2,p3,p4, name = "QC-Sample-Statistics.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 10, height = 10)
+plotPDF(p1,p2,p3,p4, name = paste0(output_prefix, "_QC-Sample-Statistics.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 10, height = 10)
 
 # Plotting Sample Fragment Size Distribution and TSS Enrichment Profiles
 p1 <- plotFragmentSizes(ArchRProj = projHeme1)
 p2 <- plotTSSEnrichment(ArchRProj = projHeme1)
-plotPDF(p1,p2, name = "QC-Sample-FragSizes-TSSProfile.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 10, height = 10)
+plotPDF(p1,p2, name = paste0(output_prefix, "_QC-Sample-FragSizes-TSSProfile.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 10, height = 10)
 
 # Filtering Doublets from an ArchRProject
 projHeme1 <- filterDoublets(projHeme1)
@@ -251,7 +251,7 @@ p <- pheatmap::pheatmap(
   color = paletteContinuous("whiteBlue"),
   border_color = 'black'
 )
-plotPDF(p, name = "heatmap_Clusters_vs_Sample.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
+plotPDF(p, name = paste0(output_prefix, "_heatmap_Clusters_vs_Sample.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
 
 
 projHeme1@embeddings
@@ -259,6 +259,6 @@ p1 <- plotEmbedding(projHeme1, colorBy = 'cellColData', name = 'Sample', embeddi
 
 p2 <- plotEmbedding(projHeme1, colorBy = 'cellColData', name = 'Clusters', embedding = 'UMAP', force = TRUE)
 
-plotPDF(p1,p2, name = "Plot-UMAP-Sample-Clusters.pdf", ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
+plotPDF(p1,p2, name = paste0(output_prefix, "_Plot-UMAP-Sample-Clusters.pdf"), ArchRProj = projHeme1, addDOC = FALSE, width = 5, height = 5)
 
-projHeme1 <- saveArchRProject(ArchRProj = projHeme1)
+saveArchRProject(ArchRProj = projHeme1)

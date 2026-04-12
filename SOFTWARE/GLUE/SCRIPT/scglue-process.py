@@ -18,11 +18,13 @@ import sys
 # .gtf must have 'gene' in $3 and [gtf_by]
 import argparse
 parser = argparse.ArgumentParser(description='Process ATAC and RNA data')
-parser.add_argument('--rna_h5ad', default='/data/work/glue/EFH/rna-pp.h5ad', help='RNA h5ad path, .X is raw data.')
-parser.add_argument('--atac_h5ad', default='/data/work/glue/EFH/atac-pp.h5ad', help='ATAC h5ad path, .X is raw data.')
-parser.add_argument('--prefix', default='EFH', help='Prefix for output')
-parser.add_argument('--gtf', default='/data/work/glue/EFH/osa1_r7.all_models_fixed.gtf', help='GTF annotation file')
+parser.add_argument('--rna_h5ad', default='/data/work/rna_subset/EFH-0d_rna.h5ad', help='RNA h5ad path, .X is raw data.')
+parser.add_argument('--atac_h5ad', default='/data/work/atac_subset/EFH-0d_atac.h5ad', help='ATAC h5ad path, .X is raw data.')
+parser.add_argument('--prefix', default='EFH-0d', help='Prefix for output')
+parser.add_argument('--gtf', default='/data/users/yangdong/yangdong_04a6a7dfe0914e4a9f3511446586a7a7/online/rice/ref/osa1_r7.all_models_4glue.gtf', help='GTF annotation file')
 parser.add_argument('--gtf_by', default='gene_id', help='Gene key') # must have gene in $3 and [gtf_by]
+parser.add_argument('--rna_key', default='sctype_new', help='Annotated key of RNA')
+parser.add_argument('--atac_key', default='Clusters', help='Annotated key of ATAC')
 
 args = parser.parse_args()
 rna_h5ad = args.rna_h5ad
@@ -30,11 +32,13 @@ atac_h5ad = args.atac_h5ad
 prefix = args.prefix
 gtf = args.gtf
 gtf_by = args.gtf_by
+rna_key=args.rna_key
+atac_key=args.atac_key
 
 # preprocess scRNA-seq data
 def pp_rna(rna_h5ad):
     rna = ad.read_h5ad(rna_h5ad)
-    rna
+    rna.obs['omics'] = 'RNA'
     rna.X, rna.X.data
     rna.layers["counts"] = rna.X.copy()
     sc.pp.highly_variable_genes(rna, n_top_genes=2000, flavor="seurat_v3")
@@ -49,7 +53,7 @@ def pp_rna(rna_h5ad):
 # preprocess scATAC-seq data
 def pp_atac(atac_h5ad):
     atac = ad.read_h5ad(atac_h5ad)
-    atac
+    atac.obs['omics'] = 'ATAC'
     # scATAC-seq accessibility matrix is also supposed to contain raw counts
     atac.X, atac.X.data
     scglue.data.lsi(atac, n_components=100, n_iter=15)

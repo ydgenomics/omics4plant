@@ -60,7 +60,6 @@ projHeme2 <- max_anno(projHeme2, atac_key = atac_key, predict_key = 'predictedGr
 cM <- confusionMatrix(paste0(projHeme2@cellColData[[atac_key]]), paste0(projHeme2@cellColData$predictedGroup_Un)); print(cM)
 cM <- cM / Matrix::rowSums(cM)
 cM_df <- as.data.frame(cM)
-colnames(cM_df) <- paste0(colnames(cM_df), "-CCA")
 write.csv(cM_df, file = paste0(prefix, "_cM-CCA.csv"), row.names = TRUE)
 
 directory <- paste0(getOutputDirectory(projHeme2), "/Plots/")

@@ -1,4 +1,4 @@
-# 260319
+# 260412
 # Data preprocessing
 
 import os
@@ -23,6 +23,8 @@ parser.add_argument('--atac_h5ad', default='/data/work/atac_subset/EFH-0d_atac.h
 parser.add_argument('--prefix', default='EFH-0d', help='Prefix for output')
 parser.add_argument('--gtf', default='/data/users/yangdong/yangdong_04a6a7dfe0914e4a9f3511446586a7a7/online/rice/ref/osa1_r7.all_models_4glue.gtf', help='GTF annotation file')
 parser.add_argument('--gtf_by', default='gene_id', help='Gene key') # must have gene in $3 and [gtf_by]
+parser.add_argument('--rna_key', default='sctype_new', help='Annotated key of RNA')
+parser.add_argument('--atac_key', default='Clusters', help='Annotated key of ATAC')
 
 args = parser.parse_args()
 rna_h5ad = args.rna_h5ad
@@ -30,8 +32,13 @@ atac_h5ad = args.atac_h5ad
 prefix = args.prefix
 gtf = args.gtf
 gtf_by = args.gtf_by
-rna_key='sctype_new'
-atac_key='seurat_clusters'
+rna_key=args.rna_key
+atac_key=args.atac_key
+
+
+# /opt/software/miniconda3/envs/glue/bin/python process_model.py \
+# --rna_h5ad $rna_h5ad --atac_h5ad $atac_h5ad --prefix $prefix \
+# --gtf $gtf --gtf_by $gtf_by --rna_key $rna_key --atac_key $atac_key
 
 # preprocess scRNA-seq data
 def pp_rna(rna_h5ad):
@@ -116,11 +123,10 @@ guidance_hvf = guidance.subgraph(chain(
 
 # Train GLUE model
 glue = scglue.models.fit_SCGLUE(
-    {"rna": rna, "atac": atac}, guidance_hvf,
-    fit_kws={"directory": "glue"}
+    {"rna": rna, "atac": atac}, guidance_hvf,init_kws={"h_dim":512, "random_seed":666},
+    fit_kws={"directory": "glue_0.5_8192","data_batch_size":8192}
 )
-
-glue.save(prefix + "_glue.dill")
+glue.save(prefix + "_glue_0.5_8192.dill")
 
 # glue = scglue.models.load_model("/data/work/glue/EFH/glue.dill")
 # guidance_hvf = nx.read_graphml("/data/work/glue/EFH/guidance-hvf.graphml.gz")
@@ -147,68 +153,22 @@ atac.obsm["X_glue"] = glue.encode_data("atac", atac)
 rna.obs.columns
 atac.obs.columns
 
-def transforLable(rna, atac, rna_key='sctype_new', atac_key='seurat_clusters', prefix='result'):
-    import scanpy as sc
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    from sklearn.neighbors import KNeighborsClassifier
-    # 标签转移
-    knn = KNeighborsClassifier(n_neighbors=5, weights='distance')
-    knn.fit(rna.obsm['X_glue'], rna.obs[rna_key])
-    atac.obs[atac_key] = atac.obs[atac_key].astype('category')
-    # 预测
-    atac.obs['glue_predict'] = knn.predict(atac.obsm['X_glue'])
-    atac.obs['glue_confidence'] = knn.predict_proba(atac.obsm['X_glue']).max(axis=1)
-    # 创建每个聚类的主要细胞类型
-    cluster_celltype = atac.obs.groupby(atac_key)['glue_predict'].agg(
-        lambda x: x.value_counts().index[0]
-    )
-    print("每个聚类的主要细胞类型:")
-    print(cluster_celltype)
-    # 添加到obs
-    anno_key = atac_key + '_anno'
-    atac.obs[anno_key] = atac.obs[atac_key].map(cluster_celltype)
-    # 交叉表
-    cross_tab = pd.crosstab(atac.obs[atac_key], atac.obs['glue_predict'])
-    cross_tab_percent = cross_tab.div(cross_tab.sum(axis=1), axis=0) * 100
-    # 排序
-    cluster_order = cross_tab.idxmax(axis=1).sort_values().index
-    celltype_order = cross_tab.max().sort_values(ascending=False).index
-    # 绘制热图
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(cross_tab_percent.loc[cluster_order, celltype_order],
-                annot=True,
-                fmt='.1f',
-                cmap='YlOrRd',
-                cbar_kws={'label': 'Percentage (%)'},
-                linewidths=0.5,
-                linecolor='white')
-    plt.title(f'{atac_key} vs {rna_key}', fontsize=14)
-    plt.xlabel(f'RNA: {rna_key}', fontsize=12)
-    plt.ylabel(f'ATAC: {atac_key}', fontsize=12)
-    plt.tight_layout()
-    plt.savefig(f"{prefix}_anno.pdf", bbox_inches="tight", dpi=300)
-    plt.close()
-    # 绘制UMAP（修正：color应该是列表）
-    sc.pl.umap(atac, color=['sample', atac_key, 'glue_predict', 'glue_confidence', anno_key], 
-               show=False)
-    plt.savefig(f"{prefix}_atac_umap.pdf", bbox_inches="tight", dpi=300)
-    plt.close()
-    return atac
+scglue.data.transfer_labels(
+    rna, atac, rna_key, use_rep="X_glue", n_jobs=-1
+)
 
+sc.pl.umap(atac, color=['omics', rna_key], show=False)
+plt.savefig(f"{prefix}_atac.pdf", bbox_inches="tight", dpi=300)
+plt.close()
 
-atac = transforLable(rna, atac, rna_key, atac_key, prefix=prefix)
-data = atac.obs[['glue_predict', 'glue_confidence', 'seurat_clusters_anno']]
+data = atac.obs[[rna_key, f'{rna_key}_confidence']]
 data.to_csv(f'{prefix}_metadata.csv')
 
-anno_key = atac_key + '_anno'
-atac.obs[rna_key] = atac.obs[anno_key].copy()
+
 combined = ad.concat([rna, atac])
 
 sc.pp.neighbors(combined, use_rep="X_glue", metric="cosine")
 sc.tl.umap(combined)
-# sc.pl.umap(combined, color=["sample", "sctype_new"], wspace=0.65, save='_concat.pdf')
 
 feature_embeddings = glue.encode_graph(guidance_hvf)
 feature_embeddings = pd.DataFrame(feature_embeddings, index=glue.vertices)
@@ -222,7 +182,6 @@ rna.write(prefix + "_rna-emb.h5ad", compression="gzip")
 atac.write(prefix + "_atac-emb.h5ad", compression="gzip")
 nx.write_graphml(guidance_hvf, prefix + "_guidance-hvf.graphml.gz")
 
-combined.obs[f'omics_{rna_key}'] = combined.obs['omics'].astype(str) + '_' + combined.obs[rna_key].astype(str)
-sc.pl.umap(combined, color=['omics', rna_key, f'omics_{rna_key}'], show=False)
+sc.pl.umap(combined, color=['omics', rna_key], show=False)
 plt.savefig(f"{prefix}_coembed.pdf", bbox_inches="tight", dpi=300)
 plt.close()
