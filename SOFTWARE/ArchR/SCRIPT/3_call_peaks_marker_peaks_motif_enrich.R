@@ -3,32 +3,73 @@
 
 library(ArchR)
 library(Seurat)
-library(BSgenome.rice.test)
+# library(BSgenome.rice.test)
+library(optparse)
 set.seed(1)
 
-args <- commandArgs(trailingOnly = TRUE)
-archr_project <- args[1]
-atac_key <- args[2]
-genomeAnnotation_Rdata <- args[3]
-geneAnnotation_Rdata <- args[4]
-genomeSize <- as.numeric(args[5])
-pwm_list_rdata <- args[6]
-cutOff <- args[7] # cutOff = "FDR <= 0.01 & Log2FC >= 1"
-workDirectory <- args[8]
-threads <- as.numeric(args[9])
+# Define command line options
+option_list <- list(
+  make_option(c("-p", "--archr_project"), 
+              type = "character", 
+              default = "EFH-0d",
+              help = "Path to ArchR project directory (required)", 
+              metavar = "PATH"),
+  make_option(c("-k", "--atac_key"), 
+              type = "character", 
+              default = "Clusters",
+              help = "Cell grouping column name in ArchR project [default: %default]", 
+              metavar = "STRING"),
+  make_option(c("-g", "--genome_annotation"), 
+              type = "character", 
+              default = "/data/work/rice/ArchR/rice_genomeAnnotation.Rdata",
+              help = "Path to genome annotation RData file (required)", 
+              metavar = "PATH"),
+  make_option(c("-a", "--gene_annotation"), 
+              type = "character", 
+              default = "/data/work/rice/ArchR/rice_geneAnnotation.Rdata",
+              help = "Path to gene annotation RData file (required)", 
+              metavar = "PATH"),
+  make_option(c("-s", "--genome_size"), 
+              type = "numeric", 
+              default = 3.9e8,
+              help = "Genome size in base pairs [default: %default] (rice japonica)", 
+              metavar = "NUM"),
+  make_option(c("-m", "--pwm_list"), 
+              type = "character", 
+              default = "/data/work/rice/ref/motif/Osj_TF_binding_motifs.meme_pwm_list.rdata",
+              help = "Path to PWM list RData file for motif enrichment (required)", 
+              metavar = "PATH"),
+  make_option(c("-c", "--cutoff"), 
+              type = "character", 
+              default = "FDR <= 0.01 & Log2FC >= 1",
+              help = "Cutoff criteria for marker peaks [default: \"%default\"]", 
+              metavar = "STRING"),
+  make_option(c("-w", "--workdir"), 
+              type = "character", 
+              default = ".",
+              help = "Working directory [default: current directory]", 
+              metavar = "PATH"),
+  make_option(c("-t", "--threads"), 
+              type = "integer", 
+              default = 1,
+              help = "Number of threads to use [default: %default]", 
+              metavar = "INT")
+)
 
-# archr_project="/data/work/archr/rice"
-# atac_key="Clusters"
-# genomeAnnotation_Rdata="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
-# geneAnnotation_Rdata="/data/work/rice/ArchR/rice_geneAnnotation.Rdata"
-# genomeSize=3.8e9 # rice genome size (japonica)
-# pwm_list_rdata="/data/work/rice/ref/motif/Osj_TF_binding_motifs.meme_pwm_list.rdata"
-# cutOff="FDR <= 0.01 & Log2FC >= 1"
-# workDirectory="/data/work/archr"
-# threads=8
-# Rscript 3_call_peaks_marker_peaks_motif_enrich.R \
-# $archr_project $atac_key $genomeAnnotation_Rdata $geneAnnotation_Rdata $genomeSize\
-# $pwm_list_rdata $cutOff $workDirectory $threads
+# Parse arguments
+parser <- OptionParser(usage = "Usage: %prog [options]",
+                       option_list = option_list,
+                       description = "Call peaks, identify marker peaks, and perform motif enrichment analysis using ArchR")
+args <- parse_args(parser, args = commandArgs(trailingOnly = TRUE))
+archr_project <- args$archr_project
+atac_key <- args$atac_key
+genomeAnnotation_Rdata <- args$genome_annotation
+geneAnnotation_Rdata <- args$gene_annotation
+genomeSize <- args$genome_size
+pwm_list_rdata <- args$pwm_list
+cutOff <- args$cutoff
+workDirectory <- args$workdir
+threads <- args$threads
 
 addArchRThreads(threads = threads)
 dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)

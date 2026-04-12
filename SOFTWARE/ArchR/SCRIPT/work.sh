@@ -2,10 +2,10 @@
 
 # 2_create_archrproject.R
 cd /data/work/archr0412
-input_folder="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d-arrows"
+input_folder="/data/work/rice/ArchR/work/Save-EFH-0d/ArrowFiles"
 genomeAnnotation_Rdata="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
 geneAnnotation_Rdata="/data/work/rice/ArchR/rice_geneAnnotation.Rdata"
-output_prefix='rice'
+output_prefix='EFH-0d'
 minTSS=1
 minFrags=500
 resolution=0.8
@@ -15,30 +15,58 @@ Rscript 2_create_archrproject.R \
 $input_folder $genomeAnnotation_Rdata $geneAnnotation_Rdata \
 $output_prefix $minTSS $minFrags $resolution $threads $workDirectory
 
-# 3_marker_genes.R
-## markres genes; add module score; track plot
-archr_project=
-marker_csv=
-cluster_key=
-tissue_type=
-workDirectory='.'
-threads=8
-Rscript 3_marker_genes.R \
-$archr_project $marker_csv $cluster_key $tissue_type $workDirectory $threads
-
-
-# 4_call_peaks_marker_peaks_motif_enrich.R
-## call peaks; marker peaks; motif enrich
-archr_project="/data/work/rice/ArchR/rice0402/work/Save-EFH-ZHH-0d"
+# 3_call_peaks_marker_peaks_motif_enrich.R
+archr_project="EFH-0d"
 atac_key="Clusters"
-genomeAnnotation_Rdata="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
-geneAnnotation_Rdata="/data/work/rice/ArchR/rice_geneAnnotation.Rdata"
-genomeSize=3.8e9
-pwm_list_rdata="/data/work/rice/ref/motif/Osj_TF_binding_motifs.meme_pwm_list.rdata"
-cutOff = "FDR <= 0.1 & Log2FC >= 0.5"
+genome_annotation="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
+gene_annotation="/data/work/rice/ArchR/rice_geneAnnotation.Rdata"
+genome_size=3.9e8 # rice genome size (japonica)
+pwm_list="/data/work/rice/ref/motif/Osj_TF_binding_motifs.meme_pwm_list.rdata"
+cutoff="FDR <= 0.01 & Log2FC >= 1"
+workdir="."
+threads=8
+Rscript 3_call_peaks_marker_peaks_motif_enrich.R \
+--archr_project $archr_project --atac_key $atac_key --genome_annotation $genome_annotation \
+--gene_annotation $gene_annotation --genome_size $genome_size --pwm_list $pwm_list \
+--cutoff "$cutoff" --workdir $workdir --threads $threads
+
+# 4_peak_link_gene.R
+archr_project="EFH-0d"
+markerPeaks_Rdata="${archr_project}_markerPeaks.Rdata"
+cutOff="FDR <= 0.01 & Log2FC >= 0.5"
+p2g_c=0.45
+p2g_fdr=0.01
 workDirectory="."
 threads=8
-Rscript 4_call_peaks_marker_peaks_motif_enrich.R \
-$archr_project $atac_key $genomeAnnotation_Rdata $geneAnnotation_Rdata \
-$genomeSize $pwm_list_rdata $cutOff $workDirectory $threads
+Rscript 4_peak_link_gene.R \
+$archr_project $markerPeaks_Rdata "$cutOff" $p2g_c $p2g_fdr $workDirectory $threads
 
+# 5_chromvar_deviation.R
+archr_project='EFH-0d'
+tf_motif_txt='/data/work/rice/ref/motif/Osj_TF_binding_motifs_information.txt'
+atac_key="Clusters"
+workDirectory="."
+threads=8
+Rscript 5_chromvar_deviation.R \
+$archr_project $tf_motif_txt $atac_key $workDirectory $threads
+
+# 6_marker_genes.R
+archr_project="EFH-0d"
+marker_csv="/data/work/rice/ArchR/marker0201.csv"
+cluster_key="Clusters"
+tissue_type="rice_embryo"
+workDirectory="."
+threads=8
+cutOff="FDR <= 0.01 & Log2FC >= 1.25"
+Rscript 6_marker_genes.R \
+$archr_project $marker_csv $cluster_key $tissue_type $workDirectory $threads "$cutOff"
+
+# 7_archr_cca.R
+archr_project="EFH-0d"
+rna_input="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d.rds"
+atac_key="Clusters"
+rna_key="sctype_new"
+workDirectory="."
+threads=8
+Rscript 7_archr_cca.R \
+$archr_project $rna_input $atac_key $rna_key $workDirectory $threads

@@ -1,5 +1,5 @@
 # Ref:
-# 260410
+# 260412
 # output: _Variable-Motif-Deviation-Scores.pdf; _Plot-Groups-Z-w-Imputation; _Plot-UMAP-Z-w-Imputation;
 # _Plot-UMAP-Gene-Scores-w-Imputation; _Motif_Heatmap_with_Family.pdf; _Motif_Heatmap_Grouped_by_Family.pdf
 
@@ -17,7 +17,7 @@ archr_project <- args[1]
 tf_motif_txt <- args[2]
 atac_key <- args[3]
 workDirectory <- args[4]
-threads <- as.numeric(args[5])
+threads <- as.integer(args[5])
 
 # archr_project='/data/work/archr/rice'
 # tf_motif_txt='/data/work/rice/ref/motif/Osj_TF_binding_motifs_information.txt'
@@ -86,7 +86,7 @@ p <- plotEmbedding(
 )
 plotPDF(p, name = paste0(prefix, "_Plot-UMAP-Gene-Scores-w-Imputation"), width = 5, height = 5, ArchRProj = projHeme2, addDOC = FALSE)
 
-# 从 SummarizedExperiment 中提取 z-score 矩阵
+matrix <- getMatrixFromProject(projHeme2, 'MotifMatrix')
 z_matrix <- assay(matrix, "z")  # 或者 "deviations"
 # # 筛选出 markerMotifs 对应的行
 # marker_z <- z_matrix[markerMotifs, ]

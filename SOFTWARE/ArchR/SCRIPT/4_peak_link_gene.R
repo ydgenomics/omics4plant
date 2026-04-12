@@ -23,7 +23,7 @@ threads <- as.integer(args[7])
 # workDirectory="."
 # threads=8
 # Rscript 4_peak_link_gene.R \
-# $archr_project $markerPeaks_Rdata $cutOff $p2g_c $p2g_fdr $workDirectory $threads
+# $archr_project $markerPeaks_Rdata "$cutOff" $p2g_c $p2g_fdr $workDirectory $threads
 
 addArchRThreads(threads = threads)
 dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
@@ -97,7 +97,7 @@ peak_link_gene <- function(ArchRProject, markerTest, cutOff = "FDR <= 0.01 & Log
     
     diff_peaks$peakName <- paste(diff_peaks$seqnames, diff_peaks$start, diff_peaks$end, sep = "_")
 
-    filtered_links <- p2g_df[p2g_df$peakName %in% diff_peaks_df$peakName & 
+    filtered_links <- p2g_df[p2g_df$peakName %in% diff_peaks$peakName & 
                             p2g_df$Correlation > p2g_c & 
                             p2g_df$FDR < p2g_fdr, ]
     message("Number of genes of linked peaks: ", length(unique(filtered_links$geneName)))

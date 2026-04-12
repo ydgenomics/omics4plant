@@ -22,7 +22,7 @@ cutOff <- args[7]
 # threads=8
 # cutOff="FDR <= 0.01 & Log2FC >= 1.25"
 # Rscript 6_marker_genes.R \
-# $archr_project $marker_csv $cluster_key $tissue_type $threads $cutOff
+# $archr_project $marker_csv $cluster_key $tissue_type $workDirectory $threads "$cutOff"
 
 
 gene_sets_prepare <- function(path_to_db_file, cell_type){
