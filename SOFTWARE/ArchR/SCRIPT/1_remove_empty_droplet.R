@@ -5,6 +5,7 @@ library(Rsamtools)
 
 args <- commandArgs(trailingOnly = TRUE)
 output_list <- args[1]
+# output_list <- "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA2/EFH-0d-0114-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA3/EFH-0d-0114-DNA3/output/"
 output_dirs <- strsplit(output_list, ',')[[1]]
 
 # output_dirs <- c(

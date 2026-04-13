@@ -1,9 +1,9 @@
-# 260410
+# 260413
 # output: _peaks.rds; _markerPeaks.Rdata; _markerList_df.csv; _Peak-Marker-Motifs-Enrich-Heatmap.pdf
 
 library(ArchR)
 library(Seurat)
-# library(BSgenome.rice.test)
+library(BSgenome.rice.test) #必须要有
 library(optparse)
 set.seed(1)
 

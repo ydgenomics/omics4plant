@@ -31,6 +31,7 @@ Rscript ./omics4plant/WORKFLOW/ATAC/ArchR/3_call_peaks_marker_peaks_motif_enrich
 --cutoff "$cutoff" --workdir $workdir --threads $threads
 
 # 4_peak_link_gene.R
+markerPeaks_Rdata="$archr_project"_markerPeaks.Rdata
 cutOff=$cutoff
 p2g_c=0.45
 p2g_fdr=0.01
