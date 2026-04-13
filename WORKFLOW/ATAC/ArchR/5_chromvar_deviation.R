@@ -1,5 +1,5 @@
 # Ref:
-# 260412
+# 260413
 # output: _Variable-Motif-Deviation-Scores.pdf; _Plot-Groups-Z-w-Imputation; _Plot-UMAP-Z-w-Imputation;
 # _Plot-UMAP-Gene-Scores-w-Imputation; _Motif_Heatmap_with_Family.pdf; _Motif_Heatmap_Grouped_by_Family.pdf
 
@@ -161,13 +161,13 @@ family_colors <- setNames(
   unique_families
 )
 
-cluster_avg <- t(apply(cluster_avg, 1, function(x) 100*(x-min(x))/(max(x)-min(x))))
+# cluster_avg <- t(apply(cluster_avg, 1, function(x) 100*(x-min(x))/(max(x)-min(x))))
 
 # 5. 绘制热图（类似图片样式）
 pheatmap(cluster_avg,
          main = "Motif Activity by Cell Type",
          # 不标准化
-         scale = "none",
+         scale = "row",
          # 行和列聚类
          cluster_rows = TRUE,
          cluster_cols = TRUE,
@@ -188,8 +188,8 @@ pheatmap(cluster_avg,
          cellheight = 2,
          # 图例
          legend = TRUE,
-         legend_breaks = c(0, 50, 100),
-         legend_labels = c("0", "50", "100"),
+        #  legend_breaks = c(0, 50, 100),
+        #  legend_labels = c("0", "50", "100"),
          # 边框
          border_color = "black",
          # 文件名（可选）
@@ -206,6 +206,7 @@ annotation_row_sorted <- annotation_row[order_idx, , drop = FALSE]
 
 pheatmap(cluster_avg_sorted,
          main = "Motif Activity by Cell Type (Grouped by TF Family)",
+         scale = "row",
          cluster_rows = FALSE,  # 不聚类，按family顺序显示
          cluster_cols = TRUE,
          show_rownames = TRUE,
