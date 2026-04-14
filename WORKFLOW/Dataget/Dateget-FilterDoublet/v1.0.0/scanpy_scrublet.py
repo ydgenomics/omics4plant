@@ -1,4 +1,4 @@
-# 260314
+# 260414
 
 def _read_10x_manual(file_path, matrix_file='matrix.mtx.gz'):
     """
@@ -87,7 +87,7 @@ def match_matrix(adata, adata_splice, adata_unsplice):
     genes_splice = set(adata_splice.var_names)
     genes_unsplice = set(adata_unsplice.var_names)
     if len(genes_filter & genes_splice) < 5000:
-        genes_filter = {gene.replace('-', '_') for gene in genes_filter}
+        genes_filter = {gene.replace('-', '_') for gene in genes_filter} #避免SoupX处理后基因名不一致的问题
     all_genes = genes_filter.union(genes_splice).union(genes_unsplice)
     print(f"genes in matrix/splice/unsplice/union: {len(genes_filter)}/{len(genes_splice)}/{len(genes_unsplice)}/{len(all_genes)}")
     adata = complete_genes(adata, all_genes)
