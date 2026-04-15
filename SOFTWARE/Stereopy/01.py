@@ -7,8 +7,8 @@ warnings.filterwarnings('ignore')
 
 # load .gef file. Data structure of .gef: https://www.processon.com/view/link/610cc49c7d9c087bbd1ab7ab#map
 
-data_path = './.gef'
-data_info = st.io.read_gef_info(data_path)
+data_path = '/data/input/Files/yangdong/M.truncatula/SAW/WT202604020036551/result/Y00710F6/outs/feature_expression/Y00710F6.raw.gef'
+data_info = st.io.read_gef_info(data_path, bin_size=1)
 data_info # print data meta info
 
 '''

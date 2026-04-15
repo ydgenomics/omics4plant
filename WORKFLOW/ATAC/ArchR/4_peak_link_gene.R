@@ -15,8 +15,8 @@ workDirectory <- args[6]
 threads <- as.integer(args[7])
 
 
-# archr_project="/data/work/archr/rice"
-# markerPeaks_Rdata="/data/work/archr/rice_markerPeaks.Rdata"
+# archr_project="/data/input/Files/User/yangdong/WDL/call_peaks_marker_peaks_motif_enrich/EFH-0d/EFH-0d"
+# markerPeaks_Rdata="/data/input/Files/User/yangdong/WDL/call_peaks_marker_peaks_motif_enrich/EFH-0d/EFH-0d_markerPeaks.Rdata"
 # cutOff="FDR <= 0.01 & Log2FC >= 0.5"
 # p2g_c=0.45
 # p2g_fdr=0.01
