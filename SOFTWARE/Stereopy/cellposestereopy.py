@@ -16,7 +16,8 @@ cp.Cellpose(
 # 使用外源的模型需要更改cellpose中/home/stereonote/.cellpose/models.py中的可以被识别的模型名称部分。
 # 并将模型复制到模型路径/home/stereonote/.cellpose/models下。
 
-# sudo cp /home/stereonote/model/cellpose/cyto2torch_0 /home/stereonote/.cellpose/modelscp /home/stereonote/model/cellpose/cyto2torch_1 /home/stereonote/.cellpose/models 
+# sudo cp /home/stereonote/model/cellpose/cyto2torch_0 /home/stereonote/.cellpose/models
+# cp /home/stereonote/model/cellpose/cyto2torch_1 /home/stereonote/.cellpose/models 
 # cp /home/stereonote/model/cellpose/cyto2torch_2 /home/stereonote/.cellpose/models 
 # cp /home/stereonote/model/cellpose/cyto2torch_3 /home/stereonote/.cellpose/models 
 # sudo cp /home/stereonote/model/cellpose/size_cyto2torch_0.npy /home/stereonote/.cellpose/models 

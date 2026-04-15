@@ -13,8 +13,12 @@ data_info
 查看tif像素
 ```shell
 # 查看tif像素
-python3 -c "from PIL import Image; Image.MAX_IMAGE_PIXELS = None; img = Image.open('/data/input/Files/yangdong/M.truncatula/SAW/WT202604020036551/result/Y00710F6/outs/image/bin1_img_tissue_cut.tif'); print(f'宽度(Width): {img.width}, 高度(Height): {img.height}')"
-# 宽度(Width): 23520, 高度(Height): 23520
+python3 -c "from PIL import Image; Image.MAX_IMAGE_PIXELS = None; img = Image.open('/data/work/Y00710F6/Y00710F6.mRNA.png'); print(f'宽度(Width): {img.width}, 高度(Height): {img.height}')"
+# 宽度(Width): 23519, 高度(Height): 23519 # tissue.gef
+# 宽度(Width): 23520, 高度(Height): 23520 # bin1_img_tissue_cut.tif
+# 宽度(Width): 20021, 高度(Height): 19651 # gem.png
+# 26474 27631 .ss
+# 
 ```
 
 查看gem文件内容

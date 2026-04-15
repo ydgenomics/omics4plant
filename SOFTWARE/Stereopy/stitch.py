@@ -1,18 +1,26 @@
-import stereo as st
+import cv2
+import numpy as np
+import glob
+import os
 
-# 1. 初始化图像处理对象
-# 给定小图所在的文件夹路径
-img_loader = st.io.ImageLoader(server_path='path/to/ssDNA_tiles_folder/')
+# 获取所有图片，按文件名排序（保证顺序正确）
+tif_files = sorted(glob.glob("/data/work/ss/SS_*.tif"))
 
-# 2. 自动拼接 (Stitching)
-# 该函数会读取小图并根据重叠区(overlap)计算位移，生成大图
-stitched_img = img_loader.stitch(method='overlap', overlap=0.1) # overlap通常是10%-20%
+# 读取第一张图获取尺寸
+sample_img = cv2.imread(tif_files[0], cv2.IMREAD_UNCHANGED)
+h, w = sample_img.shape[:2]; print(h, w)
 
-# 3. 同样的位移逻辑应用到 FB 通道
-fb_loader = st.io.ImageLoader(server_path='path/to/FB_tiles_folder/')
-# 使用ssDNA计算出的坐标偏移量来拼接FB，确保完全重合
-stitched_fb = fb_loader.stitch_by_reference(reference=stitched_img)
+# 假设是 10x10 网格，需要根据实际图片数量调整
+cols = 12
+rows = len(tif_files) // cols
 
-# 4. 保存大图
-stitched_img.save("ssDNA_full.tif")
-stitched_fb.save("FB_full.tif")
+# 创建画布
+canvas = np.zeros((rows * h, cols * w), dtype=sample_img.dtype)
+
+for idx, f in enumerate(tif_files):
+    img = cv2.imread(f, cv2.IMREAD_UNCHANGED)
+    r = idx // cols
+    c = idx % cols
+    canvas[r*h:(r+1)*h, c*w:(c+1)*w] = img
+
+cv2.imwrite("stitched_image.tif", canvas)
