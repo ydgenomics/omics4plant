@@ -1,5 +1,5 @@
 # Ref:
-# 260413
+# 260416
 # output: _Variable-Motif-Deviation-Scores.pdf; _Plot-Groups-Z-w-Imputation; _Plot-UMAP-Z-w-Imputation;
 # _Plot-UMAP-Gene-Scores-w-Imputation; _Motif_Heatmap_with_Family.pdf; _Motif_Heatmap_Grouped_by_Family.pdf
 
@@ -88,9 +88,6 @@ plotPDF(p, name = paste0(prefix, "_Plot-UMAP-Gene-Scores-w-Imputation"), width =
 
 matrix <- getMatrixFromProject(projHeme2, 'MotifMatrix')
 z_matrix <- assay(matrix, "z")  # 或者 "deviations"
-# # 筛选出 markerMotifs 对应的行
-# marker_z <- z_matrix[markerMotifs, ]
-
 dim(z_matrix)
 markerMotifs <- rownames(z_matrix)
 
@@ -113,8 +110,8 @@ for(clust in unique(cluster_info)) {
   cluster_avg[, clust] <- rowMeans(z_matrix[, cells_in_clust, drop = FALSE])
 }
 
-# 对整个矩阵进行标准化（0-100）
-cluster_avg <- t(apply(cluster_avg, 1, function(x) 100*(x-min(x))/(max(x)-min(x))))
+# # 对整个矩阵进行标准化（0-100）
+# cluster_avg <- t(apply(cluster_avg, 1, function(x) 100*(x-min(x))/(max(x)-min(x))))
 
 
 # # 绘制平均值的heatmap

@@ -406,7 +406,7 @@ $ tree -L 3 /data/input/Files/User/yangdong/WDL/remove_empty_droplet/EFH-0d
 
 ---
 
-## annotation `ATAC v1.0.4`
+## annotation `ATAC v1.0.5`
 - Script: [8_annotation.R](./ArchR/8_annotation.R)
 - Input
 - Output
@@ -429,7 +429,7 @@ $ tree -L 3 /data/input/Files/User/yangdong/WDL/remove_empty_droplet/EFH-0d
 
 ---
 
-## plot_peak_gene `ATAC v1.0.5`
+## plot_peak_gene `ATAC v1.0.6`
 - Script: [plot_peak_gene.R](./ArchR/plot_peak_gene.R)
 - Input
 - Output

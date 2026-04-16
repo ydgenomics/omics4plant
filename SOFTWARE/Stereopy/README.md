@@ -1,5 +1,16 @@
 # Stereopy
 
+
+```shell
+
+mamba create --name st python=3.8 -y  # The env name could be set arbitrarily, not only st.
+conda activate st
+mamba install stereopy -c stereopy -c grst -c numba -c conda-forge -c bioconda -c fastai -c defaults -y
+pip install patchify
+pip install fastremap
+pip install roifile
+```
+
 在华大空间转录组（Stereo-seq）分析中，图像配准（Image Registration）的目的是将显微镜拍摄的组织图像（形态学信息）与测序得到的基因表达矩阵（分子信息）在空间坐标上进行精准对齐。 [1, 2] 
 由于植物组织通常涉及细胞壁染色（如 Calcofluor White）和细胞核染色（如 DAPI/ssDNA），配准过程通常分为以下几个关键步骤：
 ## 1. 图像拼接（Stitching）

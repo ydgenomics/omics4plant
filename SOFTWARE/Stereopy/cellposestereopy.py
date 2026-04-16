@@ -1,6 +1,6 @@
 from stereo.algorithm import cell_pose as cp
-image="/data/input/Files/yinzhanhao/shuidaoyeqiao_/A03899E6.tif"  # (输入配准好的图像)
-output="/data/output/A03899E6_task.tif"
+image="/data/work/cellpose/Y00710F6.mRNA.tif"  # (输入配准好的图像)
+output="/data/work/cellpose/Y00710F6.mRNA_cp.tif"
 cp.Cellpose(
     img_path=image, # (输入配准好的图像）
     out_path=output,
@@ -16,6 +16,7 @@ cp.Cellpose(
 # 使用外源的模型需要更改cellpose中/home/stereonote/.cellpose/models.py中的可以被识别的模型名称部分。
 # 并将模型复制到模型路径/home/stereonote/.cellpose/models下。
 
+# ls /home/stereonote/.cellpose/models && ls -all /home/stereonote/.cellpose/models
 # sudo cp /home/stereonote/model/cellpose/cyto2torch_0 /home/stereonote/.cellpose/models
 # cp /home/stereonote/model/cellpose/cyto2torch_1 /home/stereonote/.cellpose/models 
 # cp /home/stereonote/model/cellpose/cyto2torch_2 /home/stereonote/.cellpose/models 

@@ -1,5 +1,4 @@
-# 260412
-#
+# 260416
 
 library(ArchR)
 library(dplyr)
@@ -13,6 +12,7 @@ p2g_c <- args[4]
 p2g_fdr <- args[5]
 workDirectory <- args[6]
 threads <- as.integer(args[7])
+atac_key <- args[8]
 
 
 # archr_project="/data/input/Files/User/yangdong/WDL/call_peaks_marker_peaks_motif_enrich/EFH-0d/EFH-0d"
@@ -22,8 +22,9 @@ threads <- as.integer(args[7])
 # p2g_fdr=0.01
 # workDirectory="."
 # threads=8
+# atac_key="Clusters"
 # Rscript 4_peak_link_gene.R \
-# $archr_project $markerPeaks_Rdata "$cutOff" $p2g_c $p2g_fdr $workDirectory $threads
+# $archr_project $markerPeaks_Rdata "$cutOff" $p2g_c $p2g_fdr $workDirectory $threads $atac_key
 
 addArchRThreads(threads = threads)
 dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
@@ -96,10 +97,11 @@ peak_link_gene <- function(ArchRProject, markerTest, cutOff = "FDR <= 0.01 & Log
     }
     
     diff_peaks$peakName <- paste(diff_peaks$seqnames, diff_peaks$start, diff_peaks$end, sep = "_")
-
-    filtered_links <- p2g_df[p2g_df$peakName %in% diff_peaks$peakName & 
-                            p2g_df$Correlation > p2g_c & 
-                            p2g_df$FDR < p2g_fdr, ]
+    # 内连接（仅保留在两个表中都出现的 peakName）
+    diff_peaks$FDR_marker <- diff_peaks$FDR
+    diff_peaks <- diff_peaks[, c("peakName", "FDR_marker", "Log2FC", "group")]
+    result <- diff_peaks %>% inner_join(p2g_df, by = "peakName")
+    filtered_links <- result[result$Correlation > p2g_c & result$FDR < p2g_fdr, ]
     message("Number of genes of linked peaks: ", length(unique(filtered_links$geneName)))
     message("Number of peaks of linked genes: ", length(unique(filtered_links$peakName)))
 
@@ -113,5 +115,11 @@ peak_link_gene <- function(ArchRProject, markerTest, cutOff = "FDR <= 0.01 & Log
 
 filtered_links <- peak_link_gene(projHeme2, markerPeaks, cutOff, p2g_c, p2g_fdr)
 write.csv(filtered_links, paste0(prefix, "_marker_peaks_links.csv"), row.names=FALSE)
+p <- plotPeak2GeneHeatmap(ArchRProj = projHeme2, groupBy = atac_key)
+plotPDF(plotList = list(p), 
+    name = paste0(prefix, "_Plot-Tracks-Marker-Genes-with-Peak2GeneLinks.pdf"), 
+    ArchRProj = projHeme2, 
+    addDOC = FALSE, width = 10, height = 10
+)
 
 saveArchRProject(projHeme2)
