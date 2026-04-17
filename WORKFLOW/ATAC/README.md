@@ -4,6 +4,18 @@
 
 ---
 
+remove_empty_droplet
+create_archrproject
+call_peaks_marker_peaks_motif_enrich
+peak_link_gene
+chromvar_deviation
+marker_genes
+archr_cca
+annotation
+plot_peak_gene
+
+---
+
 ## remove_empty_droplet `ATAC v1.0.1`
 - Script: [1_remove_empty_droplet.R](./ArchR/1_remove_empty_droplet.R)
 - Input

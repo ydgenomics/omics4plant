@@ -20,20 +20,20 @@ args <- commandArgs(trailingOnly = TRUE)
 archr_project <- args[1]
 rna_rds <- args[2]
 marker_metrics <- args[3]
-metadata_csv <- args[4]
-atac_key <- args[5]
-rna_key <- args[6]
-threads <- as.integer(args[7])
+atac_key <- args[4]
+rna_key <- args[5]
+threads <- as.integer(args[6])
 
-# archr_project="EFH-0d"
+
+# archr_project="/data/input/W202604170054199_1/annotation/ArchR.archr_analysis/ArchR-ArchR.archr_analysis-run0/EFH-0d/EFH-0d"
 # rna_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d.rds"
-# marker_metrics="/data/work/archr0412/EFH-0d_marker_genes_overlap.csv"
-# metadata_csv="/data/users/yangdong/yangdong_9cc89721d419466f9b48f759bd58b0f8/online/test/EFH-0d_metadata.csv"
+# marker_metrics="/data/input/Files/ResultData/Workflow/W202604140069658/EFH-0d/EFH-0d_marker_genes_overlap.csv"
 # atac_key="Clusters"
 # rna_key="sctype_new"
 # threads=8
+# metadata_csv="/data/users/yangdong/yangdong_9cc89721d419466f9b48f759bd58b0f8/online/test/EFH-0d_metadata.csv"
 # Rscript 8_annotation.R \
-# $archr_project $rna_rds $marker_metrics $metadata_csv $atac_key $rna_key $threads
+# $archr_project $rna_rds $marker_metrics $atac_key $rna_key $threads $glue_csv
 
 
 prefix <- basename(archr_project)
@@ -48,21 +48,7 @@ print(seu)
 proj <- loadArchRProject(archr_project)
 getAvailableMatrices(proj)
 
-message("[1. add glue metadata]")
-
-data <- read.csv(metadata_csv); print(dim(data)); data$sample <- prefix
-col_list <- c('sample', rna_key, paste0(rna_key, "_confidence"))
-for (i in col_list){
-    # 如果merged_data$X的格式与proj细胞名一致，直接添加
-    proj <- addCellColData(
-        ArchRProj = proj,
-        data = data[[i]],
-        name = i,
-        cells = data$cell_id,
-        force = TRUE
-    )
-}
-print(head(proj@cellColData))
+directory <- paste0(getOutputDirectory(proj), "/Plots/")
 
 max_anno <- function(proj, atac_key = 'Clusters', predict_key = 'predicted.id') {
     cM <- confusionMatrix(paste0(proj@cellColData[[atac_key]]), paste0(proj@cellColData[[predict_key]])); print(cM)
@@ -81,69 +67,92 @@ max_anno <- function(proj, atac_key = 'Clusters', predict_key = 'predicted.id') 
     return(proj)
 }
 
-proj <- max_anno(proj, atac_key = atac_key, predict_key = rna_key)
+if (length(args) == 7){
+    glue_csv <- args[7]
+    message("[1. add glue metadata]")
 
-directory <- paste0(getOutputDirectory(proj), "/Plots/")
+    data <- read.csv(glue_csv); print(dim(data)); data$sample <- prefix
+    col_list <- c('sample', rna_key, paste0(rna_key, "_confidence"))
+    for (i in col_list){
+        # 如果merged_data$X的格式与proj细胞名一致，直接添加
+        proj <- addCellColData(
+            ArchRProj = proj,
+            data = data[[i]],
+            name = i,
+            cells = data$cell_id,
+            force = TRUE
+        )
+    }
+    print(head(proj@cellColData))
+    proj <- max_anno(proj, atac_key = atac_key, predict_key = rna_key)
 
-pdf(paste0(directory, prefix, "_Plot-UMAP-GLUE.pdf"), width = 5, height = 5)
-p1 <- plotEmbedding(
-    ArchRProj = proj,
-    colorBy = 'cellColData',
-    name = rna_key,
-    embedding = 'UMAP',
-    force = TRUE
-); print(p1)
-p2 <- plotEmbedding(
-    ArchRProj = proj,
-    colorBy = 'cellColData',
-    name = paste0(rna_key, "_confidence"),
-    embedding = 'UMAP',
-    force = TRUE
-); print(p2)
-p3 <- plotEmbedding(
-    ArchRProj = proj,
-    colorBy = 'cellColData',
-    name = paste0(rna_key, "_max"),
-    embedding = 'UMAP',
-    force = TRUE
-); print(p3)
-cM <- confusionMatrix(paste0(proj@cellColData[[atac_key]]), paste0(proj@cellColData[[rna_key]])); print(cM)
-cM <- cM / Matrix::rowSums(cM)
-p <- pheatmap::pheatmap(
-    mat = as.matrix(cM),
-    color = paletteContinuous("whiteBlue"),
-    border_color = 'black'
-); print(p)
-dev.off()
-cM_df <- as.data.frame(cM)
-write.csv(cM_df, file = paste0(prefix, "_cM-GLUE.csv"), row.names = TRUE)
-
-pdf(paste0(directory, prefix, "_Plot-UMAP-GLUE_split.pdf"), width = 5, height = 5)
-for (i in unique(proj@cellColData[[rna_key]])){
-    p <- plotEmbedding(
+    pdf(paste0(directory, prefix, "_Plot-UMAP-GLUE.pdf"), width = 5, height = 5)
+    p1 <- plotEmbedding(
         ArchRProj = proj,
-        embedding = "UMAP",
-        colorBy = "cellColData",
-        name = atac_key,
-        size = 1,
-        sampleCells = NULL,
-        highlightCells = getCellNames(ArchRProj = proj)[which(proj@cellColData[[rna_key]] == i)],
-        baseSize = 10,
-        plotAs = "points"
-    ); print(p)
-    p <- plotEmbedding(
-        ArchRProj = proj,
-        embedding = "UMAP",
-        colorBy = "cellColData",
+        colorBy = 'cellColData',
         name = rna_key,
-        size = 1,
-        sampleCells = NULL,
-        highlightCells = getCellNames(ArchRProj = proj)[which(proj@cellColData[[rna_key]] == i)],
-        baseSize = 10,
-        plotAs = "points"
+        embedding = 'UMAP',
+        force = TRUE
+    ); print(p1)
+    p2 <- plotEmbedding(
+        ArchRProj = proj,
+        colorBy = 'cellColData',
+        name = paste0(rna_key, "_confidence"),
+        embedding = 'UMAP',
+        force = TRUE
+    ); print(p2)
+    p3 <- plotEmbedding(
+        ArchRProj = proj,
+        colorBy = 'cellColData',
+        name = paste0(rna_key, "_max"),
+        embedding = 'UMAP',
+        force = TRUE
+    ); print(p3)
+    cM <- confusionMatrix(paste0(proj@cellColData[[atac_key]]), paste0(proj@cellColData[[rna_key]])); print(cM)
+    cM <- cM / Matrix::rowSums(cM)
+    p <- pheatmap::pheatmap(
+        mat = as.matrix(cM),
+        color = paletteContinuous("whiteBlue"),
+        border_color = 'black'
     ); print(p)
+    dev.off()
+    cM_df <- as.data.frame(cM)
+    write.csv(cM_df, file = paste0(prefix, "_cM-GLUE.csv"), row.names = TRUE)
+
+    pdf(paste0(directory, prefix, "_Plot-UMAP-GLUE_split.pdf"), width = 5, height = 5)
+    for (i in unique(proj@cellColData[[rna_key]])){
+        p <- plotEmbedding(
+            ArchRProj = proj,
+            embedding = "UMAP",
+            colorBy = "cellColData",
+            name = atac_key,
+            size = 1,
+            sampleCells = NULL,
+            highlightCells = getCellNames(ArchRProj = proj)[which(proj@cellColData[[rna_key]] == i)],
+            baseSize = 10,
+            plotAs = "points"
+        ); print(p)
+        p <- plotEmbedding(
+            ArchRProj = proj,
+            embedding = "UMAP",
+            colorBy = "cellColData",
+            name = rna_key,
+            size = 1,
+            sampleCells = NULL,
+            highlightCells = getCellNames(ArchRProj = proj)[which(proj@cellColData[[rna_key]] == i)],
+            baseSize = 10,
+            plotAs = "points"
+        ); print(p)
+    }
+    dev.off()
 }
-dev.off()
+
+
+
+
+
+
+
 
 message("[2. Correlation]")
 

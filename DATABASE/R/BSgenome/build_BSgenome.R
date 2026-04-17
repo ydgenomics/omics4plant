@@ -1,5 +1,6 @@
 # https://mp.weixin.qq.com/s/Tm5AlNd0JE-dGP5slFbD1g
 # BiocManager::install("BSgenomeForge") # 不能用conda装，conda装会报错
+# 260417
 
 fasta="/data/input/Files/User/yinzhanhao/index/rice/osa1_r7.asm.chrs.fa"
 # awk '/^>Chr/ {OUT=substr($0,2) ".fa"}; OUT {print >OUT}' $fasta
