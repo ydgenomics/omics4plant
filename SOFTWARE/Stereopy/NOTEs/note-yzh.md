@@ -9,6 +9,9 @@
 import stereo as st
 data_path = '/data/input/Files/yangdong/M.truncatula/SAW/WT202604020036551/result/Y00710F6/outs/feature_expression/Y00710F6.raw.gef'
 data = st.io.read_gef(file_path=data_path, bin_size=1) # bin_type, bin_size
+data_path = '/data/input/Files/yangdong/M.truncatula/SAW/WT202604020036551/result/Y00710F6/outs/feature_expression/Y00710F6.tissue.gef'
+data_info = st.io.read_gef_info(data_path)
+data_info # print data meta info
 ```
 
 # GEM2gene_plot：

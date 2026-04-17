@@ -5,12 +5,12 @@ import sys
 import os
 
 idname = sys.argv[1]
-idname="Y00710F6"
+idname="Y00710F6.raw"
 if not os.path.exists(idname):
     os.mkdir(idname)
 
 data = pd.read_csv(
-    '/data/input/Files/yangdong/M.truncatula/SAW/WT202604020036551/result/Y00710F6/outs/feature_expression/Y00710F6.tissue.gem', sep='\t', comment='#'
+    '/data/input/Files/yangdong/M.truncatula/SAW/WT202604020036551/result/Y00710F6/outs/feature_expression/Y00710F6.raw.gem', sep='\t', comment='#'
 )
 data['x'] -= data['x'].min()
 data['y'] -= data['y'].min()

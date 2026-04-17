@@ -56,8 +56,8 @@ cp.Cellpose(
 from stereo.tools.cell_cut import CellCut
 
 cgef_out_dir = "./cell_cut_out" # (输出路径）
-bgef_path = "./SS200000135TL_D1.raw.gef" #（使用tissue.gef会报错）
-mask_path = "./SS200000135TL_D1_mask.tif" #（上一步的输出文件）
+bgef_path = "/data/input/Files/yangdong/M.truncatula/SAW/WT202604020036551/result/Y00710F6/outs/feature_expression/Y00710F6.raw.gef" #（使用tissue.gef会报错）
+mask_path = "/data/work/Y00710F6/Y00710F6.mRNA_cp.tif" #（上一步的输出文件）
 
 cc = CellCut(cgef_out_dir=cgef_out_dir)
 out_path = cc.cell_cut(bgef_path=bgef_path, mask_path=mask_path)
