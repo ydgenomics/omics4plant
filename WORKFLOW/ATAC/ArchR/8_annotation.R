@@ -24,14 +24,16 @@ atac_key <- args[4]
 rna_key <- args[5]
 threads <- as.integer(args[6])
 
+message(paste0("length of args: ", length(args)))
 
-# archr_project="/data/input/W202604170054199_1/annotation/ArchR.archr_analysis/ArchR-ArchR.archr_analysis-run0/EFH-0d/EFH-0d"
+
+# archr_project="EFH-0d"
 # rna_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d.rds"
 # marker_metrics="/data/input/Files/ResultData/Workflow/W202604140069658/EFH-0d/EFH-0d_marker_genes_overlap.csv"
 # atac_key="Clusters"
 # rna_key="sctype_new"
 # threads=8
-# metadata_csv="/data/users/yangdong/yangdong_9cc89721d419466f9b48f759bd58b0f8/online/test/EFH-0d_metadata.csv"
+# glue_csv="/data/users/yangdong/yangdong_9cc89721d419466f9b48f759bd58b0f8/online/test/EFH-0d_metadata.csv"
 # Rscript 8_annotation.R \
 # $archr_project $rna_rds $marker_metrics $atac_key $rna_key $threads $glue_csv
 
@@ -161,7 +163,7 @@ seu_avg <- AverageExpression(seu, assays = "RNA", group.by = rna_key, features =
 ############## RNA correlation
 celltypes <- unique(colnames(seu_avg$RNA))
 corM <- cor(seu_avg$RNA, method = "pearson")
-pdf(paste0(prefix, "_RNA.correlation.pdf"), width = 9, height = 9)
+pdf(paste0(directory, prefix, "_RNA.correlation.pdf"), width = 9, height = 9)
 corrplot(
     corM[celltypes, celltypes],
     method = "square",
@@ -195,7 +197,7 @@ pheatmap::pheatmap(
     atac_RNA.cor,
     cluster_cols = F,
     cluster_rows = F,
-    filename = paste0(prefix, "_RNA_ATAC.correlation.pdf"),
+    filename = paste0(directory, prefix, "_RNA_ATAC.correlation.pdf"),
     height = 9,
     width = 11
 )
@@ -209,9 +211,13 @@ cM <- confusionMatrix(paste0(projHeme2@cellColData[[atac_key]]), paste0(projHeme
 cM <- cM / Matrix::rowSums(cM)
 cca_df <- as.data.frame(cM); head(cca_df)
 
-cM <- confusionMatrix(paste0(projHeme2@cellColData[[atac_key]]), paste0(projHeme2@cellColData[[rna_key]]))
-cM <- cM / Matrix::rowSums(cM)
-glue_df <- as.data.frame(cM); head(glue_df)
+if (rna_key %in% colnames(projHeme2@cellColData)){
+    cM <- confusionMatrix(paste0(projHeme2@cellColData[[atac_key]]), paste0(projHeme2@cellColData[[rna_key]]))
+    cM <- cM / Matrix::rowSums(cM)
+    glue_df <- as.data.frame(cM); head(glue_df)
+} else {
+    glue_df <- cca_df
+}
 
 marker_df <- read.csv(marker_metrics); head(marker_df)
 
@@ -290,7 +296,7 @@ plot_data <- to_long(cca_final, "CCA_Val") %>%
 # - 大小 (Size): glue_df (GLUE_Val)
 # - 文本/数值 (Label): marker_df (Marker_Count) -> 这里如果数字太多可以考虑只显示非0值
 
-pdf(paste0(prefix, "_annotation.pdf"))
+pdf(paste0(directory, prefix, "_annotation.pdf"))
 # 过滤掉三项指标均为 0 的点，避免图面全是空圆圈
 plot_data <- plot_data %>% 
   filter(CCA_Val > 0 | GLUE_Val > 0 | Marker_Count > 0)
