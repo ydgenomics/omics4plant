@@ -1,6 +1,11 @@
-# 图像配准
-- （optional）图像拼接 DSA软件保存输出为tif
-- 图像配准使用ps，按track线对齐两个
+# ST-analysis
+> 空转分析的分辨率的方式分square/bins和cell bins两种类型，前者基于物理空间的spot数量，一般为bin50作为一个分析对象，显然这只是物理上的，与生物学上的存在一定的差距。后者是真实的细胞对象，如何确定表达真实细胞对象？需要先获得raw.gef表达的灰度图（从.gef提取），然后将ss或细胞壁FB染色的两张图像在ps上基于track line配准（registration），如果流程自动配准好了最好。表达图和取样图可以看表达有没有扩散，在ps上两张图像叠上看。
+
+## 面向cell bins
+- 获得ss/FB染色图像.tif（optional，图像拼接 DSA软件保存输出为tif）
+- 获得表达的灰度图 [getExprePng.py](../SCRIPTs/getExprePng.py)
+- 图像配准：使用ps，按track线对齐两个图层
+
 
 # 是tif和gef的那个格式不一样是嘛
 
