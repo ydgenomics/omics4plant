@@ -18,6 +18,10 @@ Multi-omic technologies empower plant researchs.
 > [workflow list]()
 - [Enrich](./WORKFLOW/Enrich/README.md)
 
+## Contributors
+- ydgenomics
+- Bioer-yd
+
 <details> <summary> Tips </summary>
 
 > 多提问，善于提问
