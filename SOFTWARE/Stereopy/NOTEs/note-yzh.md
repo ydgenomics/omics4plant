@@ -5,6 +5,9 @@
 - 获得ss/FB染色图像.tif（optional，图像拼接 DSA软件保存输出为tif）
 - 获得表达的灰度图 [getExprePng.py](../SCRIPTs/getExprePng.py)
 - 图像配准：使用ps，按track线对齐两个图层
+- 选择组织对象，
+- 文件转换 stereo2rds
+- 
 
 
 # 是tif和gef的那个格式不一样是嘛
