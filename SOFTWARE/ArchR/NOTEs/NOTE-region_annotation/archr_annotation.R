@@ -1,7 +1,12 @@
-gtf="/data/work/rice/ref/osa1_r7.all_models_4r.gtf"
-prefix='rice'
+# 260422
+# gtf必须包含exon注释，且exon注释必须包含gene_id和transcript_id属性
+args <- commandArgs(trailingOnly = TRUE)
+fa_path <- args[1]
+gtf_path <- args[2]
+prefix <- args[3]
+bsgenome_path <- args[4]
 
-create_anno_from_gtf <- function(gtf_file) {
+create_anno_from_gtf <- function(gtf_file, chrs=NULL) {
   library(GenomicFeatures)
   library(GenomicRanges)
   library(rtracklayer)
@@ -66,10 +71,11 @@ create_anno_from_gtf <- function(gtf_file) {
     mcols(tss)$symbol <- gtf$gene_id[gtf$type == "transcript"]
   }
   # 过滤基因注释
-  main_chroms <- paste0("Chr", 1:12)  # 根据水稻实际染色体
-  genes <- genes[seqnames(genes) %in% main_chroms]
-  exons <- exons[seqnames(exons) %in% main_chroms]
-  tss <- tss[seqnames(tss) %in% main_chroms]
+  if (!is.null(chrs)) {
+    genes <- genes[seqnames(genes) %in% chrs]
+    exons <- exons[seqnames(exons) %in% chrs]
+    tss <- tss[seqnames(tss) %in% chrs]
+  }
   # 返回结果
   list(
     genes = sort(genes),
@@ -78,11 +84,22 @@ create_anno_from_gtf <- function(gtf_file) {
   )
 }
 
+
+library(Biostrings)
+library(rtracklayer)
+
+fa_chrs <- names(fasta.seqlengths(fa_path))
+gtf_data <- import(gtf_path)
+gtf_chrs <- seqlevels(gtf_data)
+chrs <- intersect(fa_chrs, gtf_chrs)
+message("Using chromosomes: ", paste(chrs, collapse = ", "))
+
 library(ArchR)
-# 使用示例
-geneAnnotation <- create_anno_from_gtf(gtf)
+geneAnnotation <- create_anno_from_gtf(gtf_path, chrs = chrs)
 save(geneAnnotation, file = paste0(prefix, '_geneAnnotation.Rdata'))
 
-library(BSgenome.rice.test)
-genomeAnnotation <- createGenomeAnnotation(genome = BSgenome.rice.test)
+system(paste0("R CMD INSTALL ", bsgenome_path))
+bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))
+do.call("library", list(bsgenome_name))
+genomeAnnotation <- createGenomeAnnotation(genome = bsgenome_name)
 save(genomeAnnotation, file = paste0(prefix, '_genomeAnnotation.Rdata'))

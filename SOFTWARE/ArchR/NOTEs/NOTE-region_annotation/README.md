@@ -1,4 +1,24 @@
-# gene&genome_annotation
+# ArchR region annotation
+
+## workflow
+- input:
+  - fa:染色体fa文件，序列名为染色体，请确保所以染色体都是期待被比对的（注意细胞器）
+  - gtf:物种基因组对应注释的gtf文件，必须包含exon、transcript_id、gene_id
+- output:
+  - BSgenome.species_1.0.0.tar.gz: 后续建包用 `R CMD INSTALL BSgenome.species_1.0.0.tar.gz`
+  - _geneAnnotation.Rdata：基因区注释，用于后续ArchR
+  - _genomeAnnotation.Rdata：基因组，用于后续ArchR
+```shell
+fa="/path/to/genome.fa"
+gtf="/path/to/annotation.gtf"
+prefix="species"
+# image: txdb-bsgenome
+source /software/miniconda/bin/activate && conda activate txdbmaker
+sh /omics4plant/SOFTWARE/ArchR/NOTE-region_annotation/genome_annotation.sh $fa $gtf
+# image: ArchR_Macs2_ChromVA
+Rscript /omics4plant/SOFTWARE/ArchR/NOTE-region_annotation/archr_annotation.R \
+$fa $gtf $prefix "BSgenome.species_1.0.0.tar.gz"
+```
 
 ## hg19
 ```R
