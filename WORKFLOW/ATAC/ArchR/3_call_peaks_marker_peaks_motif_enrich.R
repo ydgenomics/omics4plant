@@ -3,7 +3,6 @@
 
 library(ArchR)
 library(Seurat)
-library(BSgenome.rice.test) #必须要有
 library(optparse)
 set.seed(1)
 
@@ -53,7 +52,13 @@ option_list <- list(
               type = "integer", 
               default = 1,
               help = "Number of threads to use [default: %default]", 
-              metavar = "INT")
+              metavar = "INT"),
+make_option(c("-b", "--bsgenome_path"),
+            type = "character",
+            default = "/data/work/rice/ref/BSgenome.Rice.Japonica.Osj_TIGR1.0_1.0.0.tar.gz",
+            help = "Path to BSgenome package tar.gz file (required)",
+            metavar = "PATH")
+
 )
 
 # Parse arguments
@@ -70,6 +75,11 @@ pwm_list_rdata <- args$pwm_list
 cutOff <- args$cutoff
 workDirectory <- args$workdir
 threads <- args$threads
+bsgenome_path <- args$bsgenome_path
+
+system(paste0("R CMD INSTALL ", bsgenome_path))
+bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))
+do.call("library", list(bsgenome_name))
 
 addArchRThreads(threads = threads)
 dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)

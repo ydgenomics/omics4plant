@@ -1,4 +1,4 @@
-# 260412
+# 260423
 # /opt/software/miniconda3/envs/glue/bin/python
 
 import os
@@ -24,7 +24,6 @@ parser.add_argument('--prefix', default='EFH-0d', help='Prefix for output')
 parser.add_argument('--gtf', default='/data/users/yangdong/yangdong_04a6a7dfe0914e4a9f3511446586a7a7/online/rice/ref/osa1_r7.all_models_4glue.gtf', help='GTF annotation file')
 parser.add_argument('--gtf_by', default='gene_id', help='Gene key') # must have gene in $3 and [gtf_by]
 parser.add_argument('--rna_key', default='sctype_new', help='Annotated key of RNA')
-parser.add_argument('--atac_key', default='Clusters', help='Annotated key of ATAC')
 
 args = parser.parse_args()
 rna_h5ad = args.rna_h5ad
@@ -33,7 +32,6 @@ prefix = args.prefix
 gtf = args.gtf
 gtf_by = args.gtf_by
 rna_key=args.rna_key
-atac_key=args.atac_key
 
 
 # /opt/software/miniconda3/envs/glue/bin/python process_model.py \

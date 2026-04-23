@@ -19,15 +19,17 @@
 
 ```mermaid
 flowchart TB
-1[(fragments)] ==> 2[/remove empty droplet/] ==> 3[/create archr project/] ==> 4[/marker genes/] ==> 10[/Annotation/]
+0[(.fa and .gtf)] ==> 0.1[/region_annotation/]==>3
+1[(fragments.tsv.gz)] ==> 2[/remove_empty_droplet/] ==> 3[/create_archrproject/] ==> 4[/call_peaks_marker_peaks_motif_enrich/] ==> 10[/annotation/]
 3 --- 3.1[remove doublets] --> 3.2[TSS>1 and Frags > 500] --> 3.3[LSI, Clusters, UMAP]
-3 ==> 5[/call peaks by clusters/] ==> 6[/marker peaks/] ==> 7[/motif enrich/] ==> 10
-7 --- 7.1[and chromVAR deviation]
-5 ==> 8[/GLUE/] ==> 10
-3 ==> 9[/ArchR-CCA/] ==> 10
-1.1[(scRNA)] --> 8
-1.1 --> 9
+4 --> 4.1[chromvar_deviation]
+4 --> 5[/peak_link_gene/]
+4 ==> 8[/glue/] ==> 10
+02[(.h5ad and .rds of RNA-seq)] ==> 8
+3 ==> 9[/archr_cca/] ==> 10
+02 ==> 9
 10 ==> 11[(annotated ArchRProject)]
+6[(ArchRProject)] --> 7[plot_peak_gene]
 ```
 
 ```mermaid
