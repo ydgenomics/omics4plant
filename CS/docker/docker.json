@@ -1,0 +1,24 @@
+{
+  "registry-mirrors": [
+    "https://docker.1ms.run",
+    "https://docker.rainbond.cc",
+    "https://huecker.io",
+    "https://dockerhub.timeweb.cloud"
+  ],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "50m",
+    "max-file": "1"
+  },
+  "storage-driver": "overlay2",
+  "dns": [
+    "223.5.5.5",
+    "119.29.29.29",
+    "8.8.8.8"
+  ],
+  "max-concurrent-downloads": 5,
+  "features": {
+    "buildkit": true
+  },
+  "live-restore": true
+}
