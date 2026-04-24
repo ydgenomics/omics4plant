@@ -25,6 +25,8 @@ flowchart TB
 3 --- 3.1[remove doublets] --> 3.2[TSS>1 and Frags > 500] --> 3.3[LSI, Clusters, UMAP]
 4 --> 4.1[chromvar_deviation]
 4 --> 5[/peak_link_gene/]
+02.1[(marker.csv)] ==> 12
+3 ==> 12[/marker_genes/] ==> 10
 4 ==> 8[/glue/] ==> 10
 02[(.h5ad and .rds of RNA-seq)] ==> 8
 3 ==> 9[/archr_cca/] ==> 10

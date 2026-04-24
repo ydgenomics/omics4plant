@@ -7,40 +7,40 @@ args <- commandArgs(trailingOnly = TRUE)
 output_list <- args[1]
 output_dirs <- strsplit(output_list, ',')[[1]]
 
-output_dirs <- c(
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA2/EFH-0d-0114-DNA2/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA3/EFH-0d-0114-DNA3/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-2d-0115-DNA1/EFH-2d-0115-DNA1/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-2d-0115-DNA2/EFH-2d-0115-DNA2/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-2d-0115-DNA3/EFH-2d-0115-DNA3/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-8d-1229-DNA/EFH-8d-1229-DNA/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-0d-0114-DNA1/EFL-0d-0114-DNA1/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-0d-0114-DNA2/EFL-0d-0114-DNA2/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-0d-0114-DNA3/EFL-0d-0114-DNA3/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-2d-0115-DNA1/EFL-2d-0115-DNA1/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-2d-0115-DNA2/EFL-2d-0115-DNA2/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-2d-0115-DNA3/EFL-2d-0115-DNA3/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-4d-1224-DNA/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-8d-1229-DNA/EFL-8d-1229-DNA/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/W202601130036788/ZHH-4d-1225-DNA/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/W202601130036788/ZHH-4d-1225-DNA/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/W202601130036789/ZHL-4d-1225-DNA/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-0d-0114-DNA1/ZHH-0d-0114-DNA1/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-0d-0114-DNA2/ZHH-0d-0114-DNA2/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-0d-0114-DNA3/ZHH-0d-0114-DNA3/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-2d-0115-DNA1/ZHH-2d-0115-DNA1/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-2d-0115-DNA2/ZHH-2d-0115-DNA2/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-2d-0115-DNA3/ZHH-2d-0115-DNA3/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-8d-1229-DNA/ZHH-8d-1229-DNA/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-0d-0114-DNA1/ZHL-0d-0114-DNA1/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-0d-0114-DNA2/ZHL-0d-0114-DNA2/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-0d-0114-DNA3/ZHL-0d-0114-DNA3/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-2d-0115-DNA1/ZHL-2d-0115-DNA1/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-2d-0115-DNA2/ZHL-2d-0115-DNA2/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-2d-0115-DNA3/ZHL-2d-0115-DNA3/output/",
-  "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-8d-1229-DNA/ZHL-8d-1229-DNA/output/"
-)
+# output_dirs <- c(
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA2/EFH-0d-0114-DNA2/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA3/EFH-0d-0114-DNA3/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-2d-0115-DNA1/EFH-2d-0115-DNA1/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-2d-0115-DNA2/EFH-2d-0115-DNA2/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-2d-0115-DNA3/EFH-2d-0115-DNA3/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-8d-1229-DNA/EFH-8d-1229-DNA/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-0d-0114-DNA1/EFL-0d-0114-DNA1/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-0d-0114-DNA2/EFL-0d-0114-DNA2/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-0d-0114-DNA3/EFL-0d-0114-DNA3/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-2d-0115-DNA1/EFL-2d-0115-DNA1/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-2d-0115-DNA2/EFL-2d-0115-DNA2/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-2d-0115-DNA3/EFL-2d-0115-DNA3/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-4d-1224-DNA/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFL-8d-1229-DNA/EFL-8d-1229-DNA/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/W202601130036788/ZHH-4d-1225-DNA/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/W202601130036788/ZHH-4d-1225-DNA/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/W202601130036789/ZHL-4d-1225-DNA/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-0d-0114-DNA1/ZHH-0d-0114-DNA1/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-0d-0114-DNA2/ZHH-0d-0114-DNA2/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-0d-0114-DNA3/ZHH-0d-0114-DNA3/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-2d-0115-DNA1/ZHH-2d-0115-DNA1/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-2d-0115-DNA2/ZHH-2d-0115-DNA2/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-2d-0115-DNA3/ZHH-2d-0115-DNA3/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHH-8d-1229-DNA/ZHH-8d-1229-DNA/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-0d-0114-DNA1/ZHL-0d-0114-DNA1/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-0d-0114-DNA2/ZHL-0d-0114-DNA2/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-0d-0114-DNA3/ZHL-0d-0114-DNA3/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-2d-0115-DNA1/ZHL-2d-0115-DNA1/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-2d-0115-DNA2/ZHL-2d-0115-DNA2/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-2d-0115-DNA3/ZHL-2d-0115-DNA3/output/",
+#   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-8d-1229-DNA/ZHL-8d-1229-DNA/output/"
+# )
 
 # 2. 获取样本名（倒数第二个文件夹）
 sample_list <- basename(dirname(output_dirs))
@@ -66,7 +66,7 @@ for (i in 2:length(file_paths)) {
   df$source_file <- basename(dirname(dirname(file_paths[i])))
   all_metrics <- rbind(all_metrics, df)
 }
-write.csv(all_metrics, "all_metrics_summary.csv", row.names = FALSE)
+write.csv(all_metrics, "../all_metrics_summary.csv", row.names = FALSE)
 
 for (i in 1:length(sample_list)){  
     prefix <- sample_list[i]
