@@ -21,6 +21,7 @@
 flowchart TB
 0[(.fa and .gtf)] ==> 0.1[/region_annotation/]==>3
 1[(fragments.tsv.gz)] ==> 2[/remove_empty_droplet/] ==> 3[/create_archrproject/] ==> 4[/call_peaks_marker_peaks_motif_enrich/] ==> 10[/annotation/]
+1.1[(singlecell.csv)] ==> 2
 3 --- 3.1[remove doublets] --> 3.2[TSS>1 and Frags > 500] --> 3.3[LSI, Clusters, UMAP]
 4 --> 4.1[chromvar_deviation]
 4 --> 5[/peak_link_gene/]
@@ -29,7 +30,7 @@ flowchart TB
 3 ==> 9[/archr_cca/] ==> 10
 02 ==> 9
 10 ==> 11[(annotated ArchRProject)]
-6[(ArchRProject)] --> 7[plot_peak_gene]
+6[(ArchRProject)] --> 7[/plot_peak_gene/]
 ```
 
 ```mermaid
