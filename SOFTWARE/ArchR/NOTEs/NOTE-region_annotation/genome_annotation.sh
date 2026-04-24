@@ -1,11 +1,11 @@
-# 260422
+# 260423
 # 在运行前请确定要构建的.fa的染色体都是要被map到的染色体和染色体
 # workflow: 1)build bsgenome object; 2)library package; 3)build gene annotation object
 
 # FA="/data/input/Files/User/yinzhanhao/index/rice/osa1_r7.asm.chrs.fa"
 # gtf="/data/input/Files/User/yinzhanhao/index/rice/osa1_r7.all_models.gtf"
-FA=$1
-GTF=$2
+FA=${1:-"/data/input/Files/User/yinzhanhao/index/rice/osa1_r7.asm.chrs.fa"}
+GTF=${2:-"/data/input/Files/User/yinzhanhao/index/rice/osa1_r7.all_models.gtf"}
 
 echo "[INFO] Splitting fasta file by chromosome"
 echo "chromosome names in fasta file: $(grep '^>' "$FA" | cut -d'>' -f2)"
