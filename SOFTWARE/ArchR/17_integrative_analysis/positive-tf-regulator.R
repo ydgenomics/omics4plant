@@ -23,6 +23,8 @@ rowData(seZ)$maxDelta <- lapply(seq_len(ncol(seZ)), function(x){
 ## Step 2. Identify Correlated TF Motifs and TF Gene Score/Expression
 corGSM_MM <- correlateMatrices(
     ArchRProj = proj,
+    removeFromName1=NULL,
+    removeFromName2=NULL,
     useMatrix1 = "GeneScoreMatrix", # GeneScoreMatrix, GeneIntegrationMatrix
     useMatrix2 = "MotifMatrix",
     reducedDims = "IterativeLSI"
@@ -35,7 +37,7 @@ corGSM_MM$maxDelta <- rowData(seZ)[match(corGSM_MM$MotifMatrix_name, rowData(seZ
 
 ## Step 4. Identify Positive TF Regulators
 corGSM_MM <- corGSM_MM[order(abs(corGSM_MM$cor), decreasing = TRUE), ]
-corGSM_MM <- corGSM_MM[which(!duplicated(gsub("\\-.*","",corGSM_MM[,"MotifMatrix_name"]))), ]
+# corGSM_MM <- corGSM_MM[which(!duplicated(gsub("\\-.*","",corGSM_MM[,"MotifMatrix_name"]))), ]
 corGSM_MM$TFRegulator <- "NO"
 # 一个”阳性调控子“不仅需要有统计显著的正相关，还需要有生物学上可观的影响幅度。相关性高但变化幅度很小，可能是背景噪音或生物学上不重要的调控
 corGSM_MM$TFRegulator[which(corGSM_MM$cor > 0.5 & corGSM_MM$padj < 0.01 & corGSM_MM$maxDelta > quantile(corGSM_MM$maxDelta, 0.75))] <- "YES"
@@ -59,7 +61,7 @@ p
 library(ggrepel)
 
 # 建议：创建一个只包含需要标注的基因的新列（例如只标注正相关的 TF）
-corGSM_MM$label <- ifelse(corGSM_MM$TFRegulator == "YES", as.character(corGSM_MM$geneName), "") 
+corGSM_MM$label <- ifelse(corGSM_MM$TFRegulator == "YES", as.character(corGSM_MM$MotifMatrix_matchName), "") 
 # 注意：请将 'geneName' 替换为你数据框中实际存储基因名的列名
 p <- ggplot(data.frame(corGSM_MM), aes(cor, maxDelta, color = TFRegulator)) +
   geom_point(size = 1) + 
@@ -83,4 +85,6 @@ p <- ggplot(data.frame(corGSM_MM), aes(cor, maxDelta, color = TFRegulator)) +
     limits = c(0, max(corGSM_MM$maxDelta) * 1.05)
   )
 
-p
+directory <- getOutputDirectory(proj)
+ggsave(filename = paste0(directory, "/Plots/", prefix, "_TFRegulator.pdf"), plot = p, width = 5, height = 4)
+saveArchRProject(proj)
