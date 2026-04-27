@@ -1,5 +1,7 @@
-# 260416
-# output: _peaks.rds; _markerPeaks.Rdata; _markerList_df.csv; _Peak-Marker-Motifs-Enrich-Heatmap.pdf
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
+# output: _peaks.rds; _markerPeaks.Rdata; _markerList_df.csv
 
 library(ArchR)
 library(Seurat)
@@ -43,11 +45,6 @@ option_list <- list(
               default = "FDR <= 0.01 & Log2FC >= 1",
               help = "Cutoff criteria for marker peaks [default: \"%default\"]", 
               metavar = "STRING"),
-  make_option(c("-w", "--workdir"), 
-              type = "character", 
-              default = ".",
-              help = "Working directory [default: current directory]", 
-              metavar = "PATH"),
   make_option(c("-t", "--threads"), 
               type = "integer", 
               default = 1,
@@ -73,19 +70,28 @@ geneAnnotation_Rdata <- args$gene_annotation
 genomeSize <- args$genome_size
 pwm_list_rdata <- args$pwm_list
 cutOff <- args$cutoff
-workDirectory <- args$workdir
 threads <- args$threads
 bsgenome_path <- args$bsgenome_path
+
+# archr_project="/data/work/ATAC/out/EFH-0d"
+# atac_key="Clusters"
+# genomeAnnotation_Rdata="/data/input/Files/User/yangdong/rice/rice_genomeAnnotation.Rdata"
+# geneAnnotation_Rdata="/data/input/Files/User/yangdong/rice/rice_geneAnnotation.Rdata"
+# genomeSize=390000000
+# pwm_list_rdata='/data/input/Files/User/yangdong/rice/Osj_TF_binding_motifs.meme_pwm_list.rdata'
+# cutOff="FDR <= 0.01 & Log2FC >= 1"
+# threads=8
+# bsgenome_path='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/BSgenome.species_1.0.0.tar.gz'
+# Rscript ../3_call_peaks_marker_peaks_motif_enrich.R \
+# $archr_project $atac_key $genomeAnnotation_Rdata $geneAnnotation_Rdata $genomeSize \
+# $pwm_list_rdata "$cutOff" $threads $bsgenome_path
 
 system(paste0("R CMD INSTALL ", bsgenome_path))
 bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))
 do.call("library", list(bsgenome_name))
 
 addArchRThreads(threads = threads)
-dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
-setwd(workDirectory)
 prefix <- basename(archr_project)
-
 
 projHeme2 <- loadArchRProject(archr_project); print(projHeme2)
 projHeme2 <- addGroupCoverages(ArchRProj = projHeme2, groupBy = atac_key, force = TRUE)

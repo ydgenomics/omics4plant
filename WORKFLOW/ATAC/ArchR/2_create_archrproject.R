@@ -1,4 +1,6 @@
-# 260412
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
 
 library(ArchR)
 set.seed(1)
@@ -15,24 +17,26 @@ minTSS <- as.numeric(args[5])
 minFrags <- as.integer(args[6])
 resolution <- as.numeric(args[7])
 threads <- as.integer(args[8])
-workDirectory <- args[9]
+bsgenome_path <- args[9]
 
-# input_folder="/data/work/rice/ArchR/EFH-0d"
-# genomeAnnotation_Rdata="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
-# geneAnnotation_Rdata="/data/work/rice/ArchR/rice_geneAnnotation.Rdata"
-# output_prefix='rice'
+# input_folder="/data/work/ATAC/out/EFH-0d-frags"
+# genomeAnnotation_Rdata="/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_genomeAnnotation.Rdata"
+# geneAnnotation_Rdata="/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_geneAnnotation.Rdata"
+# output_prefix='EFH-0d'
 # minTSS=1
 # minFrags=500
 # resolution=0.8
 # threads=8
-# workDirectory='.'
-# Rscript /data/work/archr/2_create_archrproject.R \
+# bsgenome_path='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/BSgenome.species_1.0.0.tar.gz'
+# Rscript ../2_create_archrproject.R \
 # $input_folder $genomeAnnotation_Rdata $geneAnnotation_Rdata \
-# $output_prefix $minTSS $minFrags $resolution $threads $workDirectory
+# $output_prefix $minTSS $minFrags $resolution $threads $bsgenome_path
+
+system(paste0("R CMD INSTALL --force ", bsgenome_path))
+bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))
+do.call("library", list(bsgenome_name))
 
 addArchRThreads(threads = threads)
-dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
-setwd(workDirectory)
 
 load(genomeAnnotation_Rdata); genomeAnnotation
 load(geneAnnotation_Rdata); geneAnnotation
@@ -43,11 +47,8 @@ get_input <- function(folder, genomeAnnotation, geneAnnotation, minTSS=1, minFra
     # 检查是否有任何 .gz 文件
     if (any(grepl("\\.gz$", file_list))){
         print('[get_input] create arrow from fragments...')
-        # 从 file_list 中提取所有 .gz 文件（排除 .tbi 索引文件）
         gz_files <- file_list[grepl("\\.gz$", file_list) & !grepl("\\.tbi$", file_list)]
-        # 使用正则提取样本名（提取 "EFH-0d-0114-DNA1" 这样的部分）
-        sample_names <- gsub(".*/([^/]+)fragments_filtered\\.tsv\\.gz$", "\\1", gz_files)
-        # 创建命名的 inputFiles 向量
+        sample_names <- gsub(".*/([^/]+)_fragments_filtered\\.tsv\\.gz$", "\\1", gz_files)
         inputFiles <- setNames(gz_files, sample_names)
         message('[get_input] create arrow from fragments, inputFiles:')
         print(inputFiles)

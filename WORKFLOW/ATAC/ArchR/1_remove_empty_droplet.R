@@ -1,4 +1,6 @@
-# 260409
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
 
 library(data.table)
 library(Rsamtools)
@@ -102,16 +104,16 @@ for (i in 1:length(sample_list)){
     # 先用 fwrite 写出未压缩的文件
     fwrite(
       fragments_filtered,
-      file = paste0(prefix, "fragments_filtered.tsv"),
+      file = paste0(prefix, "_fragments_filtered.tsv"),
       sep = "\t",
       col.names = FALSE
     )
 
-    bgzip(paste0(prefix, "fragments_filtered.tsv"), dest = paste0(prefix, "fragments_filtered.tsv.gz"))
+    bgzip(paste0(prefix, "_fragments_filtered.tsv"), dest = paste0(prefix, "_fragments_filtered.tsv.gz"))
     
     Sys.sleep(0.5)  # 添加短暂延迟
 
-    indexTabix(paste0(prefix, "fragments_filtered.tsv.gz"), format = "bed")
+    indexTabix(paste0(prefix, "_fragments_filtered.tsv.gz"), format = "bed")
 
-    file.remove(paste0(prefix, "fragments_filtered.tsv"))
+    file.remove(paste0(prefix, "_fragments_filtered.tsv"))
 }

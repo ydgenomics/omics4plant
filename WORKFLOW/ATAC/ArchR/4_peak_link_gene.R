@@ -1,4 +1,6 @@
-# 260416
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
 
 library(ArchR)
 library(dplyr)
@@ -8,23 +10,21 @@ args <- commandArgs(trailingOnly = TRUE)
 archr_project <- args[1]
 markerPeaks_Rdata <- args[2]
 cutOff <- args[3]
-p2g_c <- args[4]
-p2g_fdr <- args[5]
-workDirectory <- args[6]
-threads <- as.integer(args[7])
-atac_key <- args[8]
+p2g_c <- as.numeric(args[4])
+p2g_fdr <- as.numeric(args[5])
+threads <- as.integer(args[6])
+atac_key <- args[7]
 
 
-# archr_project="/data/input/Files/User/yangdong/WDL/call_peaks_marker_peaks_motif_enrich/EFH-0d/EFH-0d"
+# archr_project="EFH-0d"
 # markerPeaks_Rdata="/data/input/Files/User/yangdong/WDL/call_peaks_marker_peaks_motif_enrich/EFH-0d/EFH-0d_markerPeaks.Rdata"
 # cutOff="FDR <= 0.01 & Log2FC >= 0.5"
 # p2g_c=0.45
 # p2g_fdr=0.01
-# workDirectory="."
 # threads=8
 # atac_key="Clusters"
-# Rscript 4_peak_link_gene.R \
-# $archr_project $markerPeaks_Rdata "$cutOff" $p2g_c $p2g_fdr $workDirectory $threads $atac_key
+# Rscript ../4_peak_link_gene.R \
+# $archr_project $markerPeaks_Rdata "$cutOff" $p2g_c $p2g_fdr $threads $atac_key
 
 addArchRThreads(threads = threads)
 dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
