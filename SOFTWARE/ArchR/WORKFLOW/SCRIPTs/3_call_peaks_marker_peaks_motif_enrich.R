@@ -20,11 +20,6 @@ option_list <- list(
               default = "Clusters",
               help = "Cell grouping column name in ArchR project [default: %default]", 
               metavar = "STRING"),
-  make_option(c("-g", "--genome_annotation"), 
-              type = "character", 
-              default = "/data/work/rice/ArchR/rice_genomeAnnotation.Rdata",
-              help = "Path to genome annotation RData file (required)", 
-              metavar = "PATH"),
   make_option(c("-a", "--gene_annotation"), 
               type = "character", 
               default = "/data/work/rice/ArchR/rice_geneAnnotation.Rdata",
@@ -65,7 +60,6 @@ parser <- OptionParser(usage = "Usage: %prog [options]",
 args <- parse_args(parser, args = commandArgs(trailingOnly = TRUE))
 archr_project <- args$archr_project
 atac_key <- args$atac_key
-genomeAnnotation_Rdata <- args$genome_annotation
 geneAnnotation_Rdata <- args$gene_annotation
 genomeSize <- args$genome_size
 pwm_list_rdata <- args$pwm_list
@@ -75,7 +69,6 @@ bsgenome_path <- args$bsgenome_path
 
 # archr_project="EFH-0d"
 # atac_key="Clusters"
-# genomeAnnotation_Rdata="/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_genomeAnnotation.Rdata"
 # geneAnnotation_Rdata="/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_geneAnnotation.Rdata"
 # genomeSize=390000000
 # pwm_list_rdata='/data/input/Files/User/yangdong/rice/Osj_TF_binding_motifs.meme_pwm_list.rdata'
@@ -83,13 +76,13 @@ bsgenome_path <- args$bsgenome_path
 # threads=8
 # bsgenome_path='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/BSgenome.species_1.0.0.tar.gz'
 # Rscript ../3_call_peaks_marker_peaks_motif_enrich.R \
-# --archr_project $archr_project --atac_key $atac_key --genome_annotation $genomeAnnotation_Rdata \
-# --gene_annotation $geneAnnotation_Rdata --genome_size $genomeSize \
+# --archr_project $archr_project --atac_key $atac_key --gene_annotation $geneAnnotation_Rdata --genome_size $genomeSize \
 # --pwm_list $pwm_list_rdata --cutoff "$cutOff" --threads $threads --bsgenome_path $bsgenome_path
 
 system(paste0("R CMD INSTALL ", bsgenome_path))
 bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))
 do.call("library", list(bsgenome_name))
+genomeAnnotation <- createGenomeAnnotation(genome = bsgenome_name)
 
 addArchRThreads(threads = threads)
 prefix <- basename(archr_project)
@@ -98,7 +91,6 @@ projHeme2 <- loadArchRProject(archr_project); print(projHeme2)
 projHeme2 <- addGroupCoverages(ArchRProj = projHeme2, groupBy = atac_key, force = TRUE)
 
 pathToMacs2 <- findMacs2()
-load(genomeAnnotation_Rdata)
 load(geneAnnotation_Rdata)
 projHeme2 <- addReproduciblePeakSet(
     ArchRProj = projHeme2, 

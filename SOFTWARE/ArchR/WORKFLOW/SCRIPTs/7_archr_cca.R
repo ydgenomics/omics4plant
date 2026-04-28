@@ -15,7 +15,6 @@ rna_rds="/data/input/Files/User/yangdong/rice/rna.rds"
 atac_key="Clusters"
 rna_key="sctype"
 threads=4
-cutOff="FDR <= 0.01 & Log2FC >= 1"
 Rscript ../7_archr_cca.R \
 $archr_project $rna_rds $atac_key $rna_key $threads
 ')}

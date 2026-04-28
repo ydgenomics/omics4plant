@@ -6,10 +6,11 @@ library(data.table)
 library(Rsamtools)
 
 args <- commandArgs(trailingOnly = TRUE)
-if(length(args) != 1){stop("
-Rscript 1_remove_empty_droplet.R $output_dirs
+if(length(args) != 1){stop('
+output_dirs="/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA2/EFH-0d-0114-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA3/EFH-0d-0114-DNA3/output/"
+Rscript ../1_remove_empty_droplet.R $output_dirs
 \n$output_dirs: output directory of dnbc4tools combined by , each output directory should contain fragments.tsv.gz, singlecell.csv and metrics_summary.xls
-")}
+')}
 output_dirs <- strsplit(args[1], ',')[[1]]
 
 # output_dirs <- c(

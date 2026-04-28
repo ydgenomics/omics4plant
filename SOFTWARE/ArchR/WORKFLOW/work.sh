@@ -13,62 +13,87 @@ Rscript ../archr_annotation.R $fa $gtf $prefix
 
 # 1_remove_empty_droplet.R
 cd /data/work/archr/remove_empty_droplet
+output_dirs="/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA2/EFH-0d-0114-DNA2/output/,/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA3/EFH-0d-0114-DNA3/output/"
+Rscript ../1_remove_empty_droplet.R $output_dirs
 
 
 # 2_create_archrproject.R
-cd /data/work/archr0412
-input_folder="/data/work/rice/ArchR/work/Save-EFH-0d/ArrowFiles"
-genomeAnnotation_Rdata="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
-geneAnnotation_Rdata="/data/work/rice/ArchR/rice_geneAnnotation.Rdata"
+mkdir -p /data/work/archr/create_archrproject && cd /data/work/archr/create_archrproject
+
+input_folder='/data/work/archr/remove_empty_droplet'
+bsgenome_path='/data/work/archr/region_annotation/BSgenome.species_1.0.0.tar.gz'
+geneAnnotation_Rdata='/data/work/archr/region_annotation/rice_geneAnnotation.Rdata'
 output_prefix='EFH-0d'
 minTSS=1
 minFrags=500
 resolution=0.8
 threads=8
-workDirectory='.'
-Rscript 2_create_archrproject.R \
-$input_folder $genomeAnnotation_Rdata $geneAnnotation_Rdata \
-$output_prefix $minTSS $minFrags $resolution $threads $workDirectory
+Rscript ../2_create_archrproject.R \
+$input_folder $bsgenome_path $geneAnnotation_Rdata \
+$output_prefix $minTSS $minFrags $resolution $threads
 
 # 3_call_peaks_marker_peaks_motif_enrich.R
+mkdir -p /data/work/archr/call_peaks_marker_peaks_motif_enrich && cd /data/work/archr/call_peaks_marker_peaks_motif_enrich
+cp -a /data/work/archr/create_archrproject/EFH-0d .
+
 archr_project="EFH-0d"
 atac_key="Clusters"
-genome_annotation="/data/work/rice/ArchR/rice_genomeAnnotation.Rdata"
-gene_annotation="/data/work/rice/ArchR/rice_geneAnnotation.Rdata"
-genome_size=3.9e8 # rice genome size (japonica)
-pwm_list="/data/work/rice/ref/motif/Osj_TF_binding_motifs.meme_pwm_list.rdata"
-cutoff="FDR <= 0.01 & Log2FC >= 1"
-workdir="."
+geneAnnotation_Rdata='/data/work/archr/region_annotation/rice_geneAnnotation.Rdata'
+genomeSize=390000000
+pwm_list_rdata='/data/input/Files/User/yangdong/rice/Osj_TF_binding_motifs.meme_pwm_list.rdata'
+cutOff="FDR <= 0.01 & Log2FC >= 1"
 threads=8
-Rscript ./omics4plant/WORKFLOW/ATAC/ArchR/3_call_peaks_marker_peaks_motif_enrich.R \
---archr_project $archr_project --atac_key $atac_key --genome_annotation $genome_annotation \
---gene_annotation $gene_annotation --genome_size $genome_size --pwm_list $pwm_list \
---cutoff "$cutoff" --workdir $workdir --threads $threads
+bsgenome_path='/data/work/archr/region_annotation/BSgenome.species_1.0.0.tar.gz'
+Rscript ../3_call_peaks_marker_peaks_motif_enrich.R \
+--archr_project $archr_project --atac_key $atac_key --gene_annotation $geneAnnotation_Rdata --genome_size $genomeSize \
+--pwm_list $pwm_list_rdata --cutoff "$cutOff" --threads $threads --bsgenome_path $bsgenome_path
 
 # 4_peak_link_gene.R
-markerPeaks_Rdata="$archr_project"_markerPeaks.Rdata
-cutOff=$cutoff
+mkdir -p /data/work/archr/peak_link_gene && cd /data/work/archr/peak_link_gene
+cp -a /data/work/archr/call_peaks_marker_peaks_motif_enrich/EFH-0d .
+
+archr_project="EFH-0d"
+markerPeaks_Rdata=/data/work/archr/call_peaks_marker_peaks_motif_enrich/EFH-0d_markerPeaks.Rdata
+cutOff="FDR <= 0.01 & Log2FC >= 1"
 p2g_c=0.45
 p2g_fdr=0.01
-workDirectory=$workdir
-Rscript ./omics4plant/WORKFLOW/ATAC/ArchR/4_peak_link_gene.R \
-$archr_project $markerPeaks_Rdata "$cutOff" $p2g_c $p2g_fdr $workDirectory $threads
+threads=8
+atac_key="Clusters"
+Rscript ../4_peak_link_gene.R \
+$archr_project $markerPeaks_Rdata "${cutOff}" $p2g_c $p2g_fdr $threads $atac_key
 
 # 5_chromvar_deviation.R
-tf_motif_txt='/data/work/rice/ref/motif/Osj_TF_binding_motifs_information.txt'
-atac_key="Clusters"
-Rscript ./omics4plant/WORKFLOW/ATAC/ArchR/5_chromvar_deviation.R \
-$archr_project $tf_motif_txt $atac_key $workDirectory $threads
+mkdir -p /data/work/archr/chromvar_deviation && cd /data/work/archr/chromvar_deviation
+cp -a /data/work/archr/peak_link_gene/EFH-0d .
+
+archr_project='EFH-0d'
+tf_motif_txt='/data/input/Files/User/yangdong/rice/Osj_TF_binding_motifs_information.txt'
+atac_key='Clusters'
+threads=8
+Rscript ../5_chromvar_deviation.R \
+$archr_project $tf_motif_txt $atac_key $threads
 
 # 6_marker_genes.R
-marker_csv="/data/work/rice/ArchR/marker0201.csv"
-cluster_key=$atac_key
+mkdir -p /data/work/archr/marker_genes && cd /data/work/archr/marker_genes
+cp -a /data/work/archr/chromvar_deviation/EFH-0d .
+
+archr_project="EFH-0d"
+marker_csv="/data/input/Files/User/yangdong/rice/marker0201.csv"
+cluster_key="Clusters"
 tissue_type="rice_embryo"
-Rscript ./omics4plant/WORKFLOW/ATAC/ArchR/6_marker_genes.R \
-$archr_project $marker_csv $cluster_key $tissue_type $workDirectory $threads "$cutOff"
+threads=8
+cutOff="FDR <= 0.01 & Log2FC >= 1"
+Rscript ../6_marker_genes.R \
+$archr_project $marker_csv $cluster_key $tissue_type $threads "$cutOff"
 
 # 7_archr_cca.R
-rna_input="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d.rds"
-rna_key="sctype_new"
-Rscript ./omics4plant/WORKFLOW/ATAC/ArchR/7_archr_cca.R \
-$archr_project $rna_input $atac_key $rna_key $workDirectory $threads
+mkdir -p /data/work/archr/archr_cca && cd /data/work/archr/archr_cca
+cp -a /data/work/archr/marker_genes/EFH-0d .
+
+archr_project="EFH-0d"
+rna_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d_annotated.rds"
+atac_key="Clusters"
+rna_key="sctype"
+threads=8
+Rscript ../7_archr_cca.R \
+$archr_project $rna_rds $atac_key $rna_key $threads

@@ -6,26 +6,25 @@ library(ArchR)
 set.seed(1)
 
 args <- commandArgs(trailingOnly = TRUE)
-if(length(args) != 9){stop("
-### Usage: Rscript 2_create_archrproject.R <input_folder> <genomeAnnotation_Rdata> <geneAnnotation_Rdata> <output_prefix> <minTSS> <minFrags> <resolution> <threads> <bsgenome_path>
+if(length(args) != 8){stop("
+### Usage: Rscript 2_create_archrproject.R <input_folder> <bsgenome_path> <geneAnnotation_Rdata> <output_prefix> <minTSS> <minFrags> <resolution> <threads>
 ### Example:
 input_folder='/data/work/ATAC/out/EFH-0d-frags'
-genomeAnnotation_Rdata='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_genomeAnnotation.Rdata'
+bsgenome_path='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/BSgenome.species_1.0.0.tar.gz'
 geneAnnotation_Rdata='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_geneAnnotation.Rdata'
 output_prefix='EFH-0d'
 minTSS=1
 minFrags=500
 resolution=0.8
 threads=8
-bsgenome_path='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/BSgenome.species_1.0.0.tar.gz'
 Rscript ../2_create_archrproject.R \
-$input_folder $genomeAnnotation_Rdata $geneAnnotation_Rdata \
-$output_prefix $minTSS $minFrags $resolution $threads $bsgenome_path
+$input_folder $bsgenome_path $geneAnnotation_Rdata \
+$output_prefix $minTSS $minFrags $resolution $threads 
 ")}
 
 # -- input --
 input_folder <- args[1]
-genomeAnnotation_Rdata <- args[2]
+bsgenome_path <- args[2]
 geneAnnotation_Rdata <- args[3]
 # -- output --
 output_prefix <- args[4]
@@ -34,15 +33,14 @@ minTSS <- as.numeric(args[5])
 minFrags <- as.integer(args[6])
 resolution <- as.numeric(args[7])
 threads <- as.integer(args[8])
-bsgenome_path <- args[9]
 
-system(paste0("R CMD INSTALL --force ", bsgenome_path))
+system(paste0("R CMD INSTALL ", bsgenome_path))
 bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))
 do.call("library", list(bsgenome_name))
+genomeAnnotation <- createGenomeAnnotation(genome = bsgenome_name)
 
 addArchRThreads(threads = threads)
 
-load(genomeAnnotation_Rdata); genomeAnnotation
 load(geneAnnotation_Rdata); geneAnnotation
 
 get_input <- function(folder, genomeAnnotation, geneAnnotation, minTSS=1, minFrags=500){
