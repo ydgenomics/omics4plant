@@ -3,14 +3,17 @@ Multi-omic technologies empower plant researchs.
 
 ---
 
-> - [TECHNOLOGY](./TECHNOLOGY/): Advance techs including omics, sequence, biochemistry, physiology.
-> - [PLANT](./PLANT/): Diverse orgnanism about life tree of plant(taxonomy, evolution), cultivated species(rice, maize), model species(at) et al.
-> - [DATABASE](./DATABASE/): Genetic/evolutionary/morphological databases.
-> - [SOFTWARE](./SOFTWARE/): Softwares & Packages.
-> - [WORKFLOW](./WORKFLOW/): Analysis pipelines and buiding in DCS cloud.
 > - [CS](./CS/): Basic programing language and algorithm.
+> - [DATABASE](./DATABASE/): Genetic/evolutionary/morphological databases.
+> - [NOTE](./NOTE): My learning records, thinking, enjoy and sharing.
+> - [PLANT](./PLANT/): Diverse orgnanism about life tree of plant(taxonomy, evolution), cultivated species(rice, maize), model species(at) et al.
+> - [PLOT](./PLOT/): Scientific drawing, beautiful plots not only attract others attention but only happy myself.
 > - ~~[PROJECT](./PROJECT/): Projects, Works, Tasks, and Logs.~~
 > - [PROJECT-open](./PROJECT-open/): Opened project, friendly source.
+> - [SOFTWARE](./SOFTWARE/): Softwares & Packages.
+> - [TECHNOLOGY](./TECHNOLOGY/): Advance techs including omics, sequence, biochemistry, physiology.
+> - [TRAIN](./TRAIN/): Some trainings, systematic collection and teach.
+> - [WORKFLOW](./WORKFLOW/): Analysis pipelines and buiding in DCS cloud.
 
 ---
 
@@ -22,6 +25,18 @@ Multi-omic technologies empower plant researchs.
 - ydgenomics
 - Bioer-yd
 
+## ToDo
+<details> <summary> todo </summary>
+
+- **develop a utlis packages in R and python (ydutils)**
+  - Why we need a utils package?
+  - A utils package how to fasten our works?
+  - How to develop a package? not is all from AI.
+- **anatomy: plant cell types**
+
+</details>
+
+## Tips
 <details> <summary> Tips </summary>
 
 > 多提问，善于提问

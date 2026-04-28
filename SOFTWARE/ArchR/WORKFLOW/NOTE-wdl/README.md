@@ -1,8 +1,11 @@
 # ArchR analysis
-> 当你选择使用ArchR做下游分析时，最好看看你的gtf基因名格式，如果存在_，建议全部更换为-后做下游分析，如果你还是用的Seurat做的RNA的分析的话
+> 当你选择使用ArchR做下游分析时，最好看看你的gtf基因名格式，如果存在_，建议全部更换为-后做下游分析，如果你还是用的Seurat做的RNA的分析的话，更需要注意这个问题
 
-## [1_remove_empty_droplet.R](../ArchR/1_remove_empty_droplet.R)
-> 仅保留自动化流程判定为细胞的barcode
+## region_annotation
+
+## remove_empty_droplet
+> 移除空液滴。单细胞测序仅保留自动化流程判定为细胞的barcode
+- **script**: [1_remove_empty_droplet.R](../ArchR/1_remove_empty_droplet.R)
 - **input**: 自动化流程输出的output目录
   - three files in output directory: fragments.tsv.gz & fragments.tsv.gz.tbi; singlecell.csv; metrics_summary.xls; 
   - tree of "output"
