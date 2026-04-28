@@ -1,4 +1,5 @@
 # ArchR analysis
+> 当你选择使用ArchR做下游分析时，最好看看你的gtf基因名格式，如果存在_，建议全部更换为-后做下游分析，如果你还是用的Seurat做的RNA的分析的话
 
 ## [1_remove_empty_droplet.R](../ArchR/1_remove_empty_droplet.R)
 > 仅保留自动化流程判定为细胞的barcode
@@ -93,8 +94,8 @@
 
 ## 2_create_archrproject.R
 > 数据质量和去双胞，降维聚类
-- input:
-- output:
+- **input**:
+- **output**:
   - QualityControl目录
   - {prefix}目录：ArchRProject对象
     ```shell
@@ -120,6 +121,11 @@
     ```
 
 <details> <summary> details </summary>
+
+```shell
+
+
+```
 
 - `./Plots/{prefix}_QC-Sample-Statistics.pdf`
   ![alt text](image.png)

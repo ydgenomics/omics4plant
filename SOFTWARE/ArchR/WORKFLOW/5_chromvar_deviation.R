@@ -1,5 +1,6 @@
-# Ref:
-# 260416
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
 # output: _Variable-Motif-Deviation-Scores.pdf; _Plot-Groups-Z-w-Imputation; _Plot-UMAP-Z-w-Imputation;
 # _Plot-UMAP-Gene-Scores-w-Imputation; _Motif_Heatmap_with_Family.pdf; _Motif_Heatmap_Grouped_by_Family.pdf
 
@@ -13,23 +14,23 @@ library(dplyr)
 library(reshape2)
 
 args <- commandArgs(trailingOnly=TRUE)
+if(length(args) != 4){stop("
+### Usage: Rscript 5_chromvar_deviation.R <archr_project> <tf_motif_txt> <atac_key> <threads>
+### Example:
+archr_project='EFH-0d'
+tf_motif_txt='/data/input/Files/User/yangdong/rice/Osj_TF_binding_motifs_information.txt'
+atac_key='Clusters'
+threads=4
+Rscript ../5_chromvar_deviation.R \
+$archr_project $tf_motif_txt $atac_key $threads
+")}
+
 archr_project <- args[1]
 tf_motif_txt <- args[2]
 atac_key <- args[3]
-workDirectory <- args[4]
-threads <- as.integer(args[5])
-
-# archr_project='/data/work/archr/rice'
-# tf_motif_txt='/data/work/rice/ref/motif/Osj_TF_binding_motifs_information.txt'
-# atac_key="Clusters"
-# workDirectory="."
-# threads=8
-# Rscript 5_chromvar_deviation.R \
-# $archr_project $tf_motif_txt $atac_key $workDirectory $threads
+threads <- as.integer(args[4])
 
 addArchRThreads(threads = threads)
-dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
-setwd(workDirectory)
 prefix <- basename(archr_project)
 
 projHeme2 <- loadArchRProject(archr_project); print(projHeme2)
@@ -139,7 +140,11 @@ unique(tf_motif_info$Family)
 
 length(unique(tf_motif_info$Gene_id))
 
-tf_motif_info$Gene_id <- gsub("_", "-", tf_motif_info$Gene_id)
+
+ids <- list(tf_motif_info$Gene_id, gsub("_", "-", tf_motif_info$Gene_id))
+best_idx <- which.max(sapply(ids, function(x) sum(rownames(cluster_avg) %in% x)))
+tf_motif_info$Gene_id <- ids[[best_idx]]
+message("Selected strategy: ", c("Raw", "Substituted")[best_idx])
 
 # 合并 family 信息
 motif_family <- tf_motif_info[match(rownames(cluster_avg), tf_motif_info$Gene_id), "Family"]

@@ -6,8 +6,11 @@ library(data.table)
 library(Rsamtools)
 
 args <- commandArgs(trailingOnly = TRUE)
-output_list <- args[1]
-output_dirs <- strsplit(output_list, ',')[[1]]
+if(length(args) != 1){stop("
+Rscript 1_remove_empty_droplet.R $output_dirs
+\n$output_dirs: output directory of dnbc4tools combined by , each output directory should contain fragments.tsv.gz, singlecell.csv and metrics_summary.xls
+")}
+output_dirs <- strsplit(args[1], ',')[[1]]
 
 # output_dirs <- c(
 #   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/",
@@ -44,15 +47,12 @@ output_dirs <- strsplit(output_list, ',')[[1]]
 #   "/Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/ZHL-8d-1229-DNA/ZHL-8d-1229-DNA/output/"
 # )
 
-# 2. 获取样本名（倒数第二个文件夹）
-sample_list <- basename(dirname(output_dirs))
-# 或者更精确地获取倒数第二个文件夹名：
+
+# 获取倒数第二个文件夹名：
 sample_list <- sapply(strsplit(output_dirs, "/"), function(x) x[length(x)-1])
 
 # 3. 构建 fragments 文件路径（使用 file.path 而不是 +）
 fragments_list <- file.path(output_dirs, "fragments.tsv.gz")
-# 或者用 paste0：
-# fragments_list <- paste0(output_dirs, "fragments.tsv.gz")
 
 # 4. 构建 singlecell 文件路径
 singlecell_list <- file.path(output_dirs, "singlecell.csv")

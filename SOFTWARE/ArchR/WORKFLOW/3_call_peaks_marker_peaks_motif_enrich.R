@@ -73,18 +73,19 @@ cutOff <- args$cutoff
 threads <- args$threads
 bsgenome_path <- args$bsgenome_path
 
-# archr_project="/data/work/ATAC/out/EFH-0d"
+# archr_project="EFH-0d"
 # atac_key="Clusters"
-# genomeAnnotation_Rdata="/data/input/Files/User/yangdong/rice/rice_genomeAnnotation.Rdata"
-# geneAnnotation_Rdata="/data/input/Files/User/yangdong/rice/rice_geneAnnotation.Rdata"
+# genomeAnnotation_Rdata="/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_genomeAnnotation.Rdata"
+# geneAnnotation_Rdata="/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_geneAnnotation.Rdata"
 # genomeSize=390000000
 # pwm_list_rdata='/data/input/Files/User/yangdong/rice/Osj_TF_binding_motifs.meme_pwm_list.rdata'
 # cutOff="FDR <= 0.01 & Log2FC >= 1"
 # threads=8
 # bsgenome_path='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/BSgenome.species_1.0.0.tar.gz'
 # Rscript ../3_call_peaks_marker_peaks_motif_enrich.R \
-# $archr_project $atac_key $genomeAnnotation_Rdata $geneAnnotation_Rdata $genomeSize \
-# $pwm_list_rdata "$cutOff" $threads $bsgenome_path
+# --archr_project $archr_project --atac_key $atac_key --genome_annotation $genomeAnnotation_Rdata \
+# --gene_annotation $geneAnnotation_Rdata --genome_size $genomeSize \
+# --pwm_list $pwm_list_rdata --cutoff "$cutOff" --threads $threads --bsgenome_path $bsgenome_path
 
 system(paste0("R CMD INSTALL ", bsgenome_path))
 bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))

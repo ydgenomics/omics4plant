@@ -7,6 +7,20 @@ library(dplyr)
 set.seed(1)
 
 args <- commandArgs(trailingOnly = TRUE)
+if(length(args) != 7){stop('
+### Usage: Rscript 4_peak_link_gene.R <archr_project> <markerPeaks_Rdata> <cutOff> <p2g_c> <p2g_fdr> <threads> <atac_key>
+### Example:
+archr_project="EFH-0d"
+markerPeaks_Rdata="./EFH-0d_markerPeaks.Rdata"
+cutOff="FDR <= 0.01 & Log2FC >= 0.5"
+p2g_c=0.45
+p2g_fdr=0.01
+threads=8
+atac_key="Clusters"
+Rscript ../4_peak_link_gene.R \
+$archr_project $markerPeaks_Rdata "${cutOff}" $p2g_c $p2g_fdr $threads $atac_key
+')}
+
 archr_project <- args[1]
 markerPeaks_Rdata <- args[2]
 cutOff <- args[3]
@@ -16,20 +30,8 @@ threads <- as.integer(args[6])
 atac_key <- args[7]
 
 
-# archr_project="EFH-0d"
-# markerPeaks_Rdata="/data/input/Files/User/yangdong/WDL/call_peaks_marker_peaks_motif_enrich/EFH-0d/EFH-0d_markerPeaks.Rdata"
-# cutOff="FDR <= 0.01 & Log2FC >= 0.5"
-# p2g_c=0.45
-# p2g_fdr=0.01
-# threads=8
-# atac_key="Clusters"
-# Rscript ../4_peak_link_gene.R \
-# $archr_project $markerPeaks_Rdata "$cutOff" $p2g_c $p2g_fdr $threads $atac_key
-
 addArchRThreads(threads = threads)
-dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
-setwd(workDirectory)
-prefix=basename(archr_project)
+prefix <- basename(archr_project)
 
 projHeme2 <- loadArchRProject(archr_project); print(projHeme2)
 load(markerPeaks_Rdata)

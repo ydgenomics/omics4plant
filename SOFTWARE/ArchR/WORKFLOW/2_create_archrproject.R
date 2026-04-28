@@ -6,6 +6,23 @@ library(ArchR)
 set.seed(1)
 
 args <- commandArgs(trailingOnly = TRUE)
+if(length(args) != 9){stop("
+### Usage: Rscript 2_create_archrproject.R <input_folder> <genomeAnnotation_Rdata> <geneAnnotation_Rdata> <output_prefix> <minTSS> <minFrags> <resolution> <threads> <bsgenome_path>
+### Example:
+input_folder='/data/work/ATAC/out/EFH-0d-frags'
+genomeAnnotation_Rdata='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_genomeAnnotation.Rdata'
+geneAnnotation_Rdata='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_geneAnnotation.Rdata'
+output_prefix='EFH-0d'
+minTSS=1
+minFrags=500
+resolution=0.8
+threads=8
+bsgenome_path='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/BSgenome.species_1.0.0.tar.gz'
+Rscript ../2_create_archrproject.R \
+$input_folder $genomeAnnotation_Rdata $geneAnnotation_Rdata \
+$output_prefix $minTSS $minFrags $resolution $threads $bsgenome_path
+")}
+
 # -- input --
 input_folder <- args[1]
 genomeAnnotation_Rdata <- args[2]
@@ -18,19 +35,6 @@ minFrags <- as.integer(args[6])
 resolution <- as.numeric(args[7])
 threads <- as.integer(args[8])
 bsgenome_path <- args[9]
-
-# input_folder="/data/work/ATAC/out/EFH-0d-frags"
-# genomeAnnotation_Rdata="/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_genomeAnnotation.Rdata"
-# geneAnnotation_Rdata="/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/rice_geneAnnotation.Rdata"
-# output_prefix='EFH-0d'
-# minTSS=1
-# minFrags=500
-# resolution=0.8
-# threads=8
-# bsgenome_path='/data/input/Files/User/yangdong/WDL/region_annotation/W202604240036502/BSgenome.species_1.0.0.tar.gz'
-# Rscript ../2_create_archrproject.R \
-# $input_folder $genomeAnnotation_Rdata $geneAnnotation_Rdata \
-# $output_prefix $minTSS $minFrags $resolution $threads $bsgenome_path
 
 system(paste0("R CMD INSTALL --force ", bsgenome_path))
 bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))

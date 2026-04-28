@@ -1,24 +1,36 @@
-# 2604012
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
 
 library(ArchR)
 library(pheatmap)
 set.seed(1)
 
 args <- commandArgs(trailingOnly = TRUE)
+if(length(args) != 5){stop('
+### Usage: Rscript 7_archr_cca.R <archr_project> <rna_rds> <atac_key> <rna_key> <threads>
+### Example:
+archr_project="EFH-0d"
+rna_rds="/data/input/Files/User/yangdong/rice/rna.rds"
+atac_key="Clusters"
+rna_key="sctype"
+threads=4
+cutOff="FDR <= 0.01 & Log2FC >= 1"
+Rscript ../7_archr_cca.R \
+$archr_project $rna_rds $atac_key $rna_key $threads
+')}
+
 archr_project <- args[1]
-rna_input <- args[2]
+rna_rds <- args[2]
 atac_key <- args[3]
 rna_key <- args[4]
-workDirectory <- args[5]
-threads <- as.integer(args[6])
+threads <- as.integer(args[5])
 
 
 addArchRThreads(threads = threads)
-dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
-setwd(workDirectory)
-prefix=basename(archr_project)
+prefix <- basename(archr_project)
 
-seRNA <- readRDS(rna_input); print(seRNA)
+seRNA <- readRDS(rna_rds); print(seRNA)
 print(table(seRNA@meta.data[[rna_key]]))
 
 projHeme2 <- loadArchRProject(archr_project); print(projHeme2)

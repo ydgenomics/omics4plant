@@ -1,9 +1,27 @@
-# 260417
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
 
 library(ArchR)
 set.seed(1)
 
 args <- commandArgs(trailingOnly = TRUE)
+if(length(args) != 5){stop('
+### Usage: Rscript plot_peak_gene.R <archr_project> <query_genes> <atac_key> <upstream> <downstream>
+### Example:
+archr_project="EFH-0d"
+query_genes="LOC-Os04g41620,LOC-Os01g22380"
+atac_key="Clusters"
+upstream=10000
+downstream=10000
+query_file=""
+markerPeaks_Rdata=""
+cutOff=""
+cell_list=""
+Rscript ../plot_peak_gene.R \
+$archr_project $query_genes $atac_key $upstream $downstream
+')}
+
 archr_project <- args[1]
 query_genes <- args[2]
 atac_key <- args[3]

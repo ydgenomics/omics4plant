@@ -1,4 +1,6 @@
-# 260413
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
 # Ref: https://github.com/dongwei-2023/Single_Cell_Multiomics_in_Rice/blob/v1.0/06.Correlation_analysis_of_RNA_and_ATAC.R
 # rna: RNA, hvgs, Idents()
 
@@ -17,6 +19,19 @@ library(corrplot)
 set.seed(1)
 
 args <- commandArgs(trailingOnly = TRUE)
+if(length(args) != 6){stop('
+### Usage: Rscript 8_annotation.R <archr_project> <rna_rds> <marker_metrics> <atac_key> <rna_key> <threads>
+### Example:
+archr_project="EFH-0d"
+rna_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d.rds"
+marker_metrics="/data/input/Files/User/yangdong/rice/marker0201.csv"
+atac_key="Clusters"
+rna_key="sctype"
+threads=4
+Rscript ../8_annotation.R \
+$archr_project $rna_rds $marker_metrics $atac_key $rna_key $threads
+')}
+
 archr_project <- args[1]
 rna_rds <- args[2]
 marker_metrics <- args[3]

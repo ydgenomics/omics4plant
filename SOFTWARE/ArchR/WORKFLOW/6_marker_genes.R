@@ -1,3 +1,6 @@
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
 # 260412 https://mp.weixin.qq.com/s/qHgm4ksKQ7v7kBo2Sgsugg
 # output: _marker_genes_overlap.csv; __marker_genes_dotplot.pdf; _GeneScores-Marker-Heatmap.pdf;
 # _Plot-UMAP-Marker-Genes-WO-Imputation; _Plot-UMAP-Marker-Genes-W-Imputation.pdf; Plot-Modules.pdf; _Plot-Tracks-Marker-Genes.pdf
@@ -5,29 +8,30 @@
 library(ArchR)
 set.seed(1)
 
-args <- commandArgs(trailingOnly = TRUE)
+args <- commandArgs(trailingOnly=TRUE)
+if(length(args) != 6){stop('
+### Usage: Rscript 6_marker_genes.R <archr_project> <marker_csv> <cluster_key> <tissue_type> <threads> <cutOff>
+### Example:
+archr_project="EFH-0d"
+marker_csv="/data/input/Files/User/yangdong/rice/marker0201.csv"
+cluster_key="Clusters"
+tissue_type="rice_embryo"
+threads=4
+cutOff="FDR <= 0.01 & Log2FC >= 1"
+Rscript ../6_marker_genes.R \
+$archr_project $marker_csv $cluster_key $tissue_type $threads "$cutOff"
+')}
+
 archr_project <- args[1]
 marker_csv <- args[2]
 cluster_key <- args[3]
 tissue_type <- args[4]
-workDirectory <- args[5]
-threads <- as.integer(args[6])
-cutOff <- args[7]
-
-# archr_project="/data/work/archr/rice"
-# marker_csv="/data/work/rice/ArchR/marker0201.csv"
-# cluster_key="Clusters"
-# tissue_type="rice_embryo"
-# workDirectory="."
-# threads=8
-# cutOff="FDR <= 0.01 & Log2FC >= 1.25"
-# Rscript 6_marker_genes.R \
-# $archr_project $marker_csv $cluster_key $tissue_type $workDirectory $threads "$cutOff"
+threads <- as.integer(args[5])
+cutOff <- args[6]
 
 
 gene_sets_prepare <- function(path_to_db_file, cell_type){
-  #cell_markers = openxlsx::read.xlsx(path_to_db_file)
-  cell_markers = read.csv(path_to_db_file) # 之前的读取xlsx文件有点不好编辑，改为读取csv文件
+  cell_markers = read.csv(path_to_db_file)
   cell_markers = cell_markers[cell_markers$tissueType == cell_type,] 
   cell_markers$geneSymbolmore1 = gsub(" ","",cell_markers$geneSymbolmore1); cell_markers$geneSymbolmore2 = gsub(" ","",cell_markers$geneSymbolmore2)
   cell_markers$geneSymbolmore1 = gsub("///",",",cell_markers$geneSymbolmore1);cell_markers$geneSymbolmore1 = gsub(" ","",cell_markers$geneSymbolmore1)
@@ -38,10 +42,7 @@ gene_sets_prepare <- function(path_to_db_file, cell_type){
 }
 
 addArchRThreads(threads = threads)
-dir.create(workDirectory, recursive = TRUE, showWarnings = FALSE)
-setwd(workDirectory)
-
-output_prefix=basename(archr_project)
+output_prefix <- basename(archr_project)
 
 projHeme2 <- loadArchRProject(archr_project)
 
