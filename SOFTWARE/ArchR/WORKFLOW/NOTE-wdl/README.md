@@ -1,49 +1,62 @@
 # ArchR analysis
 > 当你选择使用ArchR做下游分析时，最好看看你的gtf基因名格式，如果存在_，建议全部更换为-后做下游分析，如果你还是用的Seurat做的RNA的分析的话，更需要注意这个问题
 
-## region_annotation
+## region_annotation [link](../../NOTEs/NOTE-region_annotation/)
+> 基于fa和gtf文件准备背景文件（BSgenome包 + gene区域的GRange对象）。用于后续构建ArchRProject对象，获得各自矩阵(tile, gene, peak, motif等)都依赖于这一步。理解起来就是输入fragment文件，要定位其位置与功能，离不开fa和gtf，这一步的处理让其可以载入到ArchR分析中去。
+- **script**: [region_annotation](../../NOTEs/NOTE-region_annotation/)
+- **wdl**: 
+- **input**: .fa & .gtf
+- **output**: 
+  - BSgenome.species_1.0.0.tar.gz: 后续建包用 `R CMD INSTALL BSgenome.species_1.0.0.tar.gz`
+  - _geneAnnotation.Rdata：基因区注释，用于后续ArchR
 
 ## remove_empty_droplet
-> 移除空液滴。单细胞测序仅保留自动化流程判定为细胞的barcode
-- **script**: [1_remove_empty_droplet.R](../ArchR/1_remove_empty_droplet.R)
+> 移除空液滴。仅保留自动化流程判定为细胞的barcodes，主要看的是下降曲线(descending line)。
+- **script**: [1_remove_empty_droplet.R](../SCRIPTs/1_remove_empty_droplet.R)
+- **wdl**: 
 - **input**: 自动化流程输出的output目录
-  - three files in output directory: fragments.tsv.gz & fragments.tsv.gz.tbi; singlecell.csv; metrics_summary.xls; 
-  - tree of "output"
-    ```shell
-    $ tree /Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/
-    /Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/
-    ├── EFH-0d-0114-DNA1_scATAC_report.html
-    ├── filter_peak_matrix
-    │   ├── barcodes.tsv.gz
-    │   ├── matrix.mtx.gz
-    │   └── peaks.bed.gz
-    ├── fragments.tsv.gz
-    ├── fragments.tsv.gz.tbi
-    ├── metrics_summary.xls
-    ├── raw_peak_matrix
-    │   ├── barcodes.tsv.gz
-    │   ├── matrix.mtx.gz
-    │   └── peaks.bed.gz
-    └── singlecell.csv
+- **output**: 过滤barcodes后的fragments.tsv.gz
 
-    3 directories, 11 files
-    ```
-- **output**:
-  ```shell
-  $ tree -L 2 ./out/EFH-0d-frags
-  ./out/EFH-0d-frags
-  ├── EFH-0d-0114-DNA1_fragments_filtered.tsv.gz
-  ├── EFH-0d-0114-DNA1_fragments_filtered.tsv.gz.tbi
-  ├── EFH-0d-0114-DNA2_fragments_filtered.tsv.gz
-  ├── EFH-0d-0114-DNA2_fragments_filtered.tsv.gz.tbi
-  ├── EFH-0d-0114-DNA3_fragments_filtered.tsv.gz
-  └── EFH-0d-0114-DNA3_fragments_filtered.tsv.gz.tbi
-
-  1 directory, 6 files
-  ```
 
 <details> <summary> details </summary>
 
+## input
+> 建议认真看看自动化流程输出的html报告 [link]()
+- three files in output directory: fragments.tsv.gz & fragments.tsv.gz.tbi; singlecell.csv; metrics_summary.xls; 
+- tree of "output"
+  ```shell
+  $ tree /Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/
+  /Files/User/huangpeilin/HuBeiNongKeYuan_rice_embryo/ATAC/EFH-0d-0114-DNA1/EFH-0d-0114-DNA1/output/
+  ├── EFH-0d-0114-DNA1_scATAC_report.html
+  ├── filter_peak_matrix
+  │   ├── barcodes.tsv.gz
+  │   ├── matrix.mtx.gz
+  │   └── peaks.bed.gz
+  ├── fragments.tsv.gz
+  ├── fragments.tsv.gz.tbi
+  ├── metrics_summary.xls
+  ├── raw_peak_matrix
+  │   ├── barcodes.tsv.gz
+  │   ├── matrix.mtx.gz
+  │   └── peaks.bed.gz
+  └── singlecell.csv
+
+  3 directories, 11 files
+  ```
+
+## output
+```shell
+$ tree -L 2 ./out/EFH-0d-frags
+./out/EFH-0d-frags
+├── EFH-0d-0114-DNA1_fragments_filtered.tsv.gz
+├── EFH-0d-0114-DNA1_fragments_filtered.tsv.gz.tbi
+├── EFH-0d-0114-DNA2_fragments_filtered.tsv.gz
+├── EFH-0d-0114-DNA2_fragments_filtered.tsv.gz.tbi
+├── EFH-0d-0114-DNA3_fragments_filtered.tsv.gz
+└── EFH-0d-0114-DNA3_fragments_filtered.tsv.gz.tbi
+
+1 directory, 6 files
+```
 - ./{prefix}/*_fragments_filtered.tsv.gz
 - ./{prefix}/*_fragments_filtered.tsv.gz.tbi
 - all_metrics_summary.csv
@@ -96,10 +109,11 @@
 </details>
 
 ## 2_create_archrproject.R
-> 数据质量和去双胞，降维聚类
-- **input**:
+> 数据质量和去双胞并降维聚类。
+- **script**: [2_create_archrproject.R](../SCRIPTs/2_create_archrproject.R)
+- **input**: 存放过滤后fragements.tsv.gz或.arrow的文件夹
 - **output**:
-  - QualityControl目录
+  - QualityControl目录：去双胞的umap和单个样本的质控（TSS and fragments）
   - {prefix}目录：ArchRProject对象
     ```shell
     $ tree -L 2 EFH-0d

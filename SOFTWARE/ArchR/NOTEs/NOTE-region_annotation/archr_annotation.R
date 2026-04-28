@@ -1,10 +1,14 @@
-# 260422
+# editor: yangdong
+# image: ArchR_Macs2_ChromVARmotifs
+# 260427
 # gtf必须包含exon注释，且exon注释必须包含gene_id和transcript_id属性
+
+
 args <- commandArgs(trailingOnly = TRUE)
 fa_path <- args[1]
 gtf_path <- args[2]
 prefix <- args[3]
-bsgenome_path <- args[4]
+# bsgenome_path <- args[4]
 
 create_anno_from_gtf <- function(gtf_file, chrs=NULL) {
   library(GenomicFeatures)
@@ -98,8 +102,8 @@ library(ArchR)
 geneAnnotation <- create_anno_from_gtf(gtf_path, chrs = chrs)
 save(geneAnnotation, file = paste0(prefix, '_geneAnnotation.Rdata'))
 
-system(paste0("R CMD INSTALL ", bsgenome_path))
-bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))
-do.call("library", list(bsgenome_name))
-genomeAnnotation <- createGenomeAnnotation(genome = bsgenome_name)
-save(genomeAnnotation, file = paste0(prefix, '_genomeAnnotation.Rdata'))
+# system(paste0("R CMD INSTALL ", bsgenome_path))
+# bsgenome_name <- sub("_1.0.0.tar.gz$", "", basename(bsgenome_path))
+# do.call("library", list(bsgenome_name))
+# genomeAnnotation <- createGenomeAnnotation(genome = bsgenome_name)
+# save(genomeAnnotation, file = paste0(prefix, '_genomeAnnotation.Rdata'))

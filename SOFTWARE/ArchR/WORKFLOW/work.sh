@@ -1,4 +1,19 @@
+# 0_region_annotation
+fa="/data/input/Files/User/yinzhanhao/index/rice/osa1_r7.asm.chrs.fa"
+gtf="/data/input/Files/User/yangdong/rice/osa1_r7.all_models_4r.gtf"
+prefix="rice"
+
+# image: txdb-bsgenome
+source /software/miniconda/bin/activate && conda activate txdbmaker
+sh ../genome_annotation.sh $fa $gtf
+
+# image: ArchR_Macs2_ChromVA
+Rscript ../archr_annotation.R $fa $gtf $prefix
+
+
 # 1_remove_empty_droplet.R
+cd /data/work/archr/remove_empty_droplet
+
 
 # 2_create_archrproject.R
 cd /data/work/archr0412

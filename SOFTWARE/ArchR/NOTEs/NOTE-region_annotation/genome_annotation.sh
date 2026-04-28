@@ -1,4 +1,6 @@
-# 260423
+# editor: yangdong
+# image: txdb-bsgenome
+# 260427
 # 在运行前请确定要构建的.fa的染色体都是要被map到的染色体和染色体
 # workflow: 1)build bsgenome object; 2)library package; 3)build gene annotation object
 

@@ -7,7 +7,10 @@
 - output:
   - BSgenome.species_1.0.0.tar.gz: 后续建包用 `R CMD INSTALL BSgenome.species_1.0.0.tar.gz`
   - _geneAnnotation.Rdata：基因区注释，用于后续ArchR
-  - _genomeAnnotation.Rdata：基因组，用于后续ArchR
+- Q&A
+  - GRange对象
+  - 什么是blacklist，如何获取和添加blacklist
+
 ```shell
 fa="/path/to/genome.fa"
 gtf="/path/to/annotation.gtf"
@@ -17,7 +20,7 @@ source /software/miniconda/bin/activate && conda activate txdbmaker
 sh /omics4plant/SOFTWARE/ArchR/NOTE-region_annotation/genome_annotation.sh $fa $gtf
 # image: ArchR_Macs2_ChromVA
 Rscript /omics4plant/SOFTWARE/ArchR/NOTE-region_annotation/archr_annotation.R \
-$fa $gtf $prefix "BSgenome.species_1.0.0.tar.gz"
+$fa $gtf $prefix
 ```
 
 ## hg19
