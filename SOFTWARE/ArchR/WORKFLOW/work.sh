@@ -97,3 +97,29 @@ rna_key="sctype"
 threads=8
 Rscript ../7_archr_cca.R \
 $archr_project $rna_rds $atac_key $rna_key $threads
+
+# footprinting.R
+mkdir -p /data/work/archr/footprinting && cd /data/work/archr/footprinting
+cp -a /data/work/archr/archr_cca/EFH-0d .
+
+archr_project="EFH-0d"
+atac_key="Clusters"
+threads=8
+bsgenome_path='/data/work/archr/region_annotation/BSgenome.species_1.0.0.tar.gz'
+Rscript ../footprinting.R \
+$archr_project $atac_key $threads $bsgenome_path
+
+# plot_peak_gene.R
+mkdir -p /data/work/archr/plot_peak_gene && cd /data/work/archr/plot_peak_gene
+
+archr_project="/data/work/archr/archr_cca/EFH-0d"
+query_genes="LOC-Os04g41620,LOC-Os01g22380"
+atac_key="Clusters"
+upstream=10000
+downstream=10000
+query_file=""
+markerPeaks_Rdata=""
+cutOff=""
+cell_list=""
+Rscript ../plot_peak_gene.R \
+$archr_project $query_genes $atac_key $upstream $downstream $query_file $markerPeaks_Rdata "$cutOff" $cell_list

@@ -55,9 +55,6 @@ p <- ggplot(data.frame(corGSM_MM), aes(cor, maxDelta, color = TFRegulator)) +
     limits = c(0, max(corGSM_MM$maxDelta)*1.05)
   )
 
-p
-
-
 library(ggrepel)
 
 # 建议：创建一个只包含需要标注的基因的新列（例如只标注正相关的 TF）

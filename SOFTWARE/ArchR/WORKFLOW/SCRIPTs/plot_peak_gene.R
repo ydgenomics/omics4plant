@@ -6,7 +6,7 @@ library(ArchR)
 set.seed(1)
 
 args <- commandArgs(trailingOnly = TRUE)
-if(length(args) != 5){stop('
+if(length(args) < 5){stop('
 ### Usage: Rscript plot_peak_gene.R <archr_project> <query_genes> <atac_key> <upstream> <downstream>
 ### Example:
 archr_project="EFH-0d"
@@ -19,7 +19,7 @@ markerPeaks_Rdata=""
 cutOff=""
 cell_list=""
 Rscript ../plot_peak_gene.R \
-$archr_project $query_genes $atac_key $upstream $downstream
+$archr_project $query_genes $atac_key $upstream $downstream $query_file $markerPeaks_Rdata "$cutOff" $cell_list
 ')}
 
 archr_project <- args[1]

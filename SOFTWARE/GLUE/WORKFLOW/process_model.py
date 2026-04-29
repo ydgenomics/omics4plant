@@ -1,5 +1,6 @@
-# 260423
-# /opt/software/miniconda3/envs/glue/bin/python
+# editor: yangdong
+# image: glue-1
+# 260427
 
 import os
 os.environ['PATH'] = "/opt/software/miniconda3/envs/glue/bin:" + os.environ['PATH']
@@ -155,7 +156,7 @@ scglue.data.transfer_labels(
     rna, atac, rna_key, use_rep="X_glue", n_jobs=-1
 )
 
-sc.pl.umap(atac, color=['omics', rna_key], show=False)
+sc.pl.umap(atac, color=rna_key, show=False)
 plt.savefig(f"{prefix}_atac.pdf", bbox_inches="tight", dpi=300)
 plt.close()
 
@@ -180,6 +181,6 @@ rna.write(prefix + "_rna-emb.h5ad", compression="gzip")
 atac.write(prefix + "_atac-emb.h5ad", compression="gzip")
 nx.write_graphml(guidance_hvf, prefix + "_guidance-hvf.graphml.gz")
 
-sc.pl.umap(combined, color=['omics', rna_key, f'{rna_key}_confidence'], show=False)
+sc.pl.umap(combined, color=['omics', rna_key], show=False)
 plt.savefig(f"{prefix}_coembed.pdf", bbox_inches="tight", dpi=300)
 plt.close()

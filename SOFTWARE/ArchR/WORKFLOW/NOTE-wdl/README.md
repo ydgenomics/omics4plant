@@ -227,3 +227,10 @@ EFH-0d
 
 
 ## footprinting
+
+No-Normalization
+![alt text](image-2.png)
+Divide
+![alt text](image-4.png)
+Subtrac
+![alt text](image-3.png)
