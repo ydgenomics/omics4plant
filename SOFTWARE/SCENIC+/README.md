@@ -1,5 +1,16 @@
 # SCENIC+
 
+## based on necessary
+- input_data
+  - cisTopic_obj_fname 以.pkl结尾ATAC_cistopic_obj_with_model.pkl
+  - GEX_anndata_fname .h5ad文件
+  - region_set_folder region_sets文件夹
+  - ctx_db_fname motifs.rankings.feather文件，motif获得
+  - dem_db_fname _motifs.scores.feather得分文件，q&a即rank和score的区别是什么
+  - path_to_motif_annotations .tbl文件即tf和motif的对应关系
+- output
+
+## demo
 Prepare_Data_BMP_TSpec.R：使用 ATAC-seq 峰值生成 cistarget 数据库所需的bed文件。
 - Input
   - rna_rds
@@ -38,6 +49,8 @@ T_ALL_Setup_SCENICPlus_BMP_TSpec.ipynb：设置 SCENIC+ 的 Jupyter Notebook 环
 
 BigWig 是一种用于存储和展示基因组数据（如测序覆盖度、信号强度）的二进制索引文件格式，由 UCSC Genome Browser 开发。
 
+
+## Env
 ```shell
 # tyc_SCENIC+ 云平台现有镜像
 source /opt/software/miniconda3/bin/activate
@@ -73,6 +86,7 @@ sed -i 's/install_requires = \[f"numpy>={numpy_requires}",\]/install_requires = 
 ```
 
 ## References
-- 从Nat Cancer 详解Scenic+用法：单细胞转录因子分析 [wechat](https://mp.weixin.qq.com/s/P8Fb26OpN1lWaVD7quxFEA)
+- 
+- [github](https://github.com/tanlabcode/SC_TALL/tree/main/SCENIC%2B) 从Nat Cancer 详解Scenic+用法：单细胞转录因子分析 [wechat](https://mp.weixin.qq.com/s/P8Fb26OpN1lWaVD7quxFEA)
 - **doc:** [https://scenicplus.readthedocs.io/](https://scenicplus.readthedocs.io/)
 - **paper:** [2023(nature methods)_SCENIC+ single-cell multiomic inference of enhancers and gene regulatory networks]()
