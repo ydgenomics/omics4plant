@@ -225,13 +225,13 @@ EFH-0d
 
 ### output
 - {prefix}_Plot-UMAP-GLUE.pdf
-  > GLUE对细胞注释的标签`[rna_key] sctype`在ArchR可视化umap
+  - > GLUE对细胞注释的标签`[rna_key] sctype`在ArchR可视化umap
   ![alt text](image-5.png) 
-  > 注释可信度`[rna_key]_confidence`的umap
+  - > 注释可信度`[rna_key]_confidence`的umap
   ![alt text](image-6.png) 
-  > 对ArchR分群的`[atac_key] Clusters`按最多细胞类型做注释获得`[rna_key]_max`的新键
+  - > 对ArchR分群的`[atac_key] Clusters`按最多细胞类型做注释获得`[rna_key]_max`的新键
   ![alt text](image-7.png) 
-  > 对应Clusters细胞含量热图，对应`[rna_key]_max`的获得
+  - > 对应Clusters细胞含量热图，对应`[rna_key]_max`的获得
   ![alt text](image-8.png)
 - {prefix}_Plot-UMAP-GLUE_split.pdf
   > 按`[rna_key]`和`[atac_key]`拆分的umap，直观看population
@@ -246,7 +246,7 @@ EFH-0d
   > 整合三个证据的dotplot，包括cell-specific genes，cca and glue
   ![alt text](image-13.png)
 
-</summary>
+</details>
 
 ## `9` plot_peak_gene
 > 可视化感兴趣基因集合附近的染色质开放情况。
