@@ -3,7 +3,7 @@
 
 ## How to see report.html of scATAC-seq [link]()
 
-## 0. region_annotation [link](../../NOTEs/NOTE-region_annotation/)
+## `0` region_annotation [link](../../NOTEs/NOTE-region_annotation/)
 > 基于fa和gtf文件准备背景文件（BSgenome包 + gene区域的GRange对象）。用于后续构建ArchRProject对象，获得各自矩阵(tile, gene, peak, motif等)都依赖于这一步。理解起来就是输入fragment文件，要定位其位置与功能，离不开fa和gtf，这一步的处理让其可以载入到ArchR分析中去。
 - **script**: [region_annotation](../../NOTEs/NOTE-region_annotation/)
 - **input**: .fa & .gtf
@@ -11,7 +11,7 @@
   - BSgenome.species_1.0.0.tar.gz: 后续建包用 `R CMD INSTALL BSgenome.species_1.0.0.tar.gz`
   - _geneAnnotation.Rdata：基因区注释，用于后续ArchR
 
-## 1. remove_empty_droplet
+## `1` remove_empty_droplet
 > 移除空液滴。仅保留自动化流程判定为细胞的barcodes，主要看的是下降曲线(descending line)。
 - **script**: [1_remove_empty_droplet.R](../SCRIPTs/1_remove_empty_droplet.R)
 - **input**: 自动化流程输出的output目录
@@ -108,7 +108,7 @@ $ tree -L 2 ./out/EFH-0d-frags
 
 </details>
 
-## 2. create_archrproject
+## `2` create_archrproject
 > 数据质量和去双胞并降维聚类。
 - **script**: [2_create_archrproject.R](../SCRIPTs/2_create_archrproject.R)
 - **input**: 存放过滤后fragements.tsv.gz或.arrow的文件夹
@@ -159,7 +159,7 @@ EFH-0d
 </details>
 
 
-## 3. call_peaks_marker_peaks_motif_enrich
+## `3` call_peaks_marker_peaks_motif_enrich
 > macs2获得cell乘peak矩阵，分群的差异peak并对其做motif富集。
 - [3_call_peaks_marker_peaks_motif_enrich.R](../SCRIPTs/3_call_peaks_marker_peaks_motif_enrich.R)
 - **Input**:
@@ -182,7 +182,7 @@ EFH-0d
 
 </details>
 
-## 4. peak_link_gene
+## `4` peak_link_gene
 > peak相关联的基因。一种关联是开放区位于基因编码区内，暗示转录时间；另一种位于非编码，可能参与调控（正/负）；还可以发现一些远端调控。
 - [4_peak_link_gene](../SCRIPTs/4_peak_link_gene.R)
 - Input:
@@ -190,43 +190,71 @@ EFH-0d
   - _marker_peaks_links.csv
 
 
-## 5. chromvar_deviation
+## `5` chromvar_deviation
 > 单细胞维度的motif富集。不同于差异peak的motif富集，单细胞motif富集可以拿到motif matrix，看某一些motif是否富集在特定的cluster。
 - [5_chromvar_deviation.R](../SCRIPTs/5_chromvar_deviation.R)
 - input：
 - output：
 
 
-## 6. marker_genes
+## `6` marker_genes
 > 细胞特异marker基因在ATAC数据的gene.activity矩阵的表达情况。理论上有一定的一致性，部分的不一致性也是能够接收的。
 - [6_marker_genes.R](../SCRIPTs/6_marker_genes.R)
 - input:
 - output:
 
 
-## 7. archr_cca
+## `7` archr_cca
 > 基于CCA方法使用RNA数据对ATAC做标签转移注释。
 - [7_archr_cca.R](../SCRIPTs/7_archr_cca.R)
 - input:
 - output:
 
 
-## 8. annotation
+## `8` annotation
 > 综合marker， cca和glue的注释。使用dotplot展示三者的注释情况。
 - [8_annotation.R](../SCRIPTs/8_annotation.R)
-- input:
-- output:
+- input: 
+  - archr_cca输出的ArchRProject对象
+  - marker_genes输出的.csv
+  - (optional) glue输出的.csv
+  - 用于注释的.rds
+- output: (见details)
 
+<details> <summary> details </summary>
 
+### output
+- {prefix}_Plot-UMAP-GLUE.pdf
+  > GLUE对细胞注释的标签`[rna_key] sctype`在ArchR可视化umap
+  ![alt text](image-5.png) 
+  > 注释可信度`[rna_key]_confidence`的umap
+  ![alt text](image-6.png) 
+  > 对ArchR分群的`[atac_key] Clusters`按最多细胞类型做注释获得`[rna_key]_max`的新键
+  ![alt text](image-7.png) 
+  > 对应Clusters细胞含量热图，对应`[rna_key]_max`的获得
+  ![alt text](image-8.png)
+- {prefix}_Plot-UMAP-GLUE_split.pdf
+  > 按`[rna_key]`和`[atac_key]`拆分的umap，直观看population
+  ![alt text](image-9.png) ![alt text](image-10.png)
+- {prefix}_RNA.correlation.pdf
+  > RNA的细胞类型间的correlation, based on HVG expression
+  ![alt text](image-11.png)
+- {prefix}_RNA_ATAC.correlation.pdf
+  > RNA和ATAC的correlation, based on HVG expression
+  ![alt text](image-12.png)
+- {prefix}_annotation.pdf
+  > 整合三个证据的dotplot，包括cell-specific genes，cca and glue
+  ![alt text](image-13.png)
 
-## plot_peak_gene
+</summary>
+
+## `9` plot_peak_gene
 > 可视化感兴趣基因集合附近的染色质开放情况。
 - [plot_peak_gene.R](../SCRIPTs/plot_peak_gene.R)
 - input:
 - output:
 
-
-## footprinting
+## `10` footprinting
 
 No-Normalization
 ![alt text](image-2.png)
@@ -234,3 +262,8 @@ Divide
 ![alt text](image-4.png)
 Subtrac
 ![alt text](image-3.png)
+
+
+## `11` trajectory
+
+## `12` custom-analysis

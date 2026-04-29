@@ -1,3 +1,10 @@
+##################
+# editor: yangdong
+# project: P18Z10200N0148_WUHAN
+# date: 20260429
+# directory:
+##################
+
 # 0_region_annotation
 fa="/data/input/Files/User/yinzhanhao/index/rice/osa1_r7.asm.chrs.fa"
 gtf="/data/input/Files/User/yangdong/rice/osa1_r7.all_models_4r.gtf"
@@ -97,6 +104,20 @@ rna_key="sctype"
 threads=8
 Rscript ../7_archr_cca.R \
 $archr_project $rna_rds $atac_key $rna_key $threads
+
+# 8_annotation.R
+mkdir -p /data/work/archr/annotation && cd /data/work/archr/annotation
+cp -a /data/work/archr/archr_cca/EFH-0d .
+
+archr_project="EFH-0d"
+rna_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d_annotated.rds"
+marker_metrics="/data/work/archr/marker_genes/EFH-0d_marker_genes_overlap.csv"
+atac_key="Clusters"
+rna_key="sctype"
+threads=4
+glue_csv="/data/work/glue/EFH-0d_metadata.csv"
+Rscript ../8_annotation.R \
+$archr_project $rna_rds $marker_metrics $atac_key $rna_key $threads $glue_csv
 
 # footprinting.R
 mkdir -p /data/work/archr/footprinting && cd /data/work/archr/footprinting

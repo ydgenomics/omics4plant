@@ -19,17 +19,18 @@ library(corrplot)
 set.seed(1)
 
 args <- commandArgs(trailingOnly = TRUE)
-if(length(args) != 6){stop('
+if(length(args) < 6){stop('
 ### Usage: Rscript 8_annotation.R <archr_project> <rna_rds> <marker_metrics> <atac_key> <rna_key> <threads>
 ### Example:
 archr_project="EFH-0d"
-rna_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d.rds"
-marker_metrics="/data/input/Files/User/yangdong/rice/marker0201.csv"
+rna_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d_annotated.rds"
+marker_metrics="/data/work/archr/marker_genes/EFH-0d_marker_genes_overlap.csv"
 atac_key="Clusters"
 rna_key="sctype"
 threads=4
+glue_csv="/data/work/glue/EFH-0d_metadata.csv"
 Rscript ../8_annotation.R \
-$archr_project $rna_rds $marker_metrics $atac_key $rna_key $threads
+$archr_project $rna_rds $marker_metrics $atac_key $rna_key $threads $glue_csv
 ')}
 
 archr_project <- args[1]
@@ -41,22 +42,8 @@ threads <- as.integer(args[6])
 
 message(paste0("length of args: ", length(args)))
 
-
-# archr_project="EFH-0d"
-# rna_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d.rds"
-# marker_metrics="/data/input/Files/ResultData/Workflow/W202604140069658/EFH-0d/EFH-0d_marker_genes_overlap.csv"
-# atac_key="Clusters"
-# rna_key="sctype_new"
-# threads=8
-# glue_csv="/data/users/yangdong/yangdong_9cc89721d419466f9b48f759bd58b0f8/online/test/EFH-0d_metadata.csv"
-# Rscript 8_annotation.R \
-# $archr_project $rna_rds $marker_metrics $atac_key $rna_key $threads $glue_csv
-
-
 prefix <- basename(archr_project)
 addArchRThreads(threads=threads)
-
-
 
 seu <- readRDS(rna_rds)
 DefaultAssay(seu) <- "RNA"
