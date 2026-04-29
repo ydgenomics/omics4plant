@@ -7,34 +7,24 @@ library(Matrix)
 library(ggplot2)
 
 # setwd("/mnt/isilon/tan_lab/sussmanj/Temp/ETP_ALL/SCENICPlus")
-rna_rds="etp.25.g1.downsample.1711.each.patient.rds"
-atac_rds="t.all.40.atac.blasts.1146.each.with.v4.anno.updated.RDS"
+rna_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/EFH-0d_annotated.rds"
+atac_rds="/data/input/Files/User/yangdong/WDL/scATAC-anno/rice_peaks.rds"
+rna_key="sctype"
+atac_key=""
 
-rna = readRDS(rna_rds)
-table(rna$comparison.bmp.vs.t.specified)
-table(rna$ETP)
+rna <- readRDS(rna_rds)
+table(rna@meta.data[[rna_key]])
+celltype_rna <- unique(rna@meta.data[[rna_key]])
 
-#Second for ETP 
-rna = readRDS("../GEO_Upload/Seurat/Full_CITE_seq_40_TALL.rds")
-table(rna$ETP)
-table(rna$orig.ident)
-table(rna$is.blast.viscello)
-rna = subset(rna, subset = is.blast.viscello == TRUE)
-Idents(rna) = "orig.ident"
-rna.subtype = subset(rna, downsample = 1146)
-table(rna.subtype$ETP)
-table(rna.subtype$orig.ident)
-table(rna.subtype$is.blast.viscello)
+# rna.subtype <- subset(rna, downsample = 1146, group.by = rna_key)
+# table(rna.subtype@meta.data[[rna_key]])
 
-atac.blasts = readRDS(atac_rds)
-table(atac.blasts$comparison.bmp.vs.t.specified)
-table(atac.blasts$ETP)
+atac <- readRDS(atac_rds)
+table(atac@meta.data[[atac_key]])
+celltype_atac <- unique(atac@meta.data[[atac_key]])
+
 
 atac.blasts = subset(atac.blasts, comparison.bmp.vs.t.specified == "Other", invert = T)
-table(atac.blasts$comparison.bmp.vs.t.specified)
-table(atac.blasts$ETP)
-
-DimPlot(atac.blasts, group.by = "comparison.bmp.vs.t.specified") + coord_fixed()
 
 ########
 #Save data for SCENIC+
@@ -51,7 +41,7 @@ rna.loom$close_all()
 #Save ATAC-seq data 
 #Sparse matrix 
 counts_matrix <- as.matrix(atac.blasts@assays$ATAC@counts)
-counts_sparse <- Matrix::Matrix(counts_matrix , sparse = T)
+counts_sparse <- Matrix::Matrix(counts_matrix, sparse = T)
 writeMM(counts_sparse, file = "Data_SCENICplus/ATAC_Peaks_Sparse.mtx")
 cell_names <- colnames(counts_sparse)
 region_names <- rownames(counts_sparse)

@@ -27,7 +27,7 @@ check_gtf <- opt$check_gtf
 # gff <- import('/data/work/scenic/input/osa1_r7.all_models.gff3', format = "gff") %>% as.data.frame()
 
 gtf <- import(input_gtf, format = "gtf") %>% as.data.frame()
-head(gtf); colnames(gtf); unique(gtf$type)
+head(gtf); unique(gtf$type)
 
 genome <- readDNAStringSet(input_fasta)
 genome; print(names(genome))
