@@ -15,7 +15,8 @@ option_list <- list(
   make_option(c("-g", "--gtf"),type = "character",default = "/data/work/scenic/input/osa1_r7.all_models.gtf",help = "Input gtf file"),
   make_option(c("-f", "--fasta"),type = "character",default = "/data/work/scenic/input/osa1_r7.asm.chrs.fa",help = "Input FASTA file"),
   make_option(c("-n", "--n_length"),type = "integer",default = 3000,help = "Length of the region to extract around the gene"),
-  make_option(c("-c", "--check_gtf"),type = "character",default = "yes", help = "Checking for underscores in gene_id")
+  make_option(c("-c", "--check_gtf"),type = "character",default = "yes", help = "Checking for underscores in gene_id"),
+  make_option(c("-s", "--species"),type = "character",default = "Os", help = "species name")
 )
 
 opt <- parse_args(OptionParser(option_list = option_list))
@@ -23,6 +24,7 @@ input_gtf <- opt$gtf
 input_fasta <- opt$fasta
 n_length <- opt$n_length
 check_gtf <- opt$check_gtf
+species <- opt$species
 
 # gff <- import('/data/work/scenic/input/osa1_r7.all_models.gff3', format = "gff") %>% as.data.frame()
 
@@ -87,4 +89,4 @@ seq_list <- seq_list[width(seq_list) > 1]
 message("Number of sequences after filtering: ", length(seq_list))
 head(seq_list)
 # output fasta format
-writeXStringSet(seq_list, filepath = paste0(basename(input_gtf), "_", n_length, "bp_promoter.fasta"), format = "fasta")
+writeXStringSet(seq_list, filepath = paste0(species, "_", n_length, "bp_promoter.fasta"), format = "fasta")

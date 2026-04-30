@@ -1,55 +1,5 @@
 # SCENIC+
 
-## based on necessary
-- input_data
-  - cisTopic_obj_fname 以.pkl结尾ATAC_cistopic_obj_with_model.pkl
-  - GEX_anndata_fname .h5ad文件
-  - region_set_folder region_sets文件夹
-  - ctx_db_fname motifs.rankings.feather文件，motif获得
-  - dem_db_fname _motifs.scores.feather得分文件，q&a即rank和score的区别是什么
-  - path_to_motif_annotations .tbl文件即tf和motif的对应关系
-- output
-
-## demo
-Prepare_Data_BMP_TSpec.R：使用 ATAC-seq 峰值生成 cistarget 数据库所需的bed文件。
-- Input
-  - rna_rds
-  - atac_rds
-- Output
-  - RNA.loom
-  - subset_RNA.loom
-  - ATAC_Peaks_Sparse.mtx
-  - ATAC_Cell_Names.txt
-  - ATAC_Region_Names.txt
-  - ATAC_Region_Names.bed
-  - ATAC_Metadata.txt
-
-准备 FASTA 文件并基于 ATAC 峰创建峰值文件Prepare_FASTA.sh：准备包含感兴趣区域的 FASTA 文件。
-- Input
-  - ATAC_Region_Names.bed
-  - ?hg38.fa
-  - ?hg38.chrom.sizes
-- Output
-  - hg38_T_ALL_1kb_bg_padding.fa
-
-Create_Cistarget_Motif.sh：以正确的格式准备数据库结合ATAC-seq数据库结果，构建本地数据库以获得最佳分析结果。
-- Input
-  - hg38_T_ALL_1kb_bg_padding.fa
-  - motifs.txt
-  - CBDIR="/mnt/isilon/tan_lab/sussmanj/Single_Cell_Tools/ScenicPlus/Motif_Collection/v10nr_clust_public/singletons"
-- Output
-
-
-T_ALL_Setup_SCENICPlus_BMP_TSpec.ipynb：设置 SCENIC+ 的 Jupyter Notebook 环境，包括 pycistopic 预处理配置 Jupyter Notebook 环境并安装 SCENIC+ 所需的依赖项。使用 pycistopic 对输入数据进行分析和预处理，例如构建染色质可及性特征矩阵。
-
-基于 config.yaml 参数运行 SCENIC+ 管道创建 config.yaml 配置文件，设定物种、参考基因组和分析参数。启动 SCENIC+ 管道进行转录调控网络推断和调控因子识别。
-
-后处理和结果检查（Jupyter Notebook）整理 SCENIC+ 输出结果，例如调控网络和调控因子目标基因集。T_ALL_Review_SCENICPlus_BMP_TSpec.ipynb：在Jupyter Notebook 中可视化调控网络，分析关键调控因子和目标基因。
-
-
-BigWig 是一种用于存储和展示基因组数据（如测序覆盖度、信号强度）的二进制索引文件格式，由 UCSC Genome Browser 开发。
-
-
 ## Env
 ```shell
 # tyc_SCENIC+ 云平台现有镜像
@@ -86,7 +36,6 @@ sed -i 's/install_requires = \[f"numpy>={numpy_requires}",\]/install_requires = 
 ```
 
 ## References
-- 
 - [github](https://github.com/tanlabcode/SC_TALL/tree/main/SCENIC%2B) 从Nat Cancer 详解Scenic+用法：单细胞转录因子分析 [wechat](https://mp.weixin.qq.com/s/P8Fb26OpN1lWaVD7quxFEA)
 - **doc:** [https://scenicplus.readthedocs.io/](https://scenicplus.readthedocs.io/)
 - **paper:** [2023(nature methods)_SCENIC+ single-cell multiomic inference of enhancers and gene regulatory networks]()

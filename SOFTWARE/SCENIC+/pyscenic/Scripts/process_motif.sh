@@ -30,6 +30,8 @@ NR > 1 {
     print matrix_id "\t" matrix_id "\t" gene_id "\tPlantTFDB\t5.0\t" gene_id "\t0\tNone\tNone\t1\tNone\tNone\tgene is directly annotated"
 }' tmp.txt > "$species"_TF_binding_motifs_information.tbl
 
+awk 'NR>1 {print $1}' tmp.txt > "$species"_tf.txt
+
 ########## Deal meme file get motif information ##########
 #less -S $input_meme
 head -n 10 $input_meme

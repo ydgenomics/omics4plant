@@ -36,6 +36,13 @@ Multi-omic technologies empower plant researchs.
 
 </details>
 
+## Q&A
+<details> <summary> Q&A </summary>
+
+- **算法：AUC**
+
+</details>
+
 ## Tips
 <details> <summary> Tips </summary>
 
