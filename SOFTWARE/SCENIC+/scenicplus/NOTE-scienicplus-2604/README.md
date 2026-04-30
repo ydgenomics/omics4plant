@@ -1,5 +1,5 @@
 # scenicplus
-> 使用非配对RNA和ATAC数据构建调控网络。
+> 使用非配对RNA和ATAC数据构建调控网络。Single-Cell Enhancer-driven gene regulatory Network Inference and Clustering.
 
 ## references
 - https://github.com/tanlabcode/SC_TALL/tree/main/SCENIC+
@@ -7,12 +7,44 @@
 - https://github.com/aertslab/create_cisTarget_databases/tree/master
 
 
+> [!NOTE]
+> - rna和atac的细胞类型的键要一致且细胞类型也一致
+> 
+
+
+定位scenicplus的snakefile
+```shell
+python -c "import scenicplus; print(scenicplus.__file__)"
+# /usr/local/lib/python3.11/site-packages/scenicplus/snakemake
+```
+
+```shell
+# 如果已有 GTF 文件和基因组 FASTA
+# 自己构建
+
+species="hsapiens"
+biomart_host="http://www.ensembl.org"
+scenicplus prepare_data download_genome_annotations \
+    --species $species \
+    --biomart_host $biomart_host \
+    --genome_annotation_out_fname "$species".genome_annotation.tsv \
+    --chromsizes_out_fname "$species".chromsizes.tsv
+
+# for plant
+scenicplus prepare_data download_genome_annotations \
+    --species osativa \
+    --biomart_host "https://plants.ensembl.org" \
+    --genome_annotation_out_fname osativa.genome_annotation.tsv \
+    --chromsizes_out_fname osativa.chromsizes.tsv
+```
 
 ## run scenicplus
 - fa
 - gtf
 - motf.meme
 - tf_motif.txt
+- rna: .h5ad *(from scanpy/seeurat, when from seurat: rds --> loom --> h5ad)* [rds2h5ad.R]()
+- atac: .pkl *(from ArchR: rds --> cistopic --> [with models])*
 
 **config.yaml**
 - input_data
@@ -99,7 +131,9 @@ python "${SCRIPT_DIR}/create_cistarget_motif_databases_yd.py" \
 
 
 ```
-
+## Q&A
+- topic的意义是什么
+- 三个feather文件各自的意义
 
 ## DEMOs
 

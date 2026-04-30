@@ -44,7 +44,7 @@ head tf_motif_matrix.txt
 awk '/^>/ {print ">" $2; next} {print}' tf_motif_matrix.txt > tf_motif_matrix2.txt
 head tf_motif_matrix2.txt
 ## 输出保存到每个文件
-mkdir "$species"_motif_dir && cd "$species"_motif_dir
+mkdir -p "$species"_motif_dir && cd "$species"_motif_dir
 awk '/^>/{if(file) close(file); filename=substr($0,2)".cb"; print $0 > filename; file=filename; next} {print >> file}'  ../tf_motif_matrix2.txt
 ## 准备每个motif id文件
 grep ">" ../tf_motif_matrix2.txt|sed 's/>//g' > ../"$species"_motifs_id.txt

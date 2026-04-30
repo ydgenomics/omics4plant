@@ -33,10 +33,6 @@ seurat_to_loom_reticulate <- function(seu, output_loom = "scenic.loom",
   } else {
     counts_matrix <- as.matrix(counts)
   }
-  
-  # Transpose to genes x cells (genes as rows)
-  counts_matrix <- t(counts_matrix)
-  
   # Get gene and cell names
   genes <- rownames(counts_matrix)
   cells <- colnames(counts_matrix)
@@ -44,7 +40,7 @@ seurat_to_loom_reticulate <- function(seu, output_loom = "scenic.loom",
   # Create loom file directly
   row_attrs <- list(Gene = genes)
   col_attrs <- list(CellID = cells)
-  
+  # loom 文件也是行为基因，列为细胞，same with seurat
   lp$create(output_loom, counts_matrix, row_attrs, col_attrs)
   
   message("Successfully created: ", output_loom)
