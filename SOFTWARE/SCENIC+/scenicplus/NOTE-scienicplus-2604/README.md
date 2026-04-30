@@ -9,7 +9,24 @@
 
 > [!NOTE]
 > - rna和atac的细胞类型的键要一致且细胞类型也一致
-> 
+
+
+```mermaid
+flowchart TB
+1[(Reference)]---1.1[(.fasta)]
+1---1.2[(.gtf)]
+2[(PlantTFDB)]---2.1[(.meme)] ==> 2.3[/process_motif.sh/]
+2---2.2[(tf2motif.txt)] ==> 2.3 --> 2.3.1[(_motifs_id.txt)]; 2.3 --> 2.3.2[(_tf.txt)]; 2.3 --> 2.3.3[(_TF_binding_motifs_information.tbl)]; 2.3 --> 2.3.4[(_motif_dir)]
+3[(scRNA)]---3.1[(rna.rds)]
+4[(scATAC)]---4.1[(atac.rds)]
+4.0[(ArchRProject)] ---> 4.1
+4.1 ==> 4.2[/process_atac/] --> 4.2.1[(dir-rds2cistopic)]
+4.2 --> 4.2.3[(chrom.sizes.txt)]
+4.2 --> 4.2.2[(atac_region_names.bed)] ==> 4.3[/extract_fa_from_peaks/]
+1.1 --> 4.3;  4.2.3 --> 4.3 ==> 4.3.1[(_1000bp_bg_padding.fa)] ==> 4.4[/create_cistarget_motif_databases/]
+2.3.4 --> 4.4; 2.3.1 --> 4.4 --> 4.4.1[(.regions_vs_motifs.rankings.feather)]
+4.4 --> 4.4.2[(.regions_vs_motifs.scores.feather)]; 4.4 --> 4.4.3[(.motifs_vs_regions.scores.feather)]
+```
 
 
 定位scenicplus的snakefile
@@ -83,11 +100,7 @@ Prepare_Data_BMP_TSpec.R：使用 ATAC-seq 峰值生成 cistarget 数据库所�
   - ATAC_Region_Names.bed
   - ATAC_Metadata.txt
 
-```shell
-
-
-```
-
+## extract_fa_from_peaks
 ```shell
 ## 
 ## image: scenicplus-docker
@@ -106,6 +119,7 @@ bash /data/work/scenic/create_fasta_with_padded_bg_from_bed.sh \
         yes
 ```
 
+## create_cistarget_motif_databases
 ```shell
 ## image: GRN-allSCENIC--01
 ## Create_Cistarget_Motif.sh
@@ -124,6 +138,11 @@ python "${SCRIPT_DIR}/create_cistarget_motif_databases_yd.py" \
     --bgpadding 1000 \
     -t 40
 ```
+**output**
+- {species}.regions_vs_motifs.rankings.feather
+- {species}.regions_vs_motifs.scores.feather
+- {species}.motifs_vs_regions.scores.feather
+
 
 
 ```shell
