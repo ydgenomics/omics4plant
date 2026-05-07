@@ -1,5 +1,12 @@
+<br>
+<a href ="https://github.com/ydgenomics/omics4plant/tree/main"><img src="omics4plant.logo.png" width="100px" align="right" /></a>
+
+<!-- badges: start -->
+<!-- badges: end -->
+
 # omics4plant
-Multi-omic technologies empower plant researchs.
+
+<br>
 
 ---
 
