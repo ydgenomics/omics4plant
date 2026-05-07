@@ -1,25 +1,67 @@
-# Softwares
+# Single-Cell Analysis Software Tools
 
-## ST
-- Stereopy https://stereopy.readthedocs.io/en/latest/
+This repository organizes various tools for single-cell omics analysis, categorized by functionality.
 
-## single-cell
+## Single-Cell RNA-seq Analysis
+
+- **Seurat**: R package for QC, normalization, dimension reduction, clustering, visualization, and data integration.
+- **rapids-singlecell**: GPU-accelerated single-cell analysis in Python.
+- **scPlantAnnotate**: Plant-specific single-cell RNA-seq annotation tool.
+- **Stereopy**: Spatial transcriptomics analysis (ST).
+
+## Single-Cell ATAC-seq Analysis
+
+- **ArchR**: Comprehensive scATAC-seq analysis, including peak co-accessibility, peak-to-gene linkage, and integration with scRNA-seq.
+- **SnapATAC2**: Fast and scalable scATAC-seq analysis with harmony integration.
+- **pycisTopic**: Topic modeling for scATAC-seq data.
+
+## Multi-Omics Integration
+
+- **Signac**: Multi-modal single-cell analysis (RNA + ATAC).
+- **GLUE**: Graph-linked unified embedding for multi-omics data integration.
+- **CellWalker2**: Hierarchical cell type relationships for multi-omics discovery.
+
+## Gene Regulatory Networks (GRN)
+
+- **SCENIC/SCENIC+**: Single-cell regulatory network inference and clustering.
+- **CellOracle**: GRN inference from single-cell data.
+- **IReNA**: Interactive regulatory network analysis.
+- **gene2role**: Gene-to-role assignment in regulatory networks.
+
+## Trajectory Analysis
+
+- **scTour**: Trajectory inference from single-cell data (alternative to RNA velocity).
+
+## Quality Control and Preprocessing
+
+- **CellBender**: Removal of ambient RNA from single-cell data.
+- **sortmerna**: RNA-seq preprocessing and quality control.
+
+## Plant-Specific Tools
+
+- **happy2seeGenome**: Genome visualization and analysis for plants.
+- **scPlantAnnotate**: Annotation for plant single-cell data.
+
+## Other Tools
+
+- **Cflows**: Computational flows for single-cell analysis.
+- **dictys**: Dictionary-based single-cell analysis.
+- **Fountain**: Single-cell data fountain (analysis pipeline).
+- **PNG**: Portable network graphics for visualizations.
+- **SCOP**: Single-cell omics pipeline.
+
+## Additional References
+
 - 2024|Nature communication|ezSingleCell [github](https://github.com/JinmiaoChenLab/ezSingleCell)
-- 2023|Plant Communications|scPlant [github]() [scPlant：一款分析植物单细胞转录组数据的通用工具](https://mp.weixin.qq.com/s/ZEm84pn_3YD7s2CpP3fbpw)
-- Epipack: 单细胞ATAC细胞标签转移 [github](https://github.com/ZhangLabGT/EpiPack)。2025年9月发表在bioRxiv上的新工具。它通过“峰嵌入信息变分推断”（PEIVI）框架，可以接受两个峰集完全不同的数据集（比如你的数据和公共参考），将它们映射到同一个空间进行分析和标签转移。它还能检测你自己的数据中是否存在公共参考里没有的“未知”细胞类型或状态。
-- CellWalker2: 利用层级细胞类型关系进行多组学发现。
-- 2024 | Nat. Comput. Sci. | 将单细胞ATAC测序数据与基因组序列整合以辨识细胞类型 
+- 2023|Plant Communications|scPlant [scPlant：一款分析植物单细胞转录组数据的通用工具](https://mp.weixin.qq.com/s/ZEm84pn_3YD7s2CpP3fbpw)
+- Epipack: 单细胞ATAC细胞标签转移 [github](https://github.com/ZhangLabGT/EpiPack)
+- 2024 | Nat. Comput. Sci. | 将单细胞ATAC测序数据与基因组序列整合以辨识细胞类型
 
-## trajectory
-- 2023|genome biology|python|scTour [scTour拟时序分析-RNAvelocity的平替](https://mp.weixin.qq.com/s/dc68-GwTqKnfMLykR2J0lw) [article]((https://pubmed.ncbi.nlm.nih.gov/37353848/))
-  > 只依赖矩阵数据，而不依赖RNA剪切数据
+## Differential Expression Analysis (DEA)
 
-## Gene regulatory network (GRN)
-- SCENIC
-- MINEX
-- IReNA
-- Gene2Role
-
-## Differential expression analysis (DEA)
-- wilcox(Seurat)
+- wilcox (Seurat)
 - memento
+
+## Functions
+
+- **functions.py**: Utility functions for single-cell analysis workflows.
