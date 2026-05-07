@@ -9,23 +9,35 @@
 
 > [!NOTE]
 > - rna和atac的细胞类型的键要一致且细胞类型也一致
+> - rna的h5ad必须包含.raw
+> - gene.annotation必须包含`ValueError: gene_annotation should have the following columns: Chromosome, Start, End, Strand, Gene, Transcription_Start_Site`
+> - `chromsizes should have the following columns: Chromosome, Start, End`
 
+- [extract_peakmatrix.R](../Scripts/extract_peakmatrix.R) 输入：archrproject；输出：peaks.rds
+- [process_atac.R](../Scripts/process_atac.R) GRN-allSCENIC--01 输入：peak.rds，fa，gtf；输出：cistopic对象文件夹，region.bed，chrome.size和gene_annotation
+- [get_cistopic_model.R](../Scripts/get_cistopic_model.py) 输入：cistopic对象文件夹；输出：cistopic_model.pkl，region的文件夹
+- [rds2h5ad](../Scripts/rds2h5ad.R) 转rna.rds为rna.h5ad
+- [process_motif]
+- [create_cistarget_db]
+- [scenicplus]
 
 ```mermaid
 flowchart TB
 1[(Reference)]---1.1[(.fasta)]
 1---1.2[(.gtf)]
 2[(PlantTFDB)]---2.1[(.meme)] ==> 2.3[/process_motif.sh/]
-2---2.2[(tf2motif.txt)] ==> 2.3 --> 2.3.1[(_motifs_id.txt)]; 2.3 --> 2.3.2[(_tf.txt)]; 2.3 --> 2.3.3[(_TF_binding_motifs_information.tbl)]; 2.3 --> 2.3.4[(_motif_dir)]
-3[(scRNA)]---3.1[(rna.rds)]
-4[(scATAC)]---4.1[(atac.rds)]
-4.0[(ArchRProject)] ---> 4.1
-4.1 ==> 4.2[/process_atac/] --> 4.2.1[(dir-rds2cistopic)]
+2---2.2[(tf2motif.txt)] ==> 2.3 --> 2.3.1[(_motifs_id.txt)]; 2.3 --> 2.3.2[(_tf.txt)]; 2.3 --> 2.3.3[(_motifs_information.tbl)]; 2.3 --> 2.3.4[(_motif_dir)]
+3[(scRNA)]---3.1[(rna.rds)] --> 3.2[/preprocess_align/]
+4[(scATAC)]---4.1[(ArchRProject)] --> 3.2 --> 3.2.1[(rna_pp.rds)]; 3.2 --> 3.2.2[(atac_pp.rds)]
+3.2.2 ==> 4.2[/process_atac/] --> 4.2.1[(dir-rds2cistopic)] ==> 4.5[/get_cistopic_model/]==>4.5.1[(.pkl)]
+4.5.1==> 4.6[/model_region/]
 4.2 --> 4.2.3[(chrom.sizes.txt)]
 4.2 --> 4.2.2[(atac_region_names.bed)] ==> 4.3[/extract_fa_from_peaks/]
 1.1 --> 4.3;  4.2.3 --> 4.3 ==> 4.3.1[(_1000bp_bg_padding.fa)] ==> 4.4[/create_cistarget_motif_databases/]
 2.3.4 --> 4.4; 2.3.1 --> 4.4 --> 4.4.1[(.regions_vs_motifs.rankings.feather)]
 4.4 --> 4.4.2[(.regions_vs_motifs.scores.feather)]; 4.4 --> 4.4.3[(.motifs_vs_regions.scores.feather)]
+5[/scenicplus/] --- 5.1[(cisTopic_obj_fname)]; 5---5.2[(GEX_anndata_fname)]; 5---5.3[(region_set_folder)]; 5---5.4[(ctx_db_fname)]; 5---5.5[(dem_db_fname)]; 5---5.6[(path_to_motif_annotations)]
+
 ```
 
 
@@ -144,15 +156,105 @@ python "${SCRIPT_DIR}/create_cistarget_motif_databases_yd.py" \
 - {species}.motifs_vs_regions.scores.feather
 
 
-
+## get_cistopic
+LDA (Latent Dirichlet Allocation，潜在狄利克雷分配) 是 pycisTopic 用来识别“主题”的核心数学模型。它最初是一种用于文本处理的算法（用于找出文章中的“主题”），但在单细胞分析中被赋予了表观基因组学的含义。
+LDA与LSI算法有异曲同工的感觉，我觉得可以理解为pca。
+什么是topic，topic是不是基因集/区域集
+50 个 Topic 代表了 50 个独特的调控“标签”。通过观察哪些细胞拥有哪些 Topic 的权重最高，研究人员就可以判断这些细胞属于哪种状态。
 ```shell
 ## image: scenicplus-docker
+atac4cistopic_dir="/data/work/scenic/atac4cistopic"
+mallet_path = "/data/work/scenic/Mallet-202108/bin/mallet"
+n_cpu=32
+mallet_mem='256G'
+atac_key='sctype'
 
+ATAC_cistopic_obj.pkl
+ATAC_Models_500_iter_LDA.pkl
+ATAC_cistopic_obj_with_model.pkl
 
 ```
+output
+输出model.pkl，已经三个region_set的文件目录，这些region是重点关注的区域，细胞类型特异的region，全部的region，已经特异的3k的region。
+
 ## Q&A
 - topic的意义是什么
 - 三个feather文件各自的意义
+
+### 查看cistopic对象
+
+要查看 `cistopic_obj` 的 metadata 信息（基因名和细胞名），可以使用以下方法：
+
+#### 1. 查看细胞名（Cell names）
+
+```python
+# 方法1：直接获取细胞名
+cistopic_obj.cell_names
+
+# 方法2：查看细胞元数据
+cistopic_obj.cell_data
+
+# 方法3：如果是从 anndata 创建的对象
+cistopic_obj.adata.obs_names
+```
+
+#### 2. 查看基因名（Gene names）
+
+```python
+# 方法1：直接获取基因名
+cistopic_obj.gene_names
+
+# 方法2：查看基因元数据
+cistopic_obj.gene_data
+
+# 方法3：如果是从 anndata 创建的对象
+cistopic_obj.adata.var_names
+```
+
+#### 3. 查看完整的 metadata
+
+```python
+# 查看对象的所有可用属性
+print(dir(cistopic_obj))
+
+# 查看对象的结构（如果支持）
+cistopic_obj
+
+# 查看 shape（细胞数 × 基因数）
+print(f"细胞数: {cistopic_obj.n_cells}")
+print(f"基因数: {cistopic_obj.n_genes}")
+
+# 查看前几个细胞名和基因名
+print("前5个细胞名:", cistopic_obj.cell_names[:5])
+print("前5个基因名:", cistopic_obj.gene_names[:5])
+
+# 查看细胞和基因的完整 metadata
+cistopic_obj.cell_data.head()
+cistopic_obj.gene_data.head()
+```
+
+#### 4. 转换为 DataFrame 查看
+
+```python
+# 将细胞名转换为 DataFrame
+import pandas as pd
+cell_df = pd.DataFrame(cistopic_obj.cell_names, columns=["cell_name"])
+gene_df = pd.DataFrame(cistopic_obj.gene_names, columns=["gene_name"])
+
+print(cell_df.head())
+print(gene_df.head())
+```
+
+#### 5. 如果对象包含 anndata 对象
+
+```python
+# 查看 anndata 对象信息
+cistopic_obj.adata
+cistopic_obj.adata.obs  # 细胞metadata
+cistopic_obj.adata.var  # 基因metadata
+```
+
+先试试 `cistopic_obj.cell_names` 和 `cistopic_obj.gene_names`，这应该是最直接的查看方式。
 
 ## DEMOs
 

@@ -61,7 +61,7 @@ scenic_loom="scenic.loom"
 tf_list="Os_tf.txt"
 tbl_file="Os_TF_binding_motifs_information.tbl"
 feather_file="Os.regions_vs_motifs.rankings.feather"
-n_cpus=28
+n_cpus=14
 rank_threshold=5000
 auc_threshold=0.05
 

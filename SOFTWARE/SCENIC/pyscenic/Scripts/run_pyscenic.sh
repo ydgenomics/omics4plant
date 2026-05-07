@@ -1,6 +1,8 @@
 # 260430
 # editor: yangdong
 
+set -e
+
 scenic_loom=${1:-"scenic.loom"}
 tf_list=${2:-"Os_tf.txt"}
 tbl_file=${3:-"Os_TF_binding_motifs_information.tbl"}

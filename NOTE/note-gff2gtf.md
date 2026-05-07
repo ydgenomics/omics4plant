@@ -1,5 +1,63 @@
 
 
+## molecular biology
+> - 基因组的碱基坐标是基于正链从5到3端从小到大标注
+> - 新链合成方向：5' → 3'; 模板链读取方向：3' → 5'
+正链（编码链）：复制叉的方向是3->5，形成的新链是5->3，其start到end是从小到大。基因组的标位是按正链的3->5标注的。
+负链（模板链）：复制叉的方向与基因的方向不同，其start到end是从大到小。
+基因：参与复制转录等事件的集合体/区域/碱基序列。包含启动子、5' UTR、外显子、内含子、3' UTR
+5'UTR：
+3'UTR
+TSS：是的，一个基因可以有多个 TSS（转录起始位点）。这是真核生物基因表达的常见现象
+转录本：基因转录后的序列，DNA->RNA，转录本后续作为模板用于翻译，转录本的成熟，转录本的转录后处理，unsplice的转录本即包含intron，而spliced的转录本是成熟的，转录本的多样性，选择性剪切影响了生物的复杂性。
+```
+双链 DNA:
+
+负链 (-):  3' ---------------- 5'  ← 这是模板链（被 RNA 聚合酶读取）
+           ↑ 读取方向：3'→5'
+           
+正链 (+):  5' ---------------- 3'  ← 这是编码链（不读取，序列与 RNA 相同）
+
+RNA 产物:  5' ---------------- 3'  ← 与正链序列相同（T→U）
+```
+
+```R
+# 查看 SCENIC+ 文档中的推荐做法
+# 通常使用"主要转录本"或"最长转录本"
+
+# 示例代码
+library(data.table)
+
+# 为每个基因选择 TSS
+tss_dt <- transcripts_dt[, .(
+  # 方法1：选择最长的转录本
+  TSS_longest = ifelse(strand == "+", 
+                       start[which.max(abs(end - start))],
+                       end[which.max(abs(end - start))]),
+  
+  # 方法2：选择最上游的 TSS
+  TSS_upstream = ifelse(strand == "+",
+                        min(start),
+                        max(end)),
+  
+  # 方法3：选择最下游的 TSS  
+  TSS_downstream = ifelse(strand == "+",
+                          max(start),
+                          min(end)),
+  
+  # 方法4：选择第一个注释的转录本
+  TSS_first = ifelse(strand == "+",
+                     start[1],
+                     end[1])
+), by = gene_id]
+
+# 通常推荐使用最长转录本
+gene_annotation$Transcription_Start_Site <- 
+  tss_dt[match(gene_annotation$Gene, gene_id), TSS_longest]
+```
+
+## gff2gtf
+
 ```shell
 # 基本用法：-T 表示输出 GTF 格式
 gffread input.gff -T -o output.gtf

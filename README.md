@@ -28,6 +28,7 @@ Multi-omic technologies empower plant researchs.
 ## ToDo
 <details> <summary> todo </summary>
 
+- 学习R包reticulate
 - **develop a utlis packages in R and python (ydutils)**
   - Why we need a utils package?
   - A utils package how to fasten our works?

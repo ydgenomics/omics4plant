@@ -43,11 +43,11 @@ convert_to_bed <- function(region) {
   return(bed)
 }
 bed_data <- apply(as.matrix(region_names), 1, convert_to_bed)
-write.table(t(bed_data), paste0(prefix, "atac_region_names.bed"), sep = "\t", quote = FALSE, row.names = FALSE, col.names = FALSE)
+write.table(t(bed_data), paste0(prefix, "_atac_region_names.bed"), sep = "\t", quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 library(Biostrings)
 seqs <- readDNAStringSet(fa)
 chrom_sizes <- data.frame(chr = names(seqs), size = width(seqs))
-write.table(chrom_sizes, paste0(prefix, "chrom.sizes"), 
+write.table(chrom_sizes, paste0(prefix, "_chrom.sizes"), 
             row.names = FALSE, col.names = FALSE, 
             sep = "\t", quote = FALSE)

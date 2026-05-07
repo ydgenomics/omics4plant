@@ -1,6 +1,6 @@
 # editor: yangdong
 # image: ArchR_Macs2_ChromVARmotifs
-# 260427
+# 260506
 # Ref: https://github.com/dongwei-2023/Single_Cell_Multiomics_in_Rice/blob/v1.0/06.Correlation_analysis_of_RNA_and_ATAC.R
 # rna: RNA, hvgs, Idents()
 
@@ -149,6 +149,7 @@ if (length(args) == 7){
         ); print(p)
     }
     dev.off()
+    saveArchRProject(proj)
 }
 
 
