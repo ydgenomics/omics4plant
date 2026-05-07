@@ -8,6 +8,8 @@
 
 I focus on multiple aspects of plant biology, including taxonomy, morphology, anatomy, evolution, development, molecular biology, and genomic sequences. My primary interest lies in plant omics, leveraging multi-omics technologies to address unresolved biological questions and improve traits in cultivated species. With advanced technologies such as high-throughput sequencing, multi-omics approaches are pivotal for empowering plant research and advancing our understanding of plant biology.
 
+*logo from ChatGPT*
+
 <br>
 
 
