@@ -19,7 +19,9 @@ This repository organizes various tools for single-cell omics analysis, categori
 
 - **Signac**: Multi-modal single-cell analysis (RNA + ATAC).
 - **GLUE**: Graph-linked unified embedding for multi-omics data integration.
+- [PNAS | SuperMap：针对非配对单细胞多模态数据的整合分析方法](https://mp.weixin.qq.com/s/PepGEikwpNwKzofq9uKPcA)
 - **CellWalker2**: Hierarchical cell type relationships for multi-omics discovery.
+- **Fountain**: Single-cell data fountain (analysis pipeline).
 
 ## Gene Regulatory Networks (GRN)
 
@@ -27,10 +29,12 @@ This repository organizes various tools for single-cell omics analysis, categori
 - **CellOracle**: GRN inference from single-cell data.
 - **IReNA**: Interactive regulatory network analysis.
 - **gene2role**: Gene-to-role assignment in regulatory networks.
+- **dictys**: Dictionary-based single-cell analysis.
 
 ## Trajectory Analysis
 
 - **scTour**: Trajectory inference from single-cell data (alternative to RNA velocity).
+- **Cflows**: Computational flows for single-cell analysis.
 
 ## Quality Control and Preprocessing
 
@@ -42,13 +46,10 @@ This repository organizes various tools for single-cell omics analysis, categori
 - **happy2seeGenome**: Genome visualization and analysis for plants.
 - **scPlantAnnotate**: Annotation for plant single-cell data.
 
-## Other Tools
+## utils packages
 
-- **Cflows**: Computational flows for single-cell analysis.
-- **dictys**: Dictionary-based single-cell analysis.
-- **Fountain**: Single-cell data fountain (analysis pipeline).
-- **PNG**: Portable network graphics for visualizations.
 - **SCOP**: Single-cell omics pipeline.
+- **ezSingleCell2**: https://github.com/JinmiaoChenLab/ezSingleCell2
 
 ## Additional References
 

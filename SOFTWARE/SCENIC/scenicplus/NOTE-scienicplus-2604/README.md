@@ -12,6 +12,7 @@
 > - rna的h5ad必须包含.raw
 > - gene.annotation必须包含`ValueError: gene_annotation should have the following columns: Chromosome, Start, End, Strand, Gene, Transcription_Start_Site`
 > - `chromsizes should have the following columns: Chromosome, Start, End`
+> - 非常消耗cpu，memory不怎么消耗
 
 - [extract_peakmatrix.R](../Scripts/extract_peakmatrix.R) 输入：archrproject；输出：peaks.rds
 - [process_atac.R](../Scripts/process_atac.R) GRN-allSCENIC--01 输入：peak.rds，fa，gtf；输出：cistopic对象文件夹，region.bed，chrome.size和gene_annotation
