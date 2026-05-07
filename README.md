@@ -8,7 +8,6 @@
 
 <br>
 
----
 
 > - [CS](./CS/): Basic programing language and algorithm.
 > - [DATABASE](./DATABASE/): Genetic/evolutionary/morphological databases.
