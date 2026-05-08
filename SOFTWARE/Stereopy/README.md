@@ -1,34 +1,12 @@
 # Stereopy
 
-
-```shell
-mamba create --name st python=3.8 -y  # The env name could be set arbitrarily, not only st.
-conda activate st
-mamba install stereopy -c stereopy -c grst -c numba -c conda-forge -c bioconda -c fastai -c defaults -y
-pip install patchify
-pip install fastremap
-pip install roifile
-```
+- tissue分割SAW可以处理，stereopy也可以实现
+- 获取stereopy的tutorial的notebook https://github.com/STOmics/Stereopy/tree/main/docs/source/Tutorials
 
 
-
-
-- 图像分割
-- 
-
-
-
-
-SAW-ST-V8-gef2gem
-
-
-
-
-
-
-
-
-
+to-do
+- split
+- cluster: BayesSpace, 
 
 ## References
 - STOmics [website](https://www.stomics.tech/)
@@ -39,3 +17,15 @@ SAW-ST-V8-gef2gem
 - stereopy 功能及使用介绍 笔记 https://mp.weixin.qq.com/s/x2mzj47d3tHPAfsd_-36qQ
 - 跟着Nature学习空转基因集打分：根据打分对切片进行区域划分 https://mp.weixin.qq.com/s/jhYkZrmY0QEJYHX3py2EgQ
 - Cell bin都是谁在用啊？ https://mp.weixin.qq.com/s/wIQh918Ql2FreBvJYqSkOg
+
+
+## Env
+
+```shell
+mamba create --name st python=3.8 -y  # The env name could be set arbitrarily, not only st.
+conda activate st
+mamba install stereopy -c stereopy -c grst -c numba -c conda-forge -c bioconda -c fastai -c defaults -y
+pip install patchify
+pip install fastremap
+pip install roifile
+```

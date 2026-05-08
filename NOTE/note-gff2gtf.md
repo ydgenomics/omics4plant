@@ -65,6 +65,10 @@ gffread input.gff -T -o output.gtf
 gffread /data/work/ref/osa1_r7.all_models.gff3 \
 -T -o /data/work/ref/osa1_r7.all_models.gtf
 
+agat_convert_sp_gff2gtf.pl \
+--gff /data/work/scenic/input/osa1_r7.all_models.gff3 \
+-o /data/work/scenic/input/osa1_r7.all_models.gtf
+
 gffread /data/work/scenic/input/osa1_r7.all_models.gff3 \
 -T -o /data/work/scenic/input/osa1_r7.all_models.gtf --keep-genes
 

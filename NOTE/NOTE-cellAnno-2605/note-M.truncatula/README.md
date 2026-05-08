@@ -1,4 +1,81 @@
 
+- 解剖学标注
+- 文献收集苜蓿叶枕相关细胞类型的marker基因，from bulk and in situ
+- 同源获得大豆叶子
+- de novo markers from FindAllMarkers -> Enrich
+
+<details><summary> 收集苜蓿叶枕单细胞转录组注释的marker基因，可提供具体基因也可提供寻找方案 </summary>
+
+针对苜蓿（*Medicago truncatula*）叶枕（Pulvinus）的单细胞转录组分析，注释 Marker 基因的难点在于该器官具有高度的异质性，涉及运动细胞（Motor cells）、维管束以及特化的表皮细胞。
+
+以下是为您整理的候选 Marker 基因及寻找方案：
+
+---
+
+### 一、 苜蓿叶枕关键细胞类型候选 Marker
+
+由于苜蓿是豆科植物研究的模式生物，其叶枕的细胞特化程度高，建议从以下几个功能维度筛选：
+
+#### 1. 运动细胞 (Motor Cells)
+
+运动细胞通过快速调节渗透压实现叶片的运动，是叶枕最核心的细胞类型。
+
+* **离子通道与转运体：** 重点关注 **$K^{+}$ 通道**（如 *AKT1*、*GORK*）和 **$Cl^{-}$ 通道**。
+* **水通道蛋白：** *PIP* 和 *TIP* 家族成员（如 *MtPIP2;1*），负责水分的快速跨膜流动。
+* **细胞壁松弛因子：** 扩张蛋白 (*Expansin*) 和木葡聚糖内转糖苷酶/水解酶 (*XTH*)，反映细胞体积频繁变化的特性。
+
+#### 2. 维管系统 (Vascular Tissue)
+
+* **木质部 (Xylem)：** *VND7* 同源基因、木质素合成相关基因（如 *CAD*、*4CL*）。
+* **韧皮部 (Phloem)：** *SEOR* (Sieve Element Occlusion)、*SUC2* (Sucrose transporter)。
+
+#### 3. 皮层与表皮 (Cortex & Epidermis)
+
+* **皮层：** 苜蓿中常表现为高表达与碳水化合物代谢相关的基因。
+* **表皮：** *LTP* (Lipid Transfer Proteins) 或蜡质合成基因 (*CER* 家族)。
+
+#### 4. 机械组织与支撑
+
+* **木质素积累：** 在叶枕与叶柄交界处，寻找 *MYB* 转录因子家族成员。
+
+---
+
+### 二、 Marker 基因寻找方案
+
+如果您现有的文献支持不足，建议采用以下三种路径来精准锁定基因列表：
+
+#### 1. 基于直系同源基因 (Ortholog Mapping)
+
+利用拟南芥或大豆等近缘物种中已知的细胞 Marker 进行迁移。
+
+* **工具：** 使用 **Orthofinder** 或 **Ensembl Plants** 寻找拟南芥细胞类型特异性基因（如 *ATHB8* 对应维管形成层）在苜蓿中的同源基因。
+* **重点关注：** 豆科植物特有的叶片运动调节基因（如 *ELP1/Lc* 基因）。
+
+#### 2. 跨组学数据验证 (Spatial-to-SingleCell)
+
+鉴于您正在处理空间转录组（Stereo-seq）数据，建议采用“空间指导单细胞”策略：
+
+* **差异分析：** 在空间数据上，通过手动圈选（Lasso）叶枕的运动细胞区、维管区和皮层区，运行 `FindMarkers`。
+* **空间共定位：** 利用 **Stereopy** 或 **Seurat** 的 `FindAllMarkers` 提取各簇（Cluster）的 Top 基因，并结合组织切片的解剖学特征进行空间验证。
+
+#### 3. 数据库检索路径
+
+* **LegumeIP V3：** 专门针对豆科植物的综合数据库，可查询苜蓿各组织的表达谱。
+* **MtExpress：** 检索苜蓿在不同组织发育阶段的转录组数据，通过寻找在叶枕（Pulvinus）显著富集且在叶片（Leaflet）或茎（Stem）低表达的基因作为候选。
+
+---
+
+### 三、 建议的操作流程
+
+1. **初步聚类：** 在 ArchR 或 Seurat 中进行常规聚类，观察各簇在空间上的分布。
+2. **提取差异基因：** 重点提取空间位置位于“叶枕腹侧（Ventral）”和“背侧（Dorsal）”运动细胞区的差异基因。
+3. **GO/KEGG 富集：** 观察该簇基因是否显著富集在“水通道”、“钾离子运输”、“细胞壁改性”等通路。
+4. **文献比对：** 搜索关键词 *“Medicago truncatula pulvinus cell type specific transcriptome”* 或参考大豆（Soybean）叶枕的相关单细胞研究。
+
+如果您需要针对特定亚群（如收缩态 vs 扩张态运动细胞）的分析，建议增加对脱落酸（ABA）和茉莉酸（JA）信号通路相关基因的关注，这些激素常参与调控叶枕的运动反应。
+
+</details>
+
 <details><summary> Medicago truncatula Pulvinus anatomy picture with cell types annotation </summary>
 
 在蒺藜苜蓿（Medicago truncatula）的解剖学研究中，叶枕（Pulvinus）的内部结构与普通叶柄有显著差异。以下是结合解剖图谱与组织学研究的细胞类型及结构标注说明：
