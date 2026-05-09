@@ -1,5 +1,5 @@
 <br>
-<a href ="https://github.com/ydgenomics/omics4plant/tree/main"><img src="omics4plant.logo.png" width="200px" align="right" /></a>
+<a href ="https://github.com/ydgenomics/omics4plant/tree/main"><img src="omics4plant.logo.png" width="300px" align="right" /></a>
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -30,10 +30,12 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 ---
 
 ## `1` Workflows
+
 - [Enrich](./WORKFLOW/Enrich/README.md)
 
 ## `2` ToDo
-<details> <summary> todo </summary>
+
+<details> <summary> ToDo </summary>
 
 - 学习R包reticulate
 - **develop a utlis packages in R and python (ydutils)**
@@ -45,6 +47,7 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 </details>
 
 ## `3` Q&A
+
 <details> <summary> Q&A </summary>
 
 - **算法：AUC**
@@ -52,6 +55,7 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 </details>
 
 ## `4` Tips
+
 <details> <summary> Tips </summary>
 
 - 云平台自己投流程任务，cpu不要超过16，mem不要超过256
@@ -59,7 +63,8 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 </details>
 
 ## `5` ForMe
-<details> <summary> Tips </summary>
+
+<details> <summary> ForMe </summary>
 
 - 多提问，善于提问
 - 每周精读一篇英文文献
