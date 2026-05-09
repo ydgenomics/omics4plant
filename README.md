@@ -31,7 +31,18 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 
 ## `1` Workflows
 
-- [Enrich](./WORKFLOW/Enrich/README.md)
+<details> <summary> Workflows </summary>
+
+- [Enrich](./WORKFLOW/Enrich/README.md) 序列功能注释并建库、基因集的功能富集
+- [optdntra](https://github.com/ydgenomics/Copy-optDNTRA/tree/main/ydgenomics) 对于转录本组装后数据做去冗余和质量评估+`transdecoder+gffread`
+- [Dataget2](./WORKFLOW/Dataget2/README.md) *building* 数据质控(SoupX, CellBender, scrublet, scDblFinder, clustree, ?metaneighbor, ?marker, ?annotation)
+- [QC](./WORKFLOW/QC/README.md)
+- [Cluster](./WORKFLOW/Cluster/README.md)
+- [MetaNeighbor](./WORKFLOW/MetaNeighbor/README.md)
+- [Annos](./WORKFLOW/Annos/README.md)
+
+</details>
+
 
 ## `2` ToDo
 

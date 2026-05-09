@@ -33,8 +33,11 @@ This repository organizes various tools for single-cell omics analysis, categori
 
 ## Trajectory Analysis
 
-- **scTour**: Trajectory inference from single-cell data (alternative to RNA velocity).
-- **Cflows**: Computational flows for single-cell analysis.
+- Ref
+  - 2026 [锐评scRNA轨迹分析从拉到夯](https://mp.weixin.qq.com/s/rTqARfeFGyJs0FTu-0Alvw)
+- tool
+  - **scTour**: Trajectory inference from single-cell data (alternative to RNA velocity).
+  - **Cflows**: Computational flows for single-cell analysis.
 
 ## Quality Control and Preprocessing
 
