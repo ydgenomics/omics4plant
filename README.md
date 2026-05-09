@@ -8,6 +8,8 @@
 
 I focus on multiple aspects of plant biology, including taxonomy, morphology, anatomy, evolution, development, molecular biology, and genomic sequences. My primary interest lies in plant omics, leveraging multi-omics technologies to address unresolved biological questions and improve traits in cultivated species. With advanced technologies such as high-throughput sequencing, multi-omics approaches are pivotal for empowering plant research and advancing our understanding of plant biology.
 
+Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
+
 *logo from ChatGPT*
 
 <br>
@@ -27,15 +29,10 @@ I focus on multiple aspects of plant biology, including taxonomy, morphology, an
 
 ---
 
-## Workflows' tutorial content
-> [workflow list]()
+## `1` Workflows
 - [Enrich](./WORKFLOW/Enrich/README.md)
 
-## Contributors
-- ydgenomics
-- Bioer-yd
-
-## ToDo
+## `2` ToDo
 <details> <summary> todo </summary>
 
 - 学习R包reticulate
@@ -47,17 +44,24 @@ I focus on multiple aspects of plant biology, including taxonomy, morphology, an
 
 </details>
 
-## Q&A
+## `3` Q&A
 <details> <summary> Q&A </summary>
 
 - **算法：AUC**
 
 </details>
 
-## Tips
+## `4` Tips
 <details> <summary> Tips </summary>
 
-> 多提问，善于提问
+- 云平台自己投流程任务，cpu不要超过16，mem不要超过256
+
+</details>
+
+## `5` ForMe
+<details> <summary> Tips </summary>
+
+- 多提问，善于提问
 - 每周精读一篇英文文献
 - 每周文献提问尝试提一个有意义的问题
 - 每日英语学习（不背单词/Nature profile/quick reading）
