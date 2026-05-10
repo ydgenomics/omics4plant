@@ -1,6 +1,6 @@
 # TODO: disable tqdm
 # params_data_preparation download_genome_annotations biomart_host
-# genome_annotation chromsizes
+# genome_annotation chromsizes direct_annotation annotations_to_use
 
 configfile: "config/config.yaml"
 

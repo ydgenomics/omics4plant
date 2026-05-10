@@ -41,6 +41,8 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 - [MetaNeighbor](./WORKFLOW/MetaNeighbor/README.md)
 - [Annos](./WORKFLOW/Annos/README.md)
 
+> 在搭建单细胞RNA-seq流程前，请系统看一下生信前沿的ppt，SCOP的处理流程，便于clear过程和尽可能出发表级的图片
+
 </details>
 
 
@@ -48,6 +50,7 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 
 <details> <summary> ToDo </summary>
 
+- orthology/homology相关算法和工具包
 - 学习R包reticulate
 - **develop a utlis packages in R and python (ydutils)**
   - Why we need a utils package?

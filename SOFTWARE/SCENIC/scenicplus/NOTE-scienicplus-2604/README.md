@@ -22,6 +22,91 @@
 - [create_cistarget_db]
 - [scenicplus]
 
+
+我应该先看人的数据结构是怎么样的，以及从planttfdb拿到的数据结构是怎样的
+- TF-motif的来源，一是直接实验得到的，二是同源得到的，三是motif相似性得到的
+- scenic读取tbl文件必须要的列`'#motif_id', 'gene_name', 'motif_similarity_qvalue', 'orthologous_identity', 'description'`，查看于utils.py函数`load_motif_annotations()`
+- 其中tbl文件中description内容来确定类别，为'gene is directly annotated'则是`Direct_annot`；包含'similar'则为`Motif_similarity_annot`；包含'orthologous'则为`Orthology_annot`，'similar'和'orthologous'都包含则为'Motif_similarity_and_Orthology_annot'，我们水稻只关注`Direct_annot`和`Orthology_annot`
+
+```R
+> colnames(df1)                
+[1] "Gene_id"       "Family"        "Matrix_id"     "Species"      
+[5] "Method"        "Datasource"    "Datasource_ID"
+> colnames(df)                 
+ [1] "motif_id"                  "motif_name"               
+ [3] "motif_description"         "source_name"              
+ [5] "source_version"            "gene_name"                
+ [7] "motif_similarity_qvalue"   "similar_motif_id"         
+ [9] "similar_motif_description" "orthologous_identity"     
+[11] "orthologous_gene_name"     "orthologous_species"      
+[13] "description"              
+> 
+# ----------- 构建适配于scenicplus的.tbl文件，下面是对应关系和orthology的处理 --------------
+#motif_id=Matrix_id
+motif_name=Matrix_id
+motif_description=Family
+source_name=Datasource
+source_version="5.0"
+gene_name=Gene_id
+motif_similarity_qvalue=0
+similar_motif_id="None"
+similar_motif_description="None"
+description=Datasource_ID
+# # 对该行的Datasource_ID列的值先(分割，然后再按空格对第一部分按空格分割。假如值是transfer from AT1G68320(Arabidopsis thaliana)，则最后list=c("transfer", "from", "AT1G68320", "(Arabidopsis thaliana)")。判断list[1]是"trnasfer"，是则orthologous_identity=0.1，orthologous_gene_name=list[3],orthologous_species=gsub("( && )", "", list[4])[[1]] 即Arabidopsis thaliana。list[1]不是"trnasfer"，则orthologous_identity=0，orthologous_gene_name=Gene_id,orthologous_species="None"
+orthologous_identity= 
+orthologous_gene_name=
+orthologous_species= 
+```
+
+```R
+> df <- read.table('./DATA/motifs-v10-nr.hgnc-m0.00001-o0.0.tbl', sep = '\t', $
+> head(df)                                                       
+           motif_id motif_name motif_description source_name source_version
+1 metacluster_196.3    EcR_usp           EcR/usp     bergman            1.1
+2 metacluster_196.3    EcR_usp           EcR/usp     bergman            1.1
+3 metacluster_196.3    EcR_usp           EcR/usp     bergman            1.1
+4 metacluster_196.3    EcR_usp           EcR/usp     bergman            1.1
+5 metacluster_196.3    EcR_usp           EcR/usp     bergman            1.1
+6 metacluster_196.3    EcR_usp           EcR/usp     bergman            1.1
+  gene_name motif_similarity_qvalue similar_motif_id similar_motif_description
+1     HNF4A                       0             None                      None
+2     HNF4G                       0             None                      None
+3     NR1D1                       0             None                      None
+4     NR1D2                       0             None                      None
+5     NR1H2                       0             None                      None
+6     NR1H3                       0             None                      None
+  orthologous_identity orthologous_gene_name orthologous_species
+1             0.270042           FBgn0003964     D. melanogaster
+2             0.276923           FBgn0003964     D. melanogaster
+3             0.157980           FBgn0000546     D. melanogaster
+4             0.170984           FBgn0000546     D. melanogaster
+5             0.317391           FBgn0000546     D. melanogaster
+6             0.326622           FBgn0000546     D. melanogaster
+                                                                                                   description
+1 gene is orthologous to FBgn0003964 in D. melanogaster (identity = 27%) which is directly annotated for motif
+2 gene is orthologous to FBgn0003964 in D. melanogaster (identity = 27%) which is directly annotated for motif
+3 gene is orthologous to FBgn0000546 in D. melanogaster (identity = 15%) which is directly annotated for motif
+4 gene is orthologous to FBgn0000546 in D. melanogaster (identity = 17%) which is directly annotated for motif
+5 gene is orthologous to FBgn0000546 in D. melanogaster (identity = 31%) which is directly annotated for motif
+6 gene is orthologous to FBgn0000546 in D. melanogaster (identity = 32%) which is directly annotated for motif
+> df1 <- read.table('./DATA/Osj_TF_binding_motifs_information.txt', sep = '\t'$
+> head(df1)
+         Gene_id      Family Matrix_id                      Species Method
+1 LOC_Os01g03720         MYB   MP00216 Oryza sativa subsp. japonica    DAP
+2 LOC_Os01g07120         ERF   MP00302 Oryza sativa subsp. japonica    DAP
+3 LOC_Os01g07480         LBD   MP00581 Oryza sativa subsp. japonica    DAP
+4 LOC_Os01g08160     G2-like   MP00261 Oryza sativa subsp. japonica    DAP
+5 LOC_Os01g09550         NAC   MP00460 Oryza sativa subsp. japonica    DAP
+6 LOC_Os01g09640 MYB_related   MP00565 Oryza sativa subsp. japonica    DAP
+  Datasource                                 Datasource_ID
+1  PlantTFDB transfer from AT1G68320(Arabidopsis thaliana)
+2  PlantTFDB transfer from AT2G40340(Arabidopsis thaliana)
+3  PlantTFDB transfer from AT5G63090(Arabidopsis thaliana)
+4  PlantTFDB transfer from AT2G03500(Arabidopsis thaliana)
+5  PlantTFDB transfer from AT4G29230(Arabidopsis thaliana)
+6  PlantTFDB transfer from AT5G56840(Arabidopsis thaliana)
+```
+
 ```mermaid
 flowchart TB
 1[(Reference)]---1.1[(.fasta)]
