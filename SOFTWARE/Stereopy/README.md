@@ -3,10 +3,15 @@
 - tissue分割SAW可以处理，stereopy也可以实现
 - 获取stereopy的tutorial的notebook https://github.com/STOmics/Stereopy/tree/main/docs/source/Tutorials
 
+- bayesspac R
+- stereopy python
+- graphst python
+- scSLANT python
 
 to-do
 - split
 - cluster: BayesSpace, 
+  - 2021 Nature Biotechnology|BayesSpace：一种基于全贝叶斯框架的空间转录组分析方法 https://mp.weixin.qq.com/s/sEwSRuvQV_F9gf7QmUH3hQ
 
 ## References
 - STOmics [website](https://www.stomics.tech/)

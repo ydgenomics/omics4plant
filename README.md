@@ -86,5 +86,6 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 - 每日英语学习（不背单词/Nature profile/quick reading）
 - 每日纸质书阅读
 - 每日健康作息（好好睡觉&好好吃饭&锻炼&大脑放松）
+- Ai只是我们的一个工具，学会理解AI的反馈，离不开对本质规则的理解，请不要让自己变成copy paste的中间人，理解AI，提供AI更正确的提示词。
 
 </details>

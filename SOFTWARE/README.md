@@ -53,6 +53,9 @@ This repository organizes various tools for single-cell omics analysis, categori
 
 - **SCOP**: Single-cell omics pipeline.
 - **ezSingleCell2**: https://github.com/JinmiaoChenLab/ezSingleCell2
+- scDock 2026 [Bioinformatics | scDock可实现全流程单细胞分析，同时搞细胞通讯找药再也不用换工具写代码了](https://mp.weixin.qq.com/s/4S5s8E5sBLs1bQBbt7To9A)
+- scDown 看到最近scDown单细胞分析工具很火，那我们就给大家安排上，多种分析方法打包，轻松处理单细胞数据 https://mp.weixin.qq.com/s/i6eJiSRwrnO1AbD670pfcw
+- scPlant 
 
 ## Additional References
 
