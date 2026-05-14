@@ -4,6 +4,41 @@
 - 同源获得大豆叶子
 - de novo markers from FindAllMarkers -> Enrich
 
+为您整理了近年发表的、在植物学与农学领域最具代表性的叶枕（Pulvinus）及叶角调控相关单细胞（scRNA-seq / snRNA-seq）与空间转录组学（Spatial Transcriptomics）顶级学术论文：
+## 一、 玉米叶枕单细胞核转录组研究（株型调控）
+
+* 论文内容：利用[单细胞核转录组测序（snRNA-seq）](https://www.sohu.com/a/815879561_120055884)对玉米紧凑型自交系 Z58 的叶枕区进行了高分辨率测序，并鉴定了 16 类不同的细胞类群，解析了叶枕近轴厚壁细胞的特化，揭示了 bHLH30 和 bHLH155 在调控叶枕发育和紧凑株型中的关键作用。
+* 论文信息：Molecular Plant（2024年5月），由山东农业大学与北京大学现代农业研究院（李博生团队）完成。 [1, 2] 
+* 2024 MP Histological and Single-nucleus Transcriptome Analyses Unveil the Specialized Functions of Ligular Sclerenchyma Cells and Key Regulators of Leaf Angle in Maize
+
+## 二、 烟草叶枕单细胞核与多组学研究（双子叶植物叶角进化）
+
+* 论文内容：通过将单细胞核转录组学与空间代谢组学联合应用，建立了包含 20 个细胞簇的烟草叶枕时空图谱。研究表明，NtTAC1 基因主要在叶枕内皮层细胞中通过协同生长素转运体 NtPIN3 调控细胞壁重塑，从而调控叶夹角。
+* 论文信息：Plant Biotechnology Journal（2026年4月），由王林、高俊平团队等完成。 [3, 4] 
+
+## 三、 禾本科植物（高粱/竹子）叶枕与居间分生组织的多组学研究
+在单子叶作物（如高粱、水稻、竹子）中，叶枕上方往往紧邻调控茎秆和叶片伸长、影响叶夹角建成的居间分生组织（Intercalary Meristem, IcM），以下是针对该区域的最新多组学论文： [5, 6] 
+
+   1. 竹子叶枕与分生组织时空图谱：PNAS（2025年12月）论文，融合了 snRNA-seq 与空间转录组学，绘制了从细胞增殖到拉伸的时空图谱，解析了 WOX2 同源物等关键调控因子。
+   2. 高粱叶枕与茎叶连接区细胞特异性图谱：The Plant Journal（2024年2月）论文，通过空间转录组分析了高粱叶枕及居间分生组织在调控株型、叶夹角和机械强度等方面的基因调控网络（GRNs）。 [5, 6, 7] 
+
+------------------------------
+如果您需要下载或引用这些论文，建议您通过其 DOI 或者前往 Wiley Online Library、ScienceDirect 等平台检索。
+您可以告诉我：
+
+* 您是否需要其中某篇论文的具体调控通路详细解析？
+* 您的研究重点是触碰/感夜运动（如含羞草）还是作物的理想株型建（如玉米/水稻）？
+
+
+[1] [https://en.pku-iaas.edu.cn](https://en.pku-iaas.edu.cn/kyjz/1415.html)
+[2] [https://www.sohu.com](https://www.sohu.com/a/815879561_120055884)
+[3] [https://onlinelibrary.wiley.com](https://onlinelibrary.wiley.com/doi/full/10.1111/pbi.70672)
+[4] [https://www.researchgate.net](https://www.researchgate.net/publication/321010900_Differential_manipulation_of_leaf_angle_throughout_the_canopy_Current_status_and_prospects)
+[5] [https://www.researchgate.net](https://www.researchgate.net/publication/398838675_Single-nucleus_and_spatial_transcriptomics_reveal_the_cell_populations_of_intercalary_meristems_in_bamboo)
+[6] [https://onlinelibrary.wiley.com](https://onlinelibrary.wiley.com/doi/10.1111/tpj.16690)
+[7] [https://www.researchgate.net](https://www.researchgate.net/publication/398838675_Single-nucleus_and_spatial_transcriptomics_reveal_the_cell_populations_of_intercalary_meristems_in_bamboo)
+
+
 <details><summary> 收集苜蓿叶枕单细胞转录组注释的marker基因，可提供具体基因也可提供寻找方案 </summary>
 
 针对苜蓿（*Medicago truncatula*）叶枕（Pulvinus）的单细胞转录组分析，注释 Marker 基因的难点在于该器官具有高度的异质性，涉及运动细胞（Motor cells）、维管束以及特化的表皮细胞。

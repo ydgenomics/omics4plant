@@ -1,6 +1,6 @@
 # editor: yangdong
 # image: ArchR_Macs2_ChromVARmotifs
-# 260427
+# 260514
 # gtf必须包含exon注释，且exon注释必须包含gene_id和transcript_id属性
 
 
@@ -21,10 +21,13 @@ create_anno_from_gtf <- function(gtf_file, chrs=NULL) {
   
   # 1. 创建 genes GRanges
   message("Creating genes...")
-  # 按 gene_id 合并外显子范围得到基因范围，解决gtf3中type为gene的注释不完整问题
-  if ("gene" %in% gtf$type) {
-    genes <- gtf[gtf$type == "gene"]
+  if (TRUE) {
+      if ("gene" %in% gtf$type) {
+        genes <- gtf[gtf$type == "gene"]
+        genes$symbol <- genes$gene_id
+      }
   } else {
+    # 按 gene_id 合并外显子范围得到基因范围，解决gtf3中type为gene的注释不完整问题
     exons <- gtf[gtf$type == "exon"]
     dt <- as.data.table(exons)
     gene_coords <- dt[, .(

@@ -5,6 +5,7 @@
 - https://github.com/tanlabcode/SC_TALL/tree/main/SCENIC+
 - https://github.com/CIMA-Project/CIMA/tree/main/GRN
 - https://github.com/aertslab/create_cisTarget_databases/tree/master
+- https://deepwiki.com/aertslab/scenicplus
 
 
 > [!NOTE]

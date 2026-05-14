@@ -2,6 +2,8 @@
 
 - tissue分割SAW可以处理，stereopy也可以实现
 - 获取stereopy的tutorial的notebook https://github.com/STOmics/Stereopy/tree/main/docs/source/Tutorials
+- 如何计算mt [dataget](https://github.com/ydgenomics/WDL/blob/main/Dataget/v1.2.3/run_scrublet.py) [scanpy](https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering-2017.html#preprocessing)
+- 如果非监督分群效果不好，可不可以手动分群 [stereopy/interactive cluster](https://stereopy.readthedocs.io/en/latest/Tutorials/Interactive_Cluster.html)
 
 - bayesspac R
 - stereopy python
