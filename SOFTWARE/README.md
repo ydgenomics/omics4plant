@@ -2,6 +2,20 @@
 
 This repository organizes various tools for single-cell omics analysis, categorized by functionality.
 
+## ST
+- 3d-OT 2026
+  > - pointNet++ framework
+- STAligner 2023 https://github.com/zhoux85/STAligner
+- SLAT
+
+## perturbation
+- CellOrcle
+- scGen
+
+## metacell
+> - 2024 Molecular Systems Biology Building and analyzing metacells in single-cell genomics data
+- 
+
 ## Single-Cell RNA-seq Analysis
 
 - **Seurat**: R package for QC, normalization, dimension reduction, clustering, visualization, and data integration.
@@ -25,6 +39,8 @@ This repository organizes various tools for single-cell omics analysis, categori
 
 ## Gene Regulatory Networks (GRN)
 
+- RegVelo https://github.com/theislab/regvelo_reproducibility
+  - 2026 Cell RegVelo Gene-regulatory-informed dynamics of single cells
 - **SCENIC/SCENIC+**: Single-cell regulatory network inference and clustering.
 - **CellOracle**: GRN inference from single-cell data.
 - **IReNA**: Interactive regulatory network analysis.

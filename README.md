@@ -58,6 +58,44 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
   - How to develop a package? not is all from AI.
 - **anatomy: plant cell types**
 
+
+```python
+# python as main to harness R and shell
+'''
+env
+  - scanpy
+  - snapATAC2
+  - Seurat
+  - signac
+  - ArchR
+genome
+  - fastqc/fastp/seqkit
+  - gffread/agat
+  - bedtools
+  - blast/diamond
+io(input/output)
+plot
+  - plot_gene
+  - plot_cell
+tool(software)
+  - qc (clean cell & gene)
+  - reduction (pca/nmf/SDV/LISD)
+  - cluster (leiden/louvain/CHOIR/clustree/biological celltypes)
+  - umap/tsne
+  - Similarity of clusters (cell types) (MetaNeighbor, hclust)
+  - integration (harmony/CCA/BBKNN/scVI/...?integration of multi-model data)
+  - differential expression analysis
+  - gene scores (AUCell/AddModuleScore)
+  - co-expression (WGCNA)
+  - Enrich (clusterprofiler/?enrichpy)
+  - cell communication (plantcellphone)
+  - trajectory (cellrank2, Genes2Genes, scTour, palantir, cytotrace)
+  - velocity (scVelo, cellrank2)
+  - PPI (STRINGDb)
+
+'''
+
+```
 </details>
 
 ## `3` Q&A
