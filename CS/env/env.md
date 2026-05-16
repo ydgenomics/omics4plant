@@ -13,22 +13,17 @@ conda install conda-forge::r-remotes -y
 
 ```shell
 source /opt/software/miniconda3/bin/activate
-conda create -n seurat r-base=4.4 -y
-conda activate seurat
-
+mamba create -n seurat r-base=4.4 -y && conda activate seurat
+# R
 conda install conda-forge::r-optparse -y
 conda install conda-forge::r-biocmanager -y
 conda install conda-forge::r-devtools -y
 conda install conda-forge::r-remotes -y
-# 1_qc
+
 conda install conda-forge::r-seurat -y
 conda install conda-forge::r-soupx -y
 conda install bioconda::bioconductor-dropletutils -y
 conda install bioconda::bioconductor-scdblfinder -y
-conda install bioconda::bioconductor-singler -y
-conda install bioconda::bioconductor-scater -y
-conda install bioconda::r-liger -y
-
 
 # 02_anno
 conda install bioconda::bioconductor-singler -y
@@ -41,8 +36,9 @@ conda install bioconda::bioconductor-scater -y
 # cluster
 conda install conda-forge::r-clustree -y
 
+
+
 # 03_integrate
-# Rscript -e 'install.packages("bbknnR")'
 conda install pwwang::r-seuratdata -y
 conda install bioconda::r-liger -y
 conda install conda-forge::r-rcppplanc -y
@@ -55,7 +51,7 @@ conda install bioconda::bioconductor-metaneighbor -y
 conda install bioconda::bioconductor-complexheatmap -y
 conda install conda-forge::r-circlize -y
 
-# Rscript -e "install.packages('presto')"
+Rscript -e 'devtools::install_github("immunogenomics/presto")'
 
 # 06_enrich
 conda install bioconda::bioconductor-clusterprofiler -y

@@ -101,8 +101,15 @@ tree /data/input/Files/yangdong/wdl/SCP/Integration/W202508120010920/03_integrat
   - Integration-R--05, Integartion-R--03
   - sceasy-schard-10, sceasy-schard--02
 
+
+
+```shell
+Rscript -e 'devtools::install_github("elolab/Coralysis")'
+```
+
 ---
 # Reference & Citation
+- 2026 NAR | 大力推荐Coralysis这个包，单细胞整合的痛点解决，整合时不平衡细胞类型需要考虑？这个工具必须试试 https://mp.weixin.qq.com/s/uKGLjqZlzi2UQSW8J10cUg
 - [《单细胞最佳实践》——数据整合部分详细解读 · 续](https://mp.weixin.qq.com/s/zBRLeP9Xs1KaOdCyXIxZmw)
 - [Nat Mach Intell｜南开开发新单细胞整合方法，消除批次效应的同时，保留细胞生物学异质性](https://mp.weixin.qq.com/s/MeE3tNOtlo0KEsK7ThlHlg) 为单细胞染色质可及性测序（scATAC-seq）数据整合提供全新解决方案
 - [NC|强烈推荐国内最新发表单细胞多模态整合算法的全面基准评估平台](https://mp.weixin.qq.com/s/dqnYB-Zs9jfH8AXSCmdR4A) 多组学整合

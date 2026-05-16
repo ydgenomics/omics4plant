@@ -77,22 +77,28 @@ io(input/output)
 plot
   - plot_gene
   - plot_cell
-tool(software)
-  - qc (clean cell & gene)
-  - reduction (pca/nmf/SDV/LISD)
+tool(software) (cell_level/gene_level/cell+gene)
+  - qc (clean cell & gene: chord)
+  - reduction (pca/nmf/SDV/LISD; cellMentor)
   - cluster (leiden/louvain/CHOIR/clustree/biological celltypes)
   - umap/tsne
   - Similarity of clusters (cell types) (MetaNeighbor, hclust)
-  - integration (harmony/CCA/BBKNN/scVI/...?integration of multi-model data)
+  - integration (harmony/CCA/BBKNN/scVI/...?integration of multi-model data; ?cross-species)
   - differential expression analysis
-  - gene scores (AUCell/AddModuleScore)
-  - co-expression (WGCNA)
+  - gene/gene_set scores (AUCell/AddModuleScore/sc.tl.score_gene/GSVA)
+  - co-expression (WGCNA/hotspot)
   - Enrich (clusterprofiler/?enrichpy)
-  - cell communication (plantcellphone)
+  - cell proportion (miloR)
+  - cell-cell interaction (CCI) (plantcellphone)
+  - gene regulatory network (mine-ex, scenic)
   - trajectory (cellrank2, Genes2Genes, scTour, palantir, cytotrace)
   - velocity (scVelo, cellrank2)
   - PPI (STRINGDb)
+  - sc-eQTL ()
+  - casual model (genotype to phenotype)
 
+# 聚类 => 离散的异质性
+# 轨迹推断 => 连续的动态模型
 '''
 
 ```
@@ -111,6 +117,7 @@ tool(software)
 <details> <summary> Tips </summary>
 
 - 云平台自己投流程任务，cpu不要超过16，mem不要超过256
+- systematic biology driven by omics
 
 </details>
 

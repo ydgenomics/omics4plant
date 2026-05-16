@@ -16,6 +16,13 @@ conda install conda-forge::r-clustree -y
 - SCCAF（Single Cell Clustering Assessment Framework）和 ROGUE指标 [wechat](https://mp.weixin.qq.com/s/DK91JN-hsYSZW0BaMeetxw)
 
 # Reference & Citation
+- 2026 通过内部评估指标优化scRNA-seq分析的聚类参数(scanpy) https://mp.weixin.qq.com/s/V96uG4EumndGMY2REBm-zQ
+  - Optimization of clustering parameters for single-cell RNA analysis using intrinsic goodness metrics https://www.frontiersin.org/journals/bioinformatics/articles/10.3389/fbinf.2025.1562410/full
+- 2026 Phiclust：单细胞分群越细越好吗？别再靠感觉调 resolution 分辨率了 https://mp.weixin.qq.com/s/UcJXQn7WhCJLaN8dTTuOiA
+- 2026 NC | 专门找找稀有细胞亚群的R包RareQ，单细胞、空间均可，笔记本就能搞定，快去挖一挖咱们的数据，看看有没有新的发现 https://mp.weixin.qq.com/s/68GWGrMgccFfyIWFBtUdzg
+- 2026 单细胞测序分析新利器：scAURA如何突破细胞类型鉴定的技术瓶颈？ https://mp.weixin.qq.com/s/iCcZMu52RoqBAdb64qQnUQ
+- 2025 scCluBench：单细胞数据聚类算法的全面基准测试 https://mp.weixin.qq.com/s/yN9wmAbN_lPthDZb6nDo-g
+- 2024 chooseR 单细胞细胞测序到底聚多少类比较好——如何回复审稿人和代码分享 https://mp.weixin.qq.com/s/gMzR8bR3OVgnLo3gqC9ZTA
 > [Nature Genetics｜解决你单细胞不知道聚多少类的问题——可以说这应该是近期最好的一篇内容了](https://mp.weixin.qq.com/s/Zgy0F5-vGNRACDmWt7Wz4A)
 > [Nature Genetics || 利用高级统计方法（潜在嵌入多元回归）解析多条件下的单细胞组学数据](https://mp.weixin.qq.com/s/SdZwKTPFDbpY-QUxbBwc8w) 一种不依赖于分群的分析框架
 > [Nature Methods | 细胞分群还在跑常规流程吗？分层聚类+显著性检验，这个顶刊算法让你不在苦苦为分辨率而发愁！](https://mp.weixin.qq.com/s/y4_yMPbor8xI8dykJsj6qA)

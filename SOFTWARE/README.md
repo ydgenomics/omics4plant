@@ -7,6 +7,8 @@ This repository organizes various tools for single-cell omics analysis, categori
   > - pointNet++ framework
 - STAligner 2023 https://github.com/zhoux85/STAligner
 - SLAT
+- benchmarking
+  - benchmarking of stAlign: https://github.com/dbjzs/3d-OT/tree/main/Benchmarking
 
 ## perturbation
 - CellOrcle

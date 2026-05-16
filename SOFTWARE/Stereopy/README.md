@@ -16,6 +16,7 @@ to-do
   - 2021 Nature Biotechnology|BayesSpace：一种基于全贝叶斯框架的空间转录组分析方法 https://mp.weixin.qq.com/s/sEwSRuvQV_F9gf7QmUH3hQ
 
 ## References
+- 2025 iMeta | 浙江大学范骁辉组-空间转录组学聚类方法基准测试 https://mp.weixin.qq.com/s/g_uFM1T3IMUDmY9emKUeyw
 - STOmics [website](https://www.stomics.tech/)
 - stereomap [html](https://www.stomics.tech/service/new-StereoMap.html)
 - 华大Stereo-seq分析终极教程，一篇文章全掌握 https://mp.weixin.qq.com/s/HGHdlXafod1M0TXE3uUZxg
