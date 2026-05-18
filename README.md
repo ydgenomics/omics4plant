@@ -59,49 +59,6 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 - **anatomy: plant cell types**
 
 
-```python
-# python as main to harness R and shell
-'''
-env
-  - scanpy
-  - snapATAC2
-  - Seurat
-  - signac
-  - ArchR
-genome
-  - fastqc/fastp/seqkit
-  - gffread/agat
-  - bedtools
-  - blast/diamond
-io(input/output)
-plot
-  - plot_gene
-  - plot_cell
-tool(software) (cell_level/gene_level/cell+gene)
-  - qc (clean cell & gene: chord)
-  - reduction (pca/nmf/SDV/LISD; cellMentor)
-  - cluster (leiden/louvain/CHOIR/clustree/biological celltypes)
-  - umap/tsne
-  - Similarity of clusters (cell types) (MetaNeighbor, hclust)
-  - integration (harmony/CCA/BBKNN/scVI/...?integration of multi-model data; ?cross-species)
-  - differential expression analysis
-  - gene/gene_set scores (AUCell/AddModuleScore/sc.tl.score_gene/GSVA)
-  - co-expression (WGCNA/hotspot)
-  - Enrich (clusterprofiler/?enrichpy)
-  - cell proportion (miloR)
-  - cell-cell interaction (CCI) (plantcellphone)
-  - gene regulatory network (mine-ex, scenic)
-  - trajectory (cellrank2, Genes2Genes, scTour, palantir, cytotrace)
-  - velocity (scVelo, cellrank2)
-  - PPI (STRINGDb)
-  - sc-eQTL ()
-  - casual model (genotype to phenotype)
-
-# 聚类 => 离散的异质性
-# 轨迹推断 => 连续的动态模型
-'''
-
-```
 </details>
 
 ## `3` Q&A

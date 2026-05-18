@@ -10,14 +10,6 @@ This repository organizes various tools for single-cell omics analysis, categori
 - benchmarking
   - benchmarking of stAlign: https://github.com/dbjzs/3d-OT/tree/main/Benchmarking
 
-## perturbation
-- CellOrcle
-- scGen
-
-## metacell
-> - 2024 Molecular Systems Biology Building and analyzing metacells in single-cell genomics data
-- 
-
 ## Single-Cell RNA-seq Analysis
 
 - **Seurat**: R package for QC, normalization, dimension reduction, clustering, visualization, and data integration.
@@ -36,31 +28,12 @@ This repository organizes various tools for single-cell omics analysis, categori
 - **Signac**: Multi-modal single-cell analysis (RNA + ATAC).
 - **GLUE**: Graph-linked unified embedding for multi-omics data integration.
 - [PNAS | SuperMap：针对非配对单细胞多模态数据的整合分析方法](https://mp.weixin.qq.com/s/PepGEikwpNwKzofq9uKPcA)
-- **CellWalker2**: Hierarchical cell type relationships for multi-omics discovery.
+- 
 - **Fountain**: Single-cell data fountain (analysis pipeline).
 
 ## Gene Regulatory Networks (GRN)
 
-- RegVelo https://github.com/theislab/regvelo_reproducibility
-  - 2026 Cell RegVelo Gene-regulatory-informed dynamics of single cells
-- **SCENIC/SCENIC+**: Single-cell regulatory network inference and clustering.
-- **CellOracle**: GRN inference from single-cell data.
-- **IReNA**: Interactive regulatory network analysis.
-- **gene2role**: Gene-to-role assignment in regulatory networks.
-- **dictys**: Dictionary-based single-cell analysis.
 
-## Trajectory Analysis
-
-- Ref
-  - 2026 [锐评scRNA轨迹分析从拉到夯](https://mp.weixin.qq.com/s/rTqARfeFGyJs0FTu-0Alvw)
-- tool
-  - **scTour**: Trajectory inference from single-cell data (alternative to RNA velocity).
-  - **Cflows**: Computational flows for single-cell analysis.
-
-## Quality Control and Preprocessing
-
-- **CellBender**: Removal of ambient RNA from single-cell data.
-- **sortmerna**: RNA-seq preprocessing and quality control.
 
 ## Plant-Specific Tools
 
@@ -87,6 +60,58 @@ This repository organizes various tools for single-cell omics analysis, categori
 - wilcox (Seurat)
 - memento
 
-## Functions
 
-- **functions.py**: Utility functions for single-cell analysis workflows.
+env
+  - scanpy
+  - snapATAC2
+  - Seurat
+  - signac
+  - ArchR
+genome
+  - fastqc/fastp/seqkit
+  - gffread/agat
+  - bedtools
+  - blast/diamond
+io(input/output)
+plot
+  - plot_gene
+  - plot_cell
+tool(software) (cell_level/gene_level/cell+gene)
+  - qc (clean cell & gene: chord)
+    - **CellBender**: Removal of ambient RNA from single-cell data.
+  - reduction (pca/nmf/SDV/LISD; cellMentor)
+  - cluster (leiden/louvain/CHOIR/clustree/biological celltypes)
+  - umap/tsne
+  - Similarity of clusters (cell types) (MetaNeighbor, hclust)
+  - integration (harmony/CCA/BBKNN/scVI/...?integration of multi-model data; ?cross-species)
+  - differential expression analysis
+  - gene/gene_set scores (AUCell/AddModuleScore/sc.tl.score_gene/GSVA)
+  - co-expression (WGCNA/hotspot)
+  - Enrich (clusterprofiler/?enrichpy)
+  - metacell
+    - 2024 Molecular Systems Biology Building and analyzing metacells in single-cell genomics data
+  - cell similarity (MetaNeighbor/cellwalker2/cellphylo)
+    - **CellWalker2**: Hierarchical cell type relationships for multi-omics discovery.
+  - cell proportion (miloR)
+  - cell-cell interaction (CCI) (plantcellphone)
+  - gene regulatory network (mine-ex, scenic)
+    - 2026 RegVelo https://github.com/theislab/regvelo_reproducibility
+    - 2024 **SCENIC/SCENIC+**: Single-cell regulatory network inference and clustering.
+    - 2021 **CellOracle**: GRN inference from single-cell data.
+    - 2025 **IReNA**: Interactive regulatory network analysis.
+    - 2025 **gene2role**: Gene-to-role assignment in regulatory networks.
+    - 2021 **dictys**: Dictionary-based single-cell analysis.
+    - 2021 MIRA https://mp.weixin.qq.com/s/YEQcni5jrhpc6M_u_lHgmA
+  - trajectory (cellrank2, Genes2Genes, scTour, palantir, cytotrace)
+    - 2026 [锐评scRNA轨迹分析从拉到夯](https://mp.weixin.qq.com/s/rTqARfeFGyJs0FTu-0Alvw)
+    - 2024 **scTour**: Trajectory inference from single-cell data (alternative to RNA velocity).
+    - 2025 **Cflows**: Computational flows for single-cell analysis.
+  - velocity (scVelo, cellrank2)
+  - PPI (STRINGDb)
+  - sc-eQTL ()
+  - casual model (genotype to phenotype)
+  - perturbation
+    - scGen
+
+# 聚类 => 离散的异质性
+# 轨迹推断 => 连续的动态模型
