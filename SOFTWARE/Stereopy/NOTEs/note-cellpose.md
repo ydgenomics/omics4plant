@@ -8,8 +8,8 @@
 
 ```python
 rawgef_path = "/data/input/Files/yangdong/M.truncatula/SAW/WT202604020036551/result/Y00710F6/outs/feature_expression/Y00710F6.raw.gef"
-image="/data/work/cellpose/Y00710F6.mRNA.tif"  # (输入配准好的图像)
-output="/data/work/cellpose/Y00710F6.mRNA_cp.tif"
+image="/data/work/wt5-ss.png"  # (输入配准好的图像)
+output="/data/work/wt5-ss_cp.png"
 
 
 from stereo.algorithm import cell_pose as cp
@@ -19,10 +19,12 @@ cp.Cellpose(
     img_path=image,
     out_path=output,
     model_type='cyto2',  #根据需求挑选需要的模型，
-    dmin=30,   # min cell diameter
+    dmin=20,   # min cell diameter (像素)
     dmax=40,   # max cell diameter
     step=10
 )
+
+# 一个spot为一个像素，像素距离为0.5um，那么30即15um
 
 # Tif转GEF:
 from stereo.tools.cell_cut import CellCut

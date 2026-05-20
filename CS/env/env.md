@@ -51,7 +51,7 @@ conda install bioconda::bioconductor-metaneighbor -y
 conda install bioconda::bioconductor-complexheatmap -y
 conda install conda-forge::r-circlize -y
 
-Rscript -e 'devtools::install_github("immunogenomics/presto")'
+# Rscript -e 'devtools::install_github("immunogenomics/presto")'
 
 # 06_enrich
 conda install bioconda::bioconductor-clusterprofiler -y

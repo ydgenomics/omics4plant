@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Omics4Plant Report</title>
+    <style>
+        /* === 极简样式，后期可换 CSS 框架 === */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 { border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
+        h2 { color: #2E7D32; margin-top: 30px; }
+        
+        /* 报告区块 */
+        .section {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        /* PDF 容器 */
+        .pdf-viewer {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        /* 工具栏 */
+        .toolbar {
+            margin-bottom: 10px;
+        }
+        .toolbar button {
+            padding: 6px 12px;
+            margin-right: 8px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .toolbar button:hover { background: #e8f5e9; }
+        
+        /* 元信息表格 */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th { background: #e8f5e9; }
+    </style>
+</head>
+<body>
+
+    <!-- === 报告头部 === -->
+    <h1>🌱 植物单细胞分析报告</h1>
+    <p><strong>项目：</strong>水稻根尖单细胞图谱 | <strong>日期：</strong>2026-05-20</p>
+
+    <!-- === 分析参数 === -->
+    <div class="section">
+        <h2>📊 分析参数</h2>
+        <table>
+            <tr><th>参数</th><th>值</th></tr>
+            <tr><td>细胞数</td><td>8,542</td></tr>
+            <tr><td>基因数</td><td>23,456</td></tr>
+            <tr><td>SoupX 污染率</td><td>18.5%</td></tr>
+            <tr><td>UMAP 分辨率</td><td>0.8</td></tr>
+        </table>
+    </div>
+
+    <!-- === UMAP 可视化 === -->
+    <div class="section">
+        <h2>🔬 UMAP 聚类图</h2>
+        
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <button onclick="zoomIn()">➕ 放大</button>
+            <button onclick="zoomOut()">➖ 缩小</button>
+            <button onclick="resetZoom()">⟲ 重置</button>
+            <button onclick="downloadPDF()">⬇️ 下载 PDF</button>
+        </div>
+        
+        <!-- PDF.js 渲染区域 -->
+        <canvas id="pdf-canvas" class="pdf-viewer"></canvas>
+        <p style="color: #666; font-size: 12px;">提示：鼠标滚轮也可缩放，拖拽可移动</p>
+    </div>
+
+    <!-- === 后续可添加更多 section === -->
+
+</body>
+
+<!-- === PDF.js 从 CDN 加载 === -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+    // === 配置 PDF.js ===
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    // === 你的 PDF 文件路径 ===
+    const PDF_URL = '../DATA/violin_plp1_qc.pdf';  // 相对路径
+    
+    let pdfDoc = null;
+    let pageNum = 1;
+    let scale = 1.5;  // 初始缩放
+    let canvas = document.getElementById('pdf-canvas');
+    let ctx = canvas.getContext('2d');
+
+    // 加载 PDF
+    async function loadPDF() {
+        try {
+            pdfDoc = await pdfjsLib.getDocument(PDF_URL).promise;
+            renderPage();
+        } catch (err) {
+            console.error('PDF 加载失败:', err);
+            canvas.parentElement.innerHTML = 
+                '<p style="color:red;">❌ 无法加载 PDF，请检查文件路径</p>';
+        }
+    }
+
+    // 渲染页面
+    async function renderPage() {
+        const page = await pdfDoc.getPage(pageNum);
+        
+        // 根据缩放调整画布
+        const viewport = page.getViewport({ scale: scale });
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        
+        await page.render({
+            canvasContext: ctx,
+            viewport: viewport
+        }).promise;
+    }
+
+    // === 交互功能 ===
+    function zoomIn() {
+        scale *= 1.2;
+        renderPage();
+    }
+
+    function zoomOut() {
+        scale /= 1.2;
+        renderPage();
+    }
+
+    function resetZoom() {
+        scale = 1.5;
+        renderPage();
+    }
+
+    function downloadPDF() {
+        const link = document.createElement('a');
+        link.href = PDF_URL;
+        link.download = 'umap_clusters.pdf';
+        link.click();
+    }
+
+    // === 鼠标滚轮缩放 ===
+    canvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (e.deltaY < 0) zoomIn();
+        else zoomOut();
+    });
+
+    // === 启动 ===
+    loadPDF();
+</script>
+</html>
