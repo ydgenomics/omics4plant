@@ -11,6 +11,18 @@ conda install conda-forge::r-devtools -y
 conda install conda-forge::r-remotes -y
 ```
 
+## 安装无法使用conda装的R包
+
+```R
+install.packages('devtools')
+library(devtools)
+devtools::install_github("immunogenomics/presto")
+insstall.packages('BiocManager')
+BiocManager::install("AnnotationForge")
+```
+
+## R
+
 ```shell
 source /opt/software/miniconda3/bin/activate
 mamba create -n seurat r-base=4.4 -y && conda activate seurat
@@ -35,8 +47,6 @@ conda install bioconda::bioconductor-scater -y
 
 # cluster
 conda install conda-forge::r-clustree -y
-
-
 
 # 03_integrate
 conda install pwwang::r-seuratdata -y

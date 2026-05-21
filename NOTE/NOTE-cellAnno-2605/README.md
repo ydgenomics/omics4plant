@@ -29,6 +29,7 @@
 ## References
 - https://omicverse.readthedocs.io/en/latest/tutorials/index_single_annotation.html#annotation
 - [Annos](https://github.com/ydgenomics/Annos)
+- 2026 https://github.com/illuminate6060/CellBLASTer
 - Online website for annotation
   - [scPlantAnnotate](https://scplantannotate.missouri.edu/)
 - Markers

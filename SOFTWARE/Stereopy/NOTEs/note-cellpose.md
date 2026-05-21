@@ -8,7 +8,7 @@
 
 ```python
 rawgef_path = "/data/input/Files/yangdong/M.truncatula/SAW/WT202604020036551/result/Y00710F6/outs/feature_expression/Y00710F6.raw.gef"
-image="/data/work/wt5-ss.png"  # (输入配准好的图像)
+image="/data/work/plp6-ss.tif"  # (输入配准好的图像)
 output="/data/work/wt5-ss_cp.png"
 
 
