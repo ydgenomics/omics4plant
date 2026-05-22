@@ -1,5 +1,13 @@
 # Stereopy
 
+
+> [!Note]
+> - scSLAT对齐时，每个样本的spot名字要唯一，所以最好`tmp.obs_names = name + '_' + tmp.obs_names`
+
+
+gef --> h5ad (many bins) --> scanpy (leiden with different resolutions) --> BayersSpace
+
+
 - tissue分割SAW可以处理，stereopy也可以实现
 - 获取stereopy的tutorial的notebook https://github.com/STOmics/Stereopy/tree/main/docs/source/Tutorials
 - 如何计算mt [dataget](https://github.com/ydgenomics/WDL/blob/main/Dataget/v1.2.3/run_scrublet.py) [scanpy](https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering-2017.html#preprocessing)
