@@ -85,7 +85,7 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 <details> <summary> ForMe </summary>
 
 - 多提问，善于提问
-- 每周精读一篇英文文献
+- 每周精读一篇英文文献（做一个简单的ppt），另外至少速看5篇文章（ai helped）。
 - 每周文献提问尝试提一个有意义的问题
 - 每日英语学习（不背单词/Nature profile/quick reading）
 - 每日纸质书阅读
