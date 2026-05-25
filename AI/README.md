@@ -9,10 +9,17 @@
 
 
 - tokenization
-- transformer
-- RNN
-- NLP
+- transformer 变形金刚:dog:
+- RNN 卷积神经网络
+- NLP 自然语言处理
 - auto-regressive
+- LoRA
+- knowledge distill 知识蒸馏，提高模型计算效率，加快部署
+- hidden layer 隐藏层
+
+
+- 泛化能力与过拟合
+- 
 
 ## reference
 - https://github.com/liyupi/ai-guide [ai.codefather.cn/vibe](https://ai.codefather.cn/library/2010994846520700929)
