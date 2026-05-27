@@ -4,6 +4,7 @@ This repository organizes various tools for single-cell omics analysis, categori
 
 ## ST
 - 2025|Nat.Methods SpotSweeper *SpotSweeper🧹：空转需要像扫雷一样质控* https://mp.weixin.qq.com/s/_2vOco6WGtBmkP4wAdJvHQ https://github.com/MicTott/SpotSweeper
+- 2022|Nat.com SpotClean *改正空间转录组学数据中污染的spot* https://mp.weixin.qq.com/s/iAcPRzxPsWMXC0eoTRt4KA https://github.com/zijianni/SpotClean
 - 2024|Cell systems SpotGF *使用基于最优传输的基因过滤算法去噪空间分辨转录组数据* https://mp.weixin.qq.com/s/0jDVNFJht5XTnsVDVg43YQ https://github.com/illuminate6060/SpotGF
 - 2025|biorxiv SpaDiff *Denoising for Sequence-based Spatial Transcriptomics via Diffusion Process* https://github.com/JiazhangCai/SpaDiff
 - 2026|biorxiv SpaceBender: *Denoising Spatial Transcriptomics Data to Enhance Biological Signals* https://github.com/danielgchen/SpaceBender

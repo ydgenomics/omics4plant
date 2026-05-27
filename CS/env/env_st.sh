@@ -20,3 +20,15 @@ cd SpotGF
 pip install .
 
 git clone https://github.com/danielgchen/SpaceBender.git
+
+
+
+
+
+
+
+
+
+
+# R
+conda install bioconda::bioconductor-spotclean -y
