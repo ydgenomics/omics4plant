@@ -3,6 +3,13 @@
 - **One question** one meeting
 - **Ten hours** reading
 
+<details> <summary> interesting </summary>
+
+- All of life encodes information with DNA
+
+
+</details>
+
 # 260316-2603
 - Article: 2025|Cell *An Arabidopsis single-nucleus atlas decodes leaf senescence and nutrient allocation*
 

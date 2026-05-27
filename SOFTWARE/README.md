@@ -3,12 +3,17 @@
 This repository organizes various tools for single-cell omics analysis, categorized by functionality.
 
 ## ST
-- 3d-OT 2026
+- 2025|Nat.Methods SpotSweeper *SpotSweeper🧹：空转需要像扫雷一样质控* https://mp.weixin.qq.com/s/_2vOco6WGtBmkP4wAdJvHQ https://github.com/MicTott/SpotSweeper
+- 2024|Cell systems SpotGF *使用基于最优传输的基因过滤算法去噪空间分辨转录组数据* https://mp.weixin.qq.com/s/0jDVNFJht5XTnsVDVg43YQ https://github.com/illuminate6060/SpotGF
+- 2025|biorxiv SpaDiff *Denoising for Sequence-based Spatial Transcriptomics via Diffusion Process* https://github.com/JiazhangCai/SpaDiff
+- 2026|biorxiv SpaceBender: *Denoising Spatial Transcriptomics Data to Enhance Biological Signals* https://github.com/danielgchen/SpaceBender
+- 2026|Nat. 3d-OT 
   > - pointNet++ framework
-- STAligner 2023 https://github.com/zhoux85/STAligner
+- 2023|STAligner https://github.com/zhoux85/STAligner
 - SLAT
 - benchmarking
   - benchmarking of stAlign: https://github.com/dbjzs/3d-OT/tree/main/Benchmarking
+
 
 ## Single-Cell RNA-seq Analysis
 

@@ -16,6 +16,10 @@
 - LoRA
 - knowledge distill 知识蒸馏，提高模型计算效率，加快部署
 - hidden layer 隐藏层
+- U-net
+- MLP
+- Heyna
+- FlashAttention
 
 
 - 泛化能力与过拟合
