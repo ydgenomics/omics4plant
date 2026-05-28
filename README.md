@@ -42,6 +42,8 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 - [Cluster](./WORKFLOW/Cluster/README.md)
 - [MetaNeighbor](./WORKFLOW/MetaNeighbor/README.md)
 - [Annos](./WORKFLOW/Annos/README.md)
+- 颜色提取器：https://www.jyshare.com/front-end/6214/
+
 
 > 在搭建单细胞RNA-seq流程前，请系统看一下生信前沿的ppt，SCOP的处理流程，便于clear过程和尽可能出发表级的图片
 
@@ -95,3 +97,6 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 - Ai只是我们的一个工具，学会理解AI的反馈，离不开对本质规则的理解，请不要让自己变成copy paste的中间人，理解AI，提供AI更正确的提示词。
 
 </details>
+
+![bgi](./bgi_research.log.png)
+![ucas](./ucas-logo.png)
