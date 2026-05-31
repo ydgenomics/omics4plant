@@ -3,6 +3,8 @@
 > [!Tip]
 > - 学习、工作和测试代码过程中，做好记录，便于后面沟通交流和工作分享
 
+---
+
 ## `1` 编程&语言 [:globe_with_meridians:菜鸟教程](https://www.runoob.com/) [omics4plant/CS](../CS/)
 
 - **Linux/shell**

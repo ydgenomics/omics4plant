@@ -7,7 +7,6 @@
 
 gef --> h5ad (many bins) --> scanpy (leiden with different resolutions) --> BayersSpace
 
-
 - tissue分割SAW可以处理，stereopy也可以实现
 - 获取stereopy的tutorial的notebook https://github.com/STOmics/Stereopy/tree/main/docs/source/Tutorials
 - 如何计算mt [dataget](https://github.com/ydgenomics/WDL/blob/main/Dataget/v1.2.3/run_scrublet.py) [scanpy](https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering-2017.html#preprocessing)
@@ -17,6 +16,31 @@ gef --> h5ad (many bins) --> scanpy (leiden with different resolutions) --> Baye
 - stereopy python
 - graphst python
 - scSLANT python
+
+## Usage
+```python
+import h5py
+
+gef_path = "/data/work/0511/tissue_seg/0522/plp14.png_flt.gef"
+with h5py.File(gef_path, 'r') as f:
+    if 'geneExp' in f:
+        print("支持的分辨率（Bin sizes）:", list(f['geneExp'].keys()))
+    else:
+        print("文件结构可能为 Cell-bin，包含的顶级组为:", list(f.keys()))
+
+import stereo as st
+import warnings
+warnings.filterwarnings('ignore')
+
+# read the GEF file
+data = st.io.read_gef(file_path=gef_path, bin_size=50)
+
+# save the data, only the result after filtering
+st.io.write_mid_gef(
+        data=data,
+        output='/data/work/plp14.bin50.gef'
+        )
+```
 
 to-do
 - split
