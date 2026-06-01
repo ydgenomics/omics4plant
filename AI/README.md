@@ -20,6 +20,7 @@
 - MLP
 - Heyna
 - FlashAttention
+- mamba
 
 
 - 泛化能力与过拟合

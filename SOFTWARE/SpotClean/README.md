@@ -33,4 +33,31 @@ In addition: There were 21 warnings (use warnings() to see them)
 Error in library(Seurat) : there is no package called ‘Seurat’
 ```
 
+
+```R
+# 设置镜像（可选，加速下载）
+options(BioC_mirror="https://mirrors.tuna.tsinghua.edu.cn/bioconductor")
+options(repos = c(CRAN = "https://mirrors.tuna.tsinghua.edu.cn/CRAN"))
+
+# 安装BiocManager
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# 基础Bioconductor包
+bioc_packages <- c(
+    "GenomicRanges", "GenomeInfoDb", "SummarizedExperiment",
+    "SingleCellExperiment", "scuttle", "DropletUtils",
+    "BiocFileCache", "SpatialExperiment", "SpotClean"
+)
+BiocManager::install(bioc_packages, update = TRUE, ask = FALSE)
+
+# CRAN包
+cran_packages <- c(
+    "curl", "httr", "htmlwidgets", "plotly",
+    "shiny", "miniUI", "magick", "readbitmap",
+    "SeuratObject", "Seurat"
+)
+install.packages(cran_packages, dependencies = TRUE)
+```
+
 - 2022|Nat.com SpotClean *改正空间转录组学数据中污染的spot* https://mp.weixin.qq.com/s/iAcPRzxPsWMXC0eoTRt4KA https://github.com/zijianni/SpotClean

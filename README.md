@@ -98,4 +98,3 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 </details>
 
 ![bgi](./bgi_research.log.png)
-![ucas](./ucas-logo.png)
