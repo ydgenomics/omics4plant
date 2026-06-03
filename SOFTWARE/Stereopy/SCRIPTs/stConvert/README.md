@@ -54,7 +54,7 @@ gef2gem("/data/work/0511/tissue_seg/wt10.tif_flt.gef", "wt10.bin1.gem", 1)
 gef2gem("/data/work/0511/tissue_seg/plp15.png_flt.gef", "plp15.bin1.gem", 1)
 
 
-def gem2h5ad(gem_path, h5ad_path=None, bin_type=None):
+def gem2h5ad(gem_path, h5ad_path=None, bin_type=None, bin_size=50):
     '''
     将GEM文件转换为h5ad文件，支持不同的输入参数组合
     ref: https://scanpy.readthedocs.io/en/stable/generated/scanpy.read_gem.html#scanpy.read_gem
@@ -66,12 +66,29 @@ def gem2h5ad(gem_path, h5ad_path=None, bin_type=None):
     import os
     if bin_type is None:
         bin_type = 'bins'
-    prefix = os.path.splitext(os.path.basename(gem_path))[0]
-    data = st.io.read_gem(file_path=gem_path, sep='\t', bin_type=bin_type, is_sparse=True)
-    st.io.stereo_to_anndata(data, flavor='seurat',output=prefix + '_seurat.h5ad')
-    st.io.stereo_to_anndata(data, flavor='scanpy',output=prefix + '_scanpy.h5ad')
+    data = st.io.read_gem(file_path=gem_path, sep='\t', bin_type=bin_type, bin_size=bin_size, is_sparse=True)
+    if h5ad_path is None:
+        prefix = os.path.splitext(os.path.basename(gem_path))[0]
+        st.io.stereo_to_anndata(data, flavor='seurat',output=prefix + '_seurat.h5ad')
+        st.io.stereo_to_anndata(data, flavor='scanpy',output=prefix + '_scanpy.h5ad')
+    else:
+        prefix=h5ad_path.replace(".h5ad", "")
+        st.io.stereo_to_anndata(data, flavor='seurat',output=prefix + '_seurat.h5ad')
+        st.io.stereo_to_anndata(data, flavor='scanpy',output=prefix + '_scanpy.h5ad')
+
     
 gem2h5ad("/data/work/test/wt10.bin1.gem")
+gem2h5ad(
+    gem_path="/data/users/yangdong/yangdong_5f5c3933d7c44a73bff0cbff6fd8db86/online/spotgf/plp15/SpotGF_auto_threshold.gem",
+    h5ad_path="/data/work/0526/bins/bin50/spotgf/plp15_auto.h5ad",
+    bin_type="bins", bin_size=50
+)
+gem2h5ad(
+    gem_path="/data/users/yangdong/yangdong_5f5c3933d7c44a73bff0cbff6fd8db86/online/spotgf/plp15/SpotGF_proportion_0.8.gem",
+    h5ad_path="/data/work/0526/bins/bin50/spotgf/plp15_0.8.h5ad",
+    bin_type="bins", bin_size=50
+)
+
 
 # read the gem file
 data_path = './SS200000135TL_D1.cellbin.gem'

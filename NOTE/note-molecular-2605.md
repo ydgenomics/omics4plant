@@ -1,6 +1,9 @@
 
 - splice site usage and splice junction coordinates and strength
 
+## References
+- 一文读懂5'UTR与3'UTR核心功能 https://mp.weixin.qq.com/s/txzmwRri_H3ypf4Jt6_vCA
+
 
 # 正链基因 vs 负链基因：复制与转录的区别
 

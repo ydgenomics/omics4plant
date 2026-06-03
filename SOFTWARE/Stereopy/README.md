@@ -5,6 +5,18 @@
 > - scSLAT对齐时，每个样本的spot名字要唯一，所以最好`tmp.obs_names = name + '_' + tmp.obs_names`
 
 
+## 260602
+- gef2gem (cellpose_035)
+- SpotGF (SPotGF)
+- gem2h5ad (cellpose_035)
+- scanpy qc,cluster (cellpose_035)
+- h5ad2rds (Supercell BayesSpace)
+- integration 整体各个样本的umap，整合去批次后分群的情况
+- BayesSpace (Supercell，测试3，4两个分辨率)
+- plot (cellpose_035, 细胞分群图，基因图，极性marker的图，富集的图？组织特异的marker基因的dotplot图)
+
+
+
 gef --> h5ad (many bins) --> scanpy (leiden with different resolutions) --> BayersSpace
 
 - tissue分割SAW可以处理，stereopy也可以实现

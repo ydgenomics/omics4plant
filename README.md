@@ -72,29 +72,5 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 
 </details>
 
-## `4` Tips
-
-<details> <summary> Tips </summary>
-
-- 云平台自己投流程任务，cpu不要超过16，mem不要超过256
-- systematic biology driven by omics
-
-</details>
-
-## `5` ForMe
-
-<details> <summary> ForMe </summary>
-
-- 明确自己的观点，对自己有好处，对听者也有好处
-  - 要清晰表达你的观点，我发现自己常常描述很多东西，但talk的过程中发现自己没有很明确的自己的观点，这样对于与讨论的人而言是不友好的，对于自己发表自己的观点也是不好的。要有明确的、站的住脚的观点
-- 多提问，善于提问
-- 每周精读一篇英文文献（做一个简单的ppt），另外至少速看5篇文章（ai helped）。
-- 每周文献提问尝试提一个有意义的问题
-- 每日英语学习（不背单词/Nature profile/quick reading）
-- 每日纸质书阅读
-- 每日健康作息（好好睡觉&好好吃饭&锻炼&大脑放松）
-- Ai只是我们的一个工具，学会理解AI的反馈，离不开对本质规则的理解，请不要让自己变成copy paste的中间人，理解AI，提供AI更正确的提示词。
-
-</details>
 
 ![bgi](./bgi_research.log.png)
