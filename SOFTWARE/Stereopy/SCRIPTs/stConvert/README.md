@@ -83,15 +83,31 @@ gem2h5ad(
     h5ad_path="/data/work/0526/bins/bin50/spotgf/plp15_auto.h5ad",
     bin_type="bins", bin_size=50
 )
-gem2h5ad(
-    gem_path="/data/users/yangdong/yangdong_5f5c3933d7c44a73bff0cbff6fd8db86/online/spotgf/plp15/SpotGF_proportion_0.8.gem",
-    h5ad_path="/data/work/0526/bins/bin50/spotgf/plp15_0.8.h5ad",
-    bin_type="bins", bin_size=50
-)
 
+import os
+import glob
 
-# read the gem file
-data_path = './SS200000135TL_D1.cellbin.gem'
+# 找到所有符合条件的 gem 文件
+gem_files = glob.glob('/data/users/yangdong/yangdong_5f5c3933d7c44a73bff0cbff6fd8db86/online/spotgf/*/SpotGF_proportion_0.8.gem')
+print(gem_files)
+
+# 遍历处理每个文件
+for gem_path in gem_files:
+    # 提取 sample 名称（* 对应的文件夹名）
+    sample = os.path.basename(os.path.dirname(gem_path))
+    
+    # 构建输出路径
+    h5ad_path = f"/data/work/0526/bins/bin50/spotgf2/{sample}_auto.h5ad"
+    
+    # 调用转换函数
+    gem2h5ad(
+        gem_path=gem_path,
+        h5ad_path=h5ad_path,
+        bin_type="bins",
+        bin_size=50
+    )
+    
+    print(f"已完成: {sample}")
 
 ```
 

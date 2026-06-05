@@ -2,7 +2,7 @@
 
 
 > [!Note]
-> - scSLAT对齐时，每个样本的spot名字要唯一，所以最好`tmp.obs_names = name + '_' + tmp.obs_names`
+> - scSLAT之前存在一样的数据对齐时会报数据拟合的问题，主要是当时使用的.X是原始数据，后面使用sctransform的矩阵跑就可以了。
 
 
 ## 260602
