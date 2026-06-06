@@ -27,8 +27,6 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 > - [TRAIN](./TRAIN/): Some trainings, systematic collection and teach.
 > - [WORKFLOW](./WORKFLOW/): Analysis pipelines and buiding in DCS cloud.
 
-- Documents: https://drive.google.com/drive/folders/1Zhgg-YzV83zjbk9mXSuX2b9xA4YDu_q7?usp=drive_link
-
 ---
 
 ## `1` Workflows
