@@ -55,6 +55,7 @@ Contributors: ydgenomics(2144752653@qq.com); Bioer-yd
 
 <details> <summary> ToDo </summary>
 
+- 单细胞转录组的测序饱和度是如何计算得到的？基于转录本mapping的方式为什么导致饱和度计算激增？
 - orthology/homology相关算法和工具包
 - 学习R包reticulate
 - **develop a utlis packages in R and python (ydutils)**

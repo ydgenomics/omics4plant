@@ -3,6 +3,10 @@ conda install conda-forge::r-clustree -y
 
 ```
 
+[issue: Pruning stuck checking for underclustering](https://github.com/corceslab/CHOIR/issues/29)
+
+
+
 两个问题：
 - 比较聚类算法（leiden……）
 - 确定合理的分辨率 (Resolution)

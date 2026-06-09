@@ -1,0 +1,107 @@
+Species_type,Tissus_type,Tissue_type_PO,Cell_type,Cell_type_PO,Cell_marker_name,Gene_symbol,Gene_id,Gene_id_rap,Protein_name,Protein_id,Marker_resource,PMID,Note_gene_type,Description
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,BEE1,AT1G18400,,,,Experimental,23763263,Cell-Marker gene,BR enhanced expression 1
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl epidermis,PO0005013,,ANNAT1,AT1G35720,,,,Experimental,30018170,Cell-Marker gene,annexin 1
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,PIN3,AT1G70940,,,,Experimental,30821050,Cell-Marker gene,Auxin efflux carrier family protein
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,AT1G70990,AT1G70990,,,,Experimental,32333782,Cell-Marker gene,proline-rich family protein
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,BEE3,AT1G73830,,,,Experimental,23763263,Cell-Marker gene,BR enhanced expression 3
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,AT1G76640,AT1G76640,,,,Experimental,24033804,Cell-Marker gene,Calcium-binding EF-hand family protein
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,PIL5,AT2G20180,,,,Experimental,15486102,Cell-Marker gene,phytochrome interacting factor 3-like 5
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,PIL5,AT2G20180,,,,Experimental,25865500,Cell-Marker gene,phytochrome interacting factor 3-like 5
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,ATC,AT2G27550,,,,Experimental,22702636,Cell-Marker gene,centroradiali
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl epidermis,PO0005013,,AT2G41800,AT2G41800,,,,Experimental,27968989,Cell-Marker gene,"imidazolonepropionase (Protein of unknown function, DUF642)"
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,PIF4,AT2G43010,,,,Experimental,30352855,Cell-Marker gene,phytochrome interacting factor 4
+Arabidopsis_thaliana,stem,PO0009047,stem,PO0009047,,AT2G43120,AT2G43120,,,,Experimental,31625609,Cell-Marker gene,RmlC-like cupins superfamily protein
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,SAUR36,AT2G45210,,,,Experimental,23503980,Cell-Marker gene,SAUR-like auxin-responsive protein family
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,HB-1,AT3G01470,,,,Experimental,25865500,Cell-Marker gene,homeobox 1
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,BBX31,AT3G21890,,,,Experimental,30835612,Cell-Marker gene,B-box type zinc finger family protein
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,DAG1,AT3G61850,,,,Experimental,30367178,Cell-Marker gene,Dof-type zinc finger DNA-binding family protein
+Arabidopsis_thaliana,stem,PO0009047,apical hook,PO0000012,,AT4G09530,AT4G09530,,,,Experimental,33093148,Cell-Marker gene,SAUR-like auxin-responsive protein family
+Arabidopsis_thaliana,stem,PO0009047,xylem,PO0005352,,GAMMA-VPE,AT4G32940,,,,Experimental,31279878,Cell-Marker gene,gamma vacuolar processing enzyme
+Arabidopsis_thaliana,stem,PO0009047,phloem,PO0005417,,GAMMA-VPE,AT4G32940,,,,Experimental,31279878,Cell-Marker gene,gamma vacuolar processing enzyme
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,BEE2,AT4G36540,,,,Experimental,23763263,Cell-Marker gene,BR enhanced expression 2
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,WRKY13,AT4G39410,,,,Experimental,26025534,Cell-Marker gene,WRKY DNA-binding protein 13
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,AT5G14090,AT5G14090,,,,Experimental,23331961,Cell-Marker gene,regulator of nonsense transcript protein
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl epidermis,PO0005013,,ANNAT2,AT5G65020,,,,Experimental,30018170,Cell-Marker gene,annexin 2
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,KCS3,AT1G07720,,,,Bulk RNA-seq,16299169,,3-ketoacyl-CoA synthase 3
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,SD1-13,AT1G11350,,,,Bulk RNA-seq,16299169,,S-domain-1 13
+Arabidopsis_thaliana,stem,PO0009047,xylem,PO0005352,,XCP2,AT1G20850,,,,Bulk RNA-seq,16299169,,xylem cysteine peptidase 2
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,WAK1,AT1G21250,,,,Bulk RNA-seq,16299169,,cell wall-associated kinase
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,WAK2,AT1G21270,,,,Bulk RNA-seq,16299169,,wall-associated kinase 2
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT1G22890,AT1G22890,,,,Bulk RNA-seq,16299169,,transmembrane protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT1G29430,AT1G29430,,,,Bulk RNA-seq,16299169,,SAUR-like auxin-responsive protein family
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT1G33600,AT1G33600,,,,Bulk RNA-seq,16299169,,Leucine-rich repeat (LRR) family protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,ABCG12,AT1G51500,,,,Bulk RNA-seq,16299169,,ABC-2 type transporter family protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT1G51805,AT1G51805,,,,Bulk RNA-seq,16299169,,Leucine-rich repeat protein kinase family protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT1G56150,AT1G56150,,,,Bulk RNA-seq,16299169,,SAUR-like auxin-responsive protein family
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,LACS3,AT1G64400,,,,Bulk RNA-seq,16299169,,AMP-dependent synthetase and ligase family protein
+Arabidopsis_thaliana,stem,PO0009047,xylem,PO0005352,,PIN1,AT1G73590,,,,Bulk RNA-seq,16299169,,Auxin efflux carrier family protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,PR5,AT1G75040,,,,Bulk RNA-seq,16299169,,pathogenesis-related protein 5
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT1G78460,AT1G78460,,,,Bulk RNA-seq,16299169,,SOUL heme-binding family protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT1G78860,AT1G78860,,,,Bulk RNA-seq,16299169,,D-mannose binding lectin protein with Apple-like carbohydrate-binding domain-containing protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,PAP8,AT2G01890,,,,Bulk RNA-seq,16299169,,purple acid phosphatase 8
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,LOV1,AT2G02450,,,,Bulk RNA-seq,16299169,,NAC domain containing protein 35
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT2G05540,AT2G05540,,,,Bulk RNA-seq,16299169,,Glycine-rich protein family
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,SERK4,AT2G13790,,,,Bulk RNA-seq,16299169,,somatic embryogenesis receptor-like kinase 4
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT2G20950,AT2G20950,,,,Bulk RNA-seq,16299169,,phospholipase-like protein (PEARLI 4) family protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,KCS10,AT2G26250,,,,Bulk RNA-seq,16299169,,3-ketoacyl-CoA synthase 10
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT2G28570,AT2G28570,,,,Bulk RNA-seq,16299169,,hypothetical protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,RLP26,AT2G33050,,,,Bulk RNA-seq,16299169,,receptor like protein 26
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,WRKY33,AT2G38470,,,,Bulk RNA-seq,16299169,,WRKY DNA-binding protein 33
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT2G39400,AT2G39400,,,,Bulk RNA-seq,16299169,,alpha/beta-Hydrolases superfamily protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,CYP86A8,AT2G45970,,,,Bulk RNA-seq,16299169,,"cytochrome P450, family 86, subfamily A, polypeptide 8"
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT3G10720,AT3G10720,,,,Bulk RNA-seq,16299169,,Plant invertase/pectin methylesterase inhibitor superfamily
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT3G11600,AT3G11600,,,,Bulk RNA-seq,16299169,,E3 ubiquitin-protein ligase
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,CYP71B22,AT3G26200,,,,Bulk RNA-seq,16299169,,"cytochrome P450, family 71, subfamily B, polypeptide 22"
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT14A,AT3G28290,,,,Bulk RNA-seq,16299169,,"transmembrane protein, putative (DUF677)"
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,ABCG19,AT3G55130,,,,Bulk RNA-seq,16299169,,white-brown complex homolog 19
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,CR4,AT3G59420,,,,Bulk RNA-seq,16299169,,crinkly4
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,ATPMEPCRB,AT4G02330,,,,Bulk RNA-seq,16299169,,Plant invertase/pectin methylesterase inhibitor superfamily
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,CRK10,AT4G23180,,,,Bulk RNA-seq,16299169,,cysteine-rich RLK (RECEPTOR-like protein kinase) 10
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,CER2,AT4G24510,,,,Bulk RNA-seq,16299169,,HXXXD-type acyl-transferase family protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,XTH18,AT4G30280,,,,Bulk RNA-seq,16299169,,xyloglucan endotransglucosylase/hydrolase 18
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT4G31000,AT4G31000,,,,Bulk RNA-seq,16299169,,Calmodulin-binding protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,WRKY18,AT4G31800,,,,Bulk RNA-seq,16299169,,WRKY DNA-binding protein 18
+Arabidopsis_thaliana,stem,PO0009047,xylem,PO0005352,,XCP1,AT4G35350,,,,Bulk RNA-seq,16299169,,xylem cysteine peptidase 1
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT4G36500,AT4G36500,,,,Bulk RNA-seq,16299169,,hypothetical protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT4G38550,AT4G38550,,,,Bulk RNA-seq,16299169,,phospholipase-like protein (PEARLI 4) family protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,PYL5,AT5G05440,,,,Bulk RNA-seq,16299169,,Polyketide cyclase/dehydrase and lipid transport superfamily protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT5G20050,AT5G20050,,,,Bulk RNA-seq,16299169,,Protein kinase superfamily protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,BCB,AT5G20230,,,,Bulk RNA-seq,16299169,,blue-copper-binding protein
+Arabidopsis_thaliana,stem,PO0009047,vascular system,PO0000034,,CUE1,AT5G33320,,,,Bulk RNA-seq,16299169,,Glucose-6-phosphate/phosphate translocator-like protein
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,LHT1,AT5G40780,,,,Bulk RNA-seq,16299169,,lysine histidine transporter 1
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,AT5G44020,AT5G44020,,,,Bulk RNA-seq,16299169,,"HAD superfamily, subfamily IIIB acid phosphatase"
+Arabidopsis_thaliana,stem,PO0009047,stem epidermis,PO0025178,,OPT1,AT5G55930,,,,Bulk RNA-seq,16299169,,oligopeptide transporter 1
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT1G22200,AT1G22200,,,,Bulk RNA-seq,27549386,,Endoplasmic reticulum vesicle transporter protein
+Arabidopsis_thaliana,stem,PO0009047,seedling hypocotyl,PO0025291,,Lhca5,AT1G45474,,,,Bulk RNA-seq,27549386,,photosystem I light harvesting complex protein 5
+Arabidopsis_thaliana,stem,PO0009047,seedling hypocotyl,PO0025291,,ATHB-15,AT1G52150,,,,Bulk RNA-seq,27549386,,Homeobox-leucine zipper family protein / lipid-binding START domain-containing protein
+Arabidopsis_thaliana,stem,PO0009047,seedling hypocotyl,PO0025291,,,AT1G53220,,,,Bulk RNA-seq,27549386,,
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,ERD14,AT1G76180,,,,Bulk RNA-seq,27549386,,Dehydrin family protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,GGH1,AT1G78660,,,,Bulk RNA-seq,27549386,,gamma-glutamyl hydrolase 1
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT2G20625,AT2G20625,,,,Bulk RNA-seq,27549386,,hypothetical protein (DUF626)
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,UXS6,AT2G28760,,,,Bulk RNA-seq,27549386,,UDP-XYL synthase 6
+Arabidopsis_thaliana,stem,PO0009047,seedling hypocotyl,PO0025291,,XTH32,AT2G36870,,,,Bulk RNA-seq,27549386,,xyloglucan endotransglucosylase/hydrolase 32
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,CCA1,AT2G46830,,,,Bulk RNA-seq,27549386,,circadian clock associated 1
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT3G06760,AT3G06760,,,,Bulk RNA-seq,27549386,,Drought-responsive family protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,MSL5,AT3G14810,,,,Bulk RNA-seq,27549386,,mechanosensitive channel of small conductance-like 5
+Arabidopsis_thaliana,stem,PO0009047,seedling hypocotyl,PO0025291,,AT3G44970,AT3G44970,,,,Bulk RNA-seq,27549386,,Cytochrome P450 superfamily protein
+Arabidopsis_thaliana,stem,PO0009047,seedling hypocotyl,PO0025291,,AT3G47540,AT3G47540,,,,Bulk RNA-seq,27549386,,Chitinase family protein
+Arabidopsis_thaliana,stem,PO0009047,seedling hypocotyl,PO0025291,,AT3G56580,AT3G56580,,,,Bulk RNA-seq,27549386,,RING/U-box superfamily protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,FAR6,AT3G56700,,,,Bulk RNA-seq,27549386,,fatty acid reductase 6
+Arabidopsis_thaliana,stem,PO0009047,seedling hypocotyl,PO0025291,,PEX11E,AT3G61070,,,,Bulk RNA-seq,27549386,,peroxin 11E
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,,AT4G09875,,,,Bulk RNA-seq,27549386,,
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT4G09880,AT4G09880,,,,Bulk RNA-seq,27549386,,hypothetical protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT4G19420,AT4G19420,,,,Bulk RNA-seq,27549386,,Pectinacetylesterase family protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,,AT5G08185,,,,Bulk RNA-seq,27549386,,
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,TPPI,AT5G10100,,,,Bulk RNA-seq,27549386,,Haloacid dehalogenase-like hydrolase (HAD) superfamily protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,ZIFL1,AT5G13750,,,,Bulk RNA-seq,27549386,,zinc induced facilitator-like 1
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT5G22490,AT5G22490,,,,Bulk RNA-seq,27549386,,O-acyltransferase (WSD1-like) family protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AAP7,AT5G23810,,,,Bulk RNA-seq,27549386,,amino acid permease 7
+Arabidopsis_thaliana,stem,PO0009047,seedling hypocotyl,PO0025291,,PTM,AT5G35210,,,,Bulk RNA-seq,27549386,,PHD type transcription factor with transmembrane domain protein (PTM)
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT5G37970,AT5G37970,,,,Bulk RNA-seq,27549386,,S-adenosyl-L-methionine-dependent methyltransferase superfamily protein
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,AT1G35617,AT1G35617,,,,Bulk RNA-seq,30610360,,hypothetical protein
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,AT3G44970,AT3G44970,,,,Bulk RNA-seq,30610360,,Cytochrome P450 superfamily protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,FAR6,AT3G56700,,,,Bulk RNA-seq,30610360,,fatty acid reductase 6
+Arabidopsis_thaliana,stem,PO0009047,hypocotyl,PO0020100,,,AT4G21515,,,,Bulk RNA-seq,30610360,,
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT5G22490,AT5G22490,,,,Bulk RNA-seq,30610360,,O-acyltransferase (WSD1-like) family protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT5G37940,AT5G37940,,,,Bulk RNA-seq,30610360,,Zinc-binding dehydrogenase family protein
+Arabidopsis_thaliana,stem,PO0009047,stem internode,PO0020142,,AT5G37970,AT5G37970,,,,Bulk RNA-seq,30610360,,S-adenosyl-L-methionine-dependent methyltransferase superfamily protein
