@@ -130,19 +130,25 @@ load_marker_file <- function(file_path) {
 
 
 s2s <- function(df, reciprocal_txt){
+  # 读取BLAST结果文件
   df2 <- read.csv(reciprocal_txt, sep='\t', header=FALSE)
+  
   # 合并数据框
   df <- tryCatch({
-    merge(df, df2, by.x = "gene", by.y = "V2", all.x = FALSE)
+    # 尝试用 V2 列匹配
+    result <- merge(df, df2, by.x = "gene", by.y = "V2", all.x = FALSE)
     # 重命名 V1 列为 new
     colnames(result)[colnames(result) == "V1"] <- "new"
+    return(result)
   }, error = function(e) {
-    merge(df, df2, by.x = "gene", by.y = "V1", all.x = FALSE)
+    # 如果失败，尝试用 V1 列匹配
+    result <- merge(df, df2, by.x = "gene", by.y = "V1", all.x = FALSE)
     colnames(result)[colnames(result) == "V2"] <- "new"
+    return(result)
   })
-
+  
   # 查看结果
   head(df)
-
+  
   return(df)
 }

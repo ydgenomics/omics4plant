@@ -1,4 +1,4 @@
-# Date: 20260209
+# Date: 20260610
 # Image: enrich-R--04
 # libraries: org.Cthalictroides.eg.db,org.Pcirratum.eg.db,org.Ahypogaea.eg.db
 # gene_csv: gene, cluster(optional), p_val_adj
@@ -69,9 +69,9 @@ for(i in unique(markers$cluster)){
     gene_list <- marker_subset %>% filter(p_val_adj < minp)
     gene_list <- gene_list$gene
     # run enrich
-    go_data <- enrichGO(gene = gene_list, OrgDb = db,keyType = 'GID',ont = 'ALL',qvalueCutoff = 0.05,pvalueCutoff = 0.05)
+    go_data <- enrichGO(gene = gene_list, OrgDb = db,keyType = 'GID',ont = 'ALL',qvalueCutoff = 0.05,pvalueCutoff = minp)
     go_data <- as.data.frame(go_data)
-    kegg_result <- enricher(gene_list,TERM2GENE = pathway2gene, TERM2NAME = pathway2name,pvalueCutoff = 0.05,qvalueCutoff = 0.05)
+    kegg_result <- enricher(gene_list,TERM2GENE = pathway2gene, TERM2NAME = pathway2name,pvalueCutoff = 0.05,qvalueCutoff = minp)
     kegg_data <- as.data.frame(kegg_result); dim(kegg_data)
     if (nrow(go_data) > 0 && nrow(kegg_data) > 0) {
         kegg_data$ONTOLOGY <- "KEGG"
