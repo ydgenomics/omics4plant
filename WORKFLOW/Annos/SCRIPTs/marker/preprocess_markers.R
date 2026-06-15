@@ -152,3 +152,28 @@ s2s <- function(df, reciprocal_txt){
   
   return(df)
 }
+
+df_reconstructed <- df %>%
+  group_by(species, tissue, celltype) %>%
+  summarise(
+    geneSymbolmore1 = paste(gene, collapse = ","),
+    .groups = "drop"
+  )
+
+df_reconstructed <- df %>%
+  group_by(species, tissue, celltype) %>%
+  summarise(
+    geneSymbolmore1 = paste(new, collapse = ","),
+    .groups = "drop"
+  )
+
+df_reconstructed <- df_reconstructed %>%
+  rename(
+    tissueType = tissue,
+    cellName = celltype
+  )
+df_reconstructed$geneSymbolmore2 <- NA
+
+df_reconstructed$shortName <- df_reconstructed$cellName
+
+write.csv(df_reconstructed, '/data/work/at_sp_stem_plantscrnaddb2.csv', row.names=FALSE)

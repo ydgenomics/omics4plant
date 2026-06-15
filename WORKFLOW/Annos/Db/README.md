@@ -1,4 +1,6 @@
 
+# REF
+- 细胞类型的名字要统一处理一下，一是格式，空格要用_替换，另外就是不同的写法其实可能是同一种细胞类型
 
 # MARKER
 |species|tissue|celltype|gene|power|from|description|
