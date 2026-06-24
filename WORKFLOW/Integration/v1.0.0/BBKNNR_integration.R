@@ -15,13 +15,9 @@ option_list <- list(
     type = "character", default = NULL,
     help = "Path to input preprocessed rds file"
   ),
-  make_option(c("-o", "--out_rds"),
+  make_option(c("-o", "--prefix"),
     type = "character", default = NULL,
-    help = "integrated rds file"
-  ),
-  make_option(c("-p", "--out_UMAP"),
-    type = "character", default = NULL,
-    help = "Output UMAP after integration"
+    help = "Prefix of output file"
   ),
   make_option(c("-b", "--batch_key"),
     type = "character", default = NULL,
@@ -44,12 +40,14 @@ option_list <- list(
 # parse input
 opt <- parse_args(OptionParser(option_list = option_list))
 input_rds <- opt$input_rds
-out_rds <- opt$out_rds
-out_UMAP <- opt$out_UMAP
+prefix <- opt$prefix
 batch_key <- opt$batch_key
 key_list <- strsplit(opt$key_list, ",")[[1]]
 resolution <- opt$resolution
 cluster_name <- opt$cluster_name
+
+out_rds <- paste0(prefix, '_BBKNNR_integrated.rds')
+out_UMAP <- paste0(prefix, '_BBKNNR_integrated.pdf')
 
 #### 1.load dataset
 obj <- readRDS(input_rds)
@@ -77,7 +75,8 @@ obj
 #obj <- RunUMAP(obj, reduction = "pca", dims = 1:30, reduction.name = "umap")
 saveRDS(obj, file = out_rds)
 
-#visual
+key_list <- c(key_list, cluster_name)
+
 pdf(out_UMAP)
 required_features <- c("nCount_RNA", "nFeature_RNA")
 if (all(required_features %in% colnames(obj@meta.data))) {
@@ -86,5 +85,20 @@ if (all(required_features %in% colnames(obj@meta.data))) {
   message("meta.data lacked nCount_RNA or nFeature_RNA, so passed vioplot")
 }
 DimPlot(obj, reduction = "umap", split.by = batch_key)
-DimPlot(obj, reduction = "umap", group.by = key_list, shuffle = TRUE, label = TRUE)
+for (i in key_list){
+    p <- DimPlot(obj, reduction = "umap", group.by = i, shuffle = TRUE, label = TRUE)
+    print(p)
+}
 dev.off()
+
+# # 处理所有 Reductions -> reduction/（不压缩）
+# reduc_names <- c('harmony', 'umap')
+
+# for (red_name in reduc_names) {
+#     reduc <- obj[[red_name]]
+#     emb <- as.data.frame(Embeddings(reduc))
+#     emb <- cbind(cell_id = rownames(emb), emb)
+#     # CSV 不压缩
+#     red_file <- paste0(red_name, "_BBKNNR_integrated.csv")
+#     write.csv(emb, red_file, row.names = FALSE)
+# }

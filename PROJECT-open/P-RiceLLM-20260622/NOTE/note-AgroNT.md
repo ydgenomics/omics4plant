@@ -1,0 +1,1 @@
+2024年发表于biological communication，使用48个物种的基因组DNA数据训练，transforemer架构。

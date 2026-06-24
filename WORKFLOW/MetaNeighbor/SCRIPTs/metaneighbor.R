@@ -1,18 +1,20 @@
 # ref:
 # > MetaNeighbor计算批次的细胞群间的相似度(AUC)，hclust基于层次聚类进行批次间分群的统一并赋予标签
-# 260606
+# 260617
 # Rscript metaneighbor.R \
-# -i "/data/work/Convert/jt_ctrl.hr.rds,/data/work/Convert/jt_stim.hr.rds" \
-# -o "jt_combined" \
+# -i "/data/work/MetaNeighbor/jt_metaneighbor.rds" \
+# -o "jt" \
 # -b "biosample" \
-# -c "leiden_res_0.50" \
+# -c "CHOIR_clusters_0.05" \
+# -n "metaneighbor_10" \
 # -a "RNA" \
-# -v 6
+# -v 10
 
 suppressPackageStartupMessages({
     library(MetaNeighbor)
     library(SummarizedExperiment)
     library(Seurat)
+    library(dplyr)
     library(SingleCellExperiment)
     library(grid)
     library(ComplexHeatmap)
@@ -24,7 +26,6 @@ suppressPackageStartupMessages({
     library(optparse)
 })
 
-# 2. 定义命令行选项列表
 option_list <- list(
   make_option(
     c("-i", "--input_rds"), 
@@ -55,6 +56,13 @@ option_list <- list(
     metavar = "character"
   ),
   make_option(
+    c("-n", "--new_key"), 
+    type = "character", 
+    default = "metaneighbor",
+    help = "新的分群的key", 
+    metavar = "character"
+  ),
+  make_option(
     c("-a", "--assay"), 
     type = "character", 
     default = "RNA",
@@ -79,6 +87,7 @@ input_rds   <- opt$input_rds
 output_name <- opt$output_name
 batch_key   <- opt$batch_key
 cluster_key <- opt$cluster_key
+new_key     <- opt$new_key
 assay       <- opt$assay
 cut_value   <- opt$cut_value
 
@@ -88,6 +97,7 @@ cat("Input RDS   :", input_rds, "\n")
 cat("Output Name :", output_name, "\n")
 cat("Batch Key   :", batch_key, "\n")
 cat("Cluster Key :", cluster_key, "\n")
+cat("New Key     :", new_key, "\n")
 cat("Assay       :", assay, "\n")
 cat("Cut Value   :", cut_value, "\n")
 cat("===============================\n\n")
@@ -223,10 +233,10 @@ group2dendro <- setNames(
   dendro_cluster_df$group
 )
 
-seu$metaneighbor <- unname(group2dendro[match(seu@meta.data[[combined_key]], names(group2dendro))])
+seu@meta.data[[new_key]] <- unname(group2dendro[match(seu@meta.data[[combined_key]], names(group2dendro))])
 
 name <- paste0("auc_hclust_", as.character(cut_value))
-seu@meta.data[[name]] <- seu$metaneighbor
+seu@meta.data[[name]] <- seu@meta.data[[new_key]]
 
 write.csv(celltype_NV, file = paste0(output_name, "_metaNeighbor.csv"), quote = FALSE, row.names = TRUE)
 saveRDS(seu, file = paste0(output_name, "_metaneighbor.rds"))
@@ -289,13 +299,16 @@ Heatmap(
   show_column_names = TRUE
 )
 
+# 如果你想把所有的图保存到一个 PDF 中，请取消下面这行的注释（并指定路径）
+# pdf("my_cluster_analysis_plots.pdf", width = 10, height = 7)
+
 if ("umap" %in% names(seu@reductions)) {
     p <- DimPlot(
         object = seu, 
         reduction = "umap",              # 指定使用 UMAP 降维结果
-        group.by = "metaneighbor",       # 分群键设置为 metaneighbor
+        group.by = new_key,              # 分群键设置为 metaneighbor
         cols = cluster_colors,           # 按你定义的变量分配颜色
-        label = TRUE,                    # 在图上给每个群中心点加上标签（可选）
+        label = TRUE,                    # 在图上给每个群中心点加上标签
         label.size = 5,                  # 标签字体大小
         repel = TRUE                     # 防止标签重叠
         ) + 
@@ -303,12 +316,43 @@ if ("umap" %in% names(seu@reductions)) {
         theme_minimal() +                # 使用一个干净的主题风格
         theme(plot.title = element_text(hjust = 0.5, face = "bold")) # 标题居中加粗
     print(p)
+    
     p1 <- DimPlot(seu, reduction = "umap", group.by = batch_key)
     print(p1)
+    
     p2 <- DimPlot(seu, reduction = "umap", group.by = combined_key)
     print(p2)
 } else {
     message("UMAP reduction not found in Seurat object. Skipping UMAP plot.")
 }
 
+# 1. 提取元数据并计算频数
+df <- seu@meta.data %>%
+  # 使用 .data[[ ]] 安全地解析字符串变量
+  group_by(.data[[batch_key]], .data[[new_key]]) %>%
+  tally() %>%
+  # 显式按 batch 分组，确保百分比分母是每个批次的细胞总数
+  group_by(.data[[batch_key]]) %>% 
+  mutate(Percentage = n / sum(n) * 100) %>%
+  ungroup() # 完结后解锁分组
+
+# 2. 绘制百分比堆叠条形图
+p_bar <- ggplot(df, aes(x = .data[[batch_key]], y = Percentage, fill = .data[[new_key]])) +
+  geom_bar(stat = "identity", position = "stack", width = 0.6) +
+  # 【修改点】映射你定义好的颜色方案
+  scale_fill_manual(values = cluster_colors) + 
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "Cluster Abundance by Batch",
+    x = "Condition",
+    y = "Percentage (%)",
+    fill = "Cluster"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank() # 建议把次要网格线也关掉，图表更精致
+  )
+
+print(p_bar)
 dev.off()

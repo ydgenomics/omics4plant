@@ -1,0 +1,46 @@
+{
+  "inputs": {
+    "genome_fasta": "data/external/osa1_r7.asm.ch.fa",
+    "chromosomes": [
+      "7"
+    ],
+    "window_size": 32768,
+    "overlap": 16384,
+    "meta_csv": "data/external/media.csv",
+    "assay_titles": [
+      "total RNA-seq"
+    ],
+    "biosample_names": [
+      "NIP_Panicle1"
+    ],
+    "processed_bw_dir": "data/processed/renorm_bigwig_output"
+  },
+  "outputs": {
+    "sequence_split_csv": "sequence_split_train.csv",
+    "bigWig_labels_meta_csv": "bigWig_labels_meta.csv"
+  },
+  "counts": {
+    "num_samples": 1812,
+    "num_samples_by_chromosome": {
+      "7": 1812
+    },
+    "num_modalities": 2,
+    "heads": [
+      "total_RNA-seq_+",
+      "total_RNA-seq_-"
+    ],
+    "num_biosamples": 1,
+    "biosample_order": [
+      "NIP_Panicle1"
+    ],
+    "target_file_name": [
+      "re-normalized_NIP_Panicle1_all_plus.bw",
+      "re-normalized_NIP_Panicle1_all_minus2.bw"
+    ],
+    "nonzero_mean": [
+      1.307295,
+      1.307428
+    ]
+  },
+  "created_at": "2025-12-22T14:35:12.404469"
+}

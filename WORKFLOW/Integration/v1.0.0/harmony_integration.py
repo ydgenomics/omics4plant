@@ -5,7 +5,7 @@
 import click
 import matplotlib.pyplot as plt
 import scanpy as sc
-import pandas
+import pandas as pd
 import harmonypy
 import leidenalg
 from matplotlib.backends.backend_pdf import PdfPages
@@ -16,17 +16,20 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 @click.command()
 @click.argument("input_h5ad", type=click.Path(exists=True))
-@click.argument("out_h5ad", type=click.Path(exists=False), default=None)
-@click.argument("out_umap", type=click.Path(exists=False), default=None)
+@click.option('--prefix', type=str, default=None, help="Prefix of output files")
 @click.option('--batch_key', type=str, default=None, help="Batch key in identifying HVG and harmony integration")
 @click.option('--key_list', type=str, default=None, help="Visulaized keys")
 @click.option('--cluster_name', type=str, default=None, help="New cluster name")
 @click.option('--resolution', type=float, default=0.5, help="set for resolution, is float")
 
-def run_harmony(input_h5ad, out_h5ad, out_umap, batch_key, key_list, cluster_name, resolution):
+def run_harmony(input_h5ad, prefix, batch_key, key_list, cluster_name, resolution):  
     key_list = key_list.split(",")
+    key_list.append(cluster_name)
+    out_umap = prefix + '_harmony_integrated.pdf'
+    out_h5ad = prefix + '_harmony_integrated.h5ad'
+    click.echo('Start scVI integration - use cpu mode')
     click.echo('Start harmony integration')
-    sc.set_figure_params(dpi_save=300, frameon=False, figsize=(10, 6))
+    # sc.set_figure_params(dpi_save=300, frameon=False, figsize=(10, 6))
     adata = sc.read_h5ad(input_h5ad)
     adata.var_names_make_unique()
     sc.pp.normalize_total(adata, target_sum=1e4)
@@ -57,7 +60,7 @@ def run_harmony(input_h5ad, out_h5ad, out_umap, batch_key, key_list, cluster_nam
             plt.close()
         else:
             print("obs lacked total_counts or n_genes column")
-        sc.pl.umap(adata, color=key_list, legend_loc='on data', ncols=1)
+        sc.pl.umap(adata, color=key_list, legend_loc='right margin', ncols=1)
         plt.savefig(pdf, format='pdf', dpi=300, bbox_inches='tight')
         plt.close()
     #adata.obsm['X_umapharmony'] = adata.obsm['X_umap']
@@ -67,6 +70,18 @@ def run_harmony(input_h5ad, out_h5ad, out_umap, batch_key, key_list, cluster_nam
     click.echo("Save output")
     adata.write(filename=out_h5ad,compression="gzip")
     click.echo("Done harmony")
+    
+    obsm_key = 'X_pca_harmony'
+    obsm_data = adata.obsm[obsm_key]
+    reduc_name = obsm_key.replace("X_", "") if obsm_key.startswith("X_") else obsm_key
+    df = pd.DataFrame(
+        obsm_data,
+        index=adata.obs_names,
+        columns=[f"{reduc_name}_{i+1}" for i in range(obsm_data.shape[1])]
+    )
+    df.index.name = "cell_id"
+    df.reset_index(inplace=True)
+    df.to_csv(obsm_key+'_harmony_integrated.csv', index=False)
 
 
 if __name__ == '__main__':
