@@ -1,5 +1,5 @@
 <br>
-<a href ="https://github.com/ydgenomics/omics4plant/tree/main"><img src="omics4plant.logo.png" width="300px" align="right" /></a>
+<a href ="https://github.com/ydgenomics/omics4plant/tree/main"><img src="./PNG/omics4plant.logo.png" width="300px" align="right" /></a>
 
 <!-- badges: start -->
 <!-- badges: end -->

@@ -2,6 +2,9 @@
 
 This repository organizes various tools for single-cell omics analysis, categorized by functionality.
 
+
+- [2026 Scientific Reports | scDecorr：无需依赖细胞类型注释即可“对齐”单细胞数据的新工具](https://mp.weixin.qq.com/s/gAGJsgQLbr2WkrdUU_r-yQ?scene=1) [gitub](https://github.com/hayatlab/scdecorr.)
+
 ## ST
 - 2025|Nat.Methods SpotSweeper *SpotSweeper🧹：空转需要像扫雷一样质控* https://mp.weixin.qq.com/s/_2vOco6WGtBmkP4wAdJvHQ https://github.com/MicTott/SpotSweeper
 - 2022|Nat.com SpotClean *改正空间转录组学数据中污染的spot* https://mp.weixin.qq.com/s/iAcPRzxPsWMXC0eoTRt4KA https://github.com/zijianni/SpotClean

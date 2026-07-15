@@ -15,11 +15,11 @@ from matplotlib.backends.backend_pdf import PdfPages
 """
 
 @click.command()
-@click.argument("input_h5ad", type=click.Path(exists=True))
-@click.option('--prefix', type=str, default=None, help="Prefix of output files")
-@click.option('--batch_key', type=str, default=None, help="Batch key in identifying HVG and harmony integration")
-@click.option('--key_list', type=str, default=None, help="Visulaized keys")
-@click.option('--cluster_name', type=str, default=None, help="New cluster name")
+@click.argument("input_h5ad", type=click.Path(exists=True), default="Sp_metaneighbor.rh.h5ad")
+@click.option('--prefix', type=str, default="Sp", help="Prefix of output files")
+@click.option('--batch_key', type=str, default="biosample", help="Batch key in identifying HVG and harmony integration")
+@click.option('--key_list', type=str, default="sample,metaneighbor", help="Visulaized keys")
+@click.option('--cluster_name', type=str, default="celltype", help="New cluster name")
 @click.option('--resolution', type=float, default=0.5, help="set for resolution, is float")
 
 def run_harmony(input_h5ad, prefix, batch_key, key_list, cluster_name, resolution):  

@@ -5,7 +5,7 @@
 
 library(Seurat) # make sure you are running SeuratV5
 options(Seurat.object.assay.version = 'v5')
-library(SeuratData)
+# library(SeuratData)
 library(patchwork)
 library(optparse)
 library(ggplot2)
@@ -13,19 +13,19 @@ library(magrittr)
 
 option_list <- list(
   make_option(c("-i", "--input_rds"),
-    type = "character", default = NULL,
+    type = "character", default = "/data/Sp_metaneighbor.rds",
     help = "Path to input preprocessed rds file"
   ),
   make_option(c("-o", "--prefix"),
-    type = "character", default = NULL,
+    type = "character", default = "Sp",
     help = "Prefix of output file"
   ),
   make_option(c("-b", "--batch_key"),
-    type = "character", default = NULL,
+    type = "character", default = "biosample",
     help = "Batch key identifier to integrate"
   ),
   make_option(c("-k", "--key_list"),
-    type = "character", default = "biosample,sample",
+    type = "character", default = "biosample,metaneighbor",
     help = "Sample key identifier"
   ),
   make_option(c("-r", "--resolution"),
