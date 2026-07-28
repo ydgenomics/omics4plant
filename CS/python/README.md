@@ -1,0 +1,1 @@
+[:tv:3小时超快速入门python](https://www.bilibili.com/video/BV1Jgf6YvE8e/?spm_id_from=333.337.search-card.all.click&vd_source=5600c17ea3ce6334fe6d9c0d3cd99627)
