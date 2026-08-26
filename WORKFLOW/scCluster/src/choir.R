@@ -1,7 +1,7 @@
 # ref: https://tomsing1.github.io/blog/posts/choir/
 # https://www.choirclustering.com/articles/CHOIR.html
 # https://github.com/corceslab/CHOIR/issues/29
-# image: CHOIR--01 /home/stereonote/miniconda3/envs/r_env/bin/Rscript
+# [image]: CHOIR--01 /home/stereonote/miniconda3/envs/r_env/bin/Rscript
 
 # 如果运行太慢/内存不足：保持 distance_approx = TRUE，核对 n_cores 是否匹配你的机器，并可尝试调小 downsampling_rate（如指定为较小的数值）。
 

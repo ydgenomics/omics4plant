@@ -45,7 +45,7 @@ task choir{
     $input_rds $cluster_key $batch_key $alpha $random_seed
   >>>
   runtime{
-    docker_url: "public-library/huangpeilin_47c963e5f3ea4945a821c90d28d8ab30_public:latest"
+    docker_url: "stereonote_hpc/yangdong_66486b5a5c3843abb13a0441ab1f0cda_private:latest"
     req_cpu: 8
     req_memory: "~{mem}Gi"
   }
