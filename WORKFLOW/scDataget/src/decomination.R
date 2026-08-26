@@ -1,9 +1,16 @@
-# 260314
+# [update] 2608
+# [image] SoupX-R--02
+# [note]
 
-# Rscript /data/work/decomination.R \
-# --raw_matrix "/data/input/Files/yangdong/zamia/no-V3RNA25021000048/output/raw_matrix" \
-# --filter_matrix "/data/input/Files/yangdong/zamia/no-V3RNA25021000048/output/filter_matrix" \
-# --prefix "zemi" --min_genes 100 --min_cells 3 --tfidfMin 1 --roundToInt TRUE
+if (FALSE){
+'
+Rscript /data/work/decomination.R \
+--raw_matrix "/data/input/Files/yangdong/zamia/no-V3RNA25021000048/output/raw_matrix" \
+--filter_matrix "/data/input/Files/yangdong/zamia/no-V3RNA25021000048/output/filter_matrix" \
+--prefix "zemi" --min_genes 100 --min_cells 3 --tfidfMin 1 --roundToInt "yes"
+'
+}
+
 
 
 seuratPreprocess_yd <- function(seu, mode = "lognormalize", resolution = 0.5) {
@@ -76,9 +83,9 @@ library(ggplot2)
 library(optparse)
 
 option_list <- list(
-    make_option(c("-r", "--raw_matrix"), type = "character", default = "/data/input/Files/yangdong/zamia/no-V3RNA25021000048/output/raw_matrix", help = "String: Path to raw matrix", metavar = "character"),
-    make_option(c("-f", "--filter_matrix"), type = "character", default = "/data/input/Files/yangdong/zamia/no-V3RNA25021000048/output/filter_matrix", help = "String: Path to filtered matrix", metavar = "character"),
-    make_option(c("-s", "--prefix"), type = "character", default = "pbmc", help = "String: Sample name", metavar = "character"),
+    make_option(c("-r", "--raw_matrix"), type = "character", default = "/Files/Single-Cell.Bioinformatics.Expert.Model/shanjingan/scRNA-seq/sjg-root-1/W202605150039962/02.cDNAAnno/RawMatrix", help = "String: Path to raw matrix", metavar = "character"),
+    make_option(c("-f", "--filter_matrix"), type = "character", default = "/Files/Single-Cell.Bioinformatics.Expert.Model/shanjingan/scRNA-seq/sjg-root-1/W202605150039962/04.Matrix/FilterMatrix", help = "String: Path to filtered matrix", metavar = "character"),
+    make_option(c("-s", "--prefix"), type = "character", default = "Fh_leaf_1", help = "String: Sample name", metavar = "character"),
     make_option(c("-m", "--methods"), type = "character", default = "soupx", help = "String: Methods of decontamination", metavar = "character"),
     make_option(c("-g", "--min_genes"), type = "numeric", default = 100, help = "Minimum number of genes per cell to filter cell", metavar = "numeric"),
     make_option(c("-c", "--min_cells"), type = "numeric", default = 3, help = "Minimum number of cells per gene to filter cell", metavar = "numeric"),
@@ -99,17 +106,19 @@ roundToInt <- tolower(opt$roundToInt) %in% c("true", "t", "yes", "y", "1")
 
 # ------------- filter matrix ---------------
 filter_matrix <- Read10X(filter_matrix, gene.column=1)
-gene_names <- rownames(filter_matrix); head(filter_matrix)
+head(rownames(filter_matrix))
 
 filter_seu <- createSeuratObject(matrix=filter_matrix, min_cells = min_cells, min_genes = min_genes)
 filter_matrix <- GetAssayData(object = filter_seu, layer = "counts", assay = "RNA")
 filter_seu <- seuratPreprocess_yd(filter_seu, mode = "lognormalize", resolution = 0.5)
-p <- DimPlot(filter_seu, reduction = "umap", label = TRUE)
-ggsave(filename = paste0(prefix, "_uncorrected.pdf"), plot = p)
+p <- DimPlot(filter_seu, reduction = "umap", label = TRUE) + NoLegend()
+ggsave(paste0(prefix, "_uncorrected.png"), plot = p, width = 6, height = 6, dpi = 300)
+ggsave(paste0(prefix, "_uncorrected.pdf"), plot = p, width = 6, height = 6)
 saveRDS(filter_seu, paste0(prefix, "_uncorrected.rds"))
 
+# ------------- raw matrix ---------------
 raw_matrix <- Read10X(raw_matrix, gene.column=1)
-gene_names <- rownames(raw_matrix); head(gene_names)
+head(rownames(raw_matrix))
 raw.seu <- createSeuratObject(matrix=raw_matrix, min_cells = 0, min_genes = 0)
 raw_matrix <- GetAssayData(object = raw.seu, layer = "counts", assay = "RNA")
 raw_matrix <- raw_matrix[rownames(filter_seu),]
@@ -122,11 +131,12 @@ for (method in methods_list) {
         result <- runSoupx_yd(raw_matrix, filter_matrix, meta = filter_seu@meta.data, prefix = prefix, tfidfMin = tfidfMin, roundToInt = roundToInt)
         out <- result[[1]]
         rho <- result[[2]]
-        DropletUtils::write10xCounts(paste0(prefix, "_soupx_", as.character(rho)), out, version="3")
-        seu <- createSeuratObject(matrix=out, min_cells = 0, min_genes = 0)
+        DropletUtils::write10xCounts(paste0(prefix, "_soupx"), out, version="3")
+        seu <- createSeuratObject(matrix=out)
         seu <- seuratPreprocess_yd(seu, mode = "lognormalize", resolution = 0.5)
-        p <- DimPlot(seu, reduction = "umap", label = TRUE)
-        ggsave(filename = paste0(prefix, "_soupx.pdf"), plot = p)
+        p <- DimPlot(seu, reduction = "umap", label = TRUE) + NoLegend()
+        ggsave(paste0(prefix, "_soupx_", as.character(rho), ".png"), plot = p, width = 6, height = 6, dpi = 300)
+        ggsave(paste0(prefix, "_soupx_", as.character(rho), ".pdf"), plot = p, width = 6, height = 6)
         saveRDS(seu, file = paste0(prefix, "_soupx.rds"))
     }
 }

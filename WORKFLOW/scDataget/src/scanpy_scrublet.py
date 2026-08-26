@@ -1,4 +1,23 @@
-# 260414
+# [update] 2608
+# [image] scrublet-py--04
+# [note]
+
+
+'''
+python /data/work/QC/scanpy_scrublet.py \
+--filter_matrix "/Files/Single-Cell.Bioinformatics.Expert.Model/shanjingan/scRNA-seq/sjg-root-1/W202605150039962/04.Matrix/FilterMatrix,/Files/Single-Cell.Bioinformatics.Expert.Model/shanjingan/scRNA-seq/sjg-root-2/04.Matrix/FilterMatrix" \
+--velocity_matrix "/Files/Single-Cell.Bioinformatics.Expert.Model/shanjingan/scRNA-seq/sjg-root-1/W202605150039962/04.Matrix/FilterMatrix,/Files/Single-Cell.Bioinformatics.Expert.Model/shanjingan/scRNA-seq/sjg-root-2/04.Matrix/FilterMatrix" \
+--sample_key "sample" \
+--batch_key "biosample" \
+--sample_value "Fh_leaf_1,Fh_leaf_2" \
+--batch_value "Fh_leaf,Fh_leaf" \
+--prefix "Fh_leaf" \
+--min_genes 100 \
+--min_cells 3 \
+--doublet_threshold 0.3 \
+--n_hvg 3000 \
+--rlst "0.2,0.6,1.0"
+'''
 
 def _read_10x_manual(file_path, matrix_file='matrix.mtx.gz'):
     """
@@ -165,7 +184,7 @@ def concatAnndata(filter_matrix, velocity_matrix, sample_key, batch_key, sample_
         adata.obs_names = [f"{key}_{cell_name}" for cell_name in adata.obs_names]
         print(adata.obs_names[:10])
         adatas[key] = adata
-    adata = ad.concat(adatas, label=None, join="outer")
+    adata = ad.concat(adatas, label=None, join="inner")
     reporter.add("Raw Cells of All", adata.n_obs)
     reporter.add("Raw Genes of All", adata.n_vars)
     del adatas
@@ -181,13 +200,6 @@ def concatAnndata(filter_matrix, velocity_matrix, sample_key, batch_key, sample_
 def qc(adata, sample_key, prefix, min_genes=100, min_cells=3, doublet_threshold=0.3):
     # Interpretation: https://scanpy.readthedocs.io/en/stable/generated/scanpy.pp.calculate_qc_metrics.html#scanpy.pp.calculate_qc_metrics
     sc.pp.calculate_qc_metrics(adata, inplace=True, log1p=True)
-    sns.jointplot(
-        data=adata.obs, 
-        x="log1p_total_counts", 
-        y="log1p_n_genes_by_counts", 
-        kind="hex"
-    )
-    savefig(prefix + "_qc.pdf")
     # Pre-process, QC, and Scrublet
     sc.pp.filter_cells(adata, min_genes=min_genes)
     sc.pp.filter_genes(adata, min_cells=min_cells)
@@ -229,9 +241,6 @@ def process(adata, sample_key, n_hvg, resolution=0.5):
 
 def clusterMarker(adata, rlst, prefix):
     print("[clusterMarker] Cluster based on leiden algorithm and find markers for each cluster...")
-    p = sc.pl.violin(adata, ["n_genes_by_counts", "total_counts"], jitter=0.4, multi_panel=True, show=False)
-    plt.savefig(prefix + '_violin.pdf', dpi=300, bbox_inches='tight')
-    plt.close()
     rlst = sorted(float(x) for x in filter(None, rlst))
     resolutions = [f"leiden_res_{x:.2f}" for x in rlst]
     # Cluster
@@ -241,6 +250,7 @@ def clusterMarker(adata, rlst, prefix):
     # umap
     sc.pl.umap(adata, color=resolutions, wspace=0.3, ncols=2, legend_loc="right margin", show=False)
     plt.savefig(prefix + '_leiden.pdf', dpi=300, bbox_inches='tight')
+    plt.savefig(prefix + '_leiden.png', dpi=300, bbox_inches='tight')
     plt.close()
     for r in resolutions:
         if f'dendrogram_{r}' in adata.uns:
@@ -254,6 +264,7 @@ def clusterMarker(adata, rlst, prefix):
             sc.tl.rank_genes_groups(adata, groupby=res, method="wilcoxon")
             sc.pl.rank_genes_groups_dotplot(adata, groupby=res, standard_scale="var", n_genes=5, show=False)
             plt.savefig(f'{output_dir}/{res}_dotplot.pdf', dpi=300, bbox_inches='tight')
+            plt.savefig(f'{output_dir}/{res}_dotplot.png', dpi=300, bbox_inches='tight')
             plt.close()
             reporter.add(f"{res} - n_clusters", len(adata.obs[res].unique()))
             marker = sc.get.rank_genes_groups_df(adata, group=None)
@@ -266,26 +277,6 @@ def clusterMarker(adata, rlst, prefix):
             print(f"Skipping {res} as it has only one cluster")
     return adata
 
-
-def batchAnndata(adata, sample_key, batch_key, n_hvg, color_list, rlst, prefix):
-    print("[batchAnndata] Split batch data then individual annotation...")
-    reporter.add("batchAnndata", "")
-    if len(adata.obs[batch_key].unique()) > 1:
-        adata.X = adata.layers['counts'].copy()
-        for i in adata.obs[batch_key].unique():
-            print(f"> Scanpy plot {i}...")
-            reporter.add(f"batchAnndata: {i}", "")
-            original_dir = os.getcwd()
-            os.makedirs(f"{prefix}_{i}", exist_ok=True)
-            os.chdir(f"{prefix}_{i}")
-            adata_subset = adata[adata.obs[batch_key] == i].copy()  # 使用 .copy() 避免修改原始数据
-            adata_subset = process(adata=adata_subset, sample_key=sample_key, n_hvg=n_hvg, resolution=0.5)
-            p = sc.pl.umap(adata_subset, color=color_list, wspace=0.3, ncols=2, legend_loc='right margin', show=False)
-            plt.savefig(f'{prefix}_{i}_qc_after.pdf', dpi=300, bbox_inches='tight')
-            plt.close()
-            adata_subset = clusterMarker(adata=adata_subset, rlst=rlst, prefix=f'{prefix}_{i}')
-            adata_subset.write_h5ad(filename=f'{prefix}_{i}.h5ad', compression="gzip")
-            os.chdir(original_dir)
             
 
 import numpy as np
@@ -393,11 +384,109 @@ def main(
 
     checkInput(filter_matrix = filter_matrix, velocity_matrix = velocity_matrix, sample_key = sample_key, batch_key = batch_key)
 
-    adata = concatAnndata(filter_matrix, velocity_matrix, sample_key, batch_key, sample_value, batch_value)
+    # 1. 收集各个 unique biosample 对应的索引下标
+    group_to_indices = {}
+    for idx, bio_val in enumerate(batch_value):
+        group_to_indices.setdefault(bio_val, []).append(idx)
 
-    adata = qc(adata, sample_key=sample_key, prefix=prefix, min_genes=min_genes, min_cells=min_cells, doublet_threshold=doublet_threshold)
+    # 2. 按 unique 的 biosample 遍历循环
+    results = {}
+    original_dir = os.getcwd() # 记录最开始的绝对路径
+    for bio_val, indices in group_to_indices.items():
+        # 根据索引提取子集
+        sub_sample_val = [sample_value[i] for i in indices]
+        sub_bio_val = [batch_value[i] for i in indices]
+        sub_filter_mat = [filter_matrix[i] for i in indices]
+        sub_vel_mat = [velocity_matrix[i] for i in indices]
 
-    adata.layers["counts"] = adata.X.copy()
+        os.makedirs(bio_val, exist_ok=True)
+        os.chdir(os.path.join(original_dir, bio_val)) # 切换到绝对子路径
+
+        # 执行 concatAnndata
+        adata = concatAnndata(
+            sub_filter_mat,
+            sub_vel_mat,
+            sample_key,
+            batch_key,
+            sub_sample_val,
+            sub_bio_val,
+        )
+
+        adata = qc(adata, sample_key=sample_key, prefix=prefix, min_genes=min_genes, min_cells=min_cells, doublet_threshold=doublet_threshold)
+
+        adata.layers["counts"] = adata.X.copy()
+
+        adata = process(adata, sample_key=sample_key, n_hvg=n_hvg, resolution=0.5)
+        color_list = key_list + ["leiden_res_0.50", "log1p_n_genes_by_counts", "predicted_doublet", "doublet_score"]
+        p = sc.pl.umap(
+            adata, 
+            color=color_list,
+            wspace=0.3, # default to 0.1
+            ncols=2,
+            legend_loc='right margin',
+            show=False
+        )
+        plt.savefig(bio_val + '_qc_before.pdf', dpi=300, bbox_inches='tight')
+        plt.savefig(bio_val + '_qc_before.png', dpi=300, bbox_inches='tight')
+        plt.close()
+
+        # ---------------- filter doublet ------------------
+        # 然后过滤，只保留 predicted_doublet == False 的细胞
+        adata = adata[adata.obs['predicted_doublet'] == False].copy()
+        adata.X = adata.layers['counts'].copy()
+        adata = process(adata, sample_key=sample_key, n_hvg=n_hvg, resolution=0.5)
+
+        sns.jointplot(
+            data=adata.obs, 
+            x="log1p_total_counts", 
+            y="log1p_n_genes_by_counts", 
+            kind="hex"
+        )
+        savefig(prefix + "_scatter.pdf")
+        savefig(prefix + "_scatter.png")
+        p = sc.pl.violin(adata, ["n_genes_by_counts", "total_counts"], jitter=0.4, multi_panel=True, log=True, show=False)
+        plt.savefig(prefix + '_violin.pdf', dpi=300, bbox_inches='tight')
+        plt.savefig(prefix + '_violin.png', dpi=300, bbox_inches='tight')
+        plt.close()
+    
+        color_list = key_list + ["leiden_res_0.50", "log1p_n_genes_by_counts", "doublet_score"]
+        p = sc.pl.umap(
+            adata, 
+            color=color_list,
+            wspace=0.3, # default to 0.1
+            ncols=2,
+            legend_loc='right margin',
+            show=False
+        )
+        plt.savefig(bio_val + '_qc_after.pdf', dpi=300, bbox_inches='tight')
+        plt.savefig(bio_val + '_qc_after.png', dpi=300, bbox_inches='tight')
+        plt.close()
+    
+    
+        adata = clusterMarker(adata, rlst, prefix = bio_val)
+    
+        reporter.add("Data summary", " ")
+        reporter.add('Total cells: ', str(adata.n_obs))
+        reporter.add('Total genes: ', str(adata.n_vars))
+        reporter.add('Average genes per cell: ', str(adata.obs['n_genes'].mean()))
+        reporter.add('Median genes per cell: ', str(adata.obs['n_genes'].median()))
+        reporter.add('Average counts per cell: ', str(adata.obs['total_counts'].mean()))
+        reporter.add('Median counts per cell: ', str(adata.obs['total_counts'].median()))
+        reporter.add('Top 10 cells: ', ','.join(adata.obs_names[:10]))
+        reporter.add('Top 10 genes: ', ','.join(adata.var_names[:10]))
+    
+        print("!!!! Note: .X stored normalized data and .layers['counts'] is raw data !!!")
+        # adata.X = adata.layers["counts"].copy() # Save the raw counts in the X attribute
+        adata.write_h5ad(filename=bio_val + '.h5ad', compression="gzip")
+
+        os.chdir(original_dir)
+
+        results[bio_val] = adata
+
+    adata = ad.concat(list(results.values()), label=None, join="outer")
+    reporter.add("Total cells of all biosample: ", str(adata.n_obs))
+
+    adata.X = adata.layers["counts"].copy()
 
     adata = process(adata, sample_key=sample_key, n_hvg=n_hvg, resolution=0.5)
     color_list = key_list + ["leiden_res_0.50", "log1p_n_genes_by_counts", "predicted_doublet", "doublet_score"]
@@ -409,27 +498,10 @@ def main(
         legend_loc='right margin',
         show=False
     )
-    plt.savefig(prefix + '_qc_before.pdf', dpi=300, bbox_inches='tight')
+    plt.savefig(prefix + '_qc.pdf', dpi=300, bbox_inches='tight')
+    plt.savefig(prefix + '_qc.png', dpi=300, bbox_inches='tight')
+
     plt.close()
-
-    # ---------------- filter doublet ------------------
-    # 然后过滤，只保留 predicted_doublet == False 的细胞
-    adata = adata[adata.obs['predicted_doublet'] == False].copy()
-    adata.X = adata.layers['counts'].copy()
-    adata = process(adata, sample_key=sample_key, n_hvg=n_hvg, resolution=0.5)
-
-    color_list = key_list + ["leiden_res_0.50", "log1p_n_genes_by_counts", "doublet_score"]
-    p = sc.pl.umap(
-        adata, 
-        color=color_list,
-        wspace=0.3, # default to 0.1
-        ncols=2,
-        legend_loc='right margin',
-        show=False
-    )
-    plt.savefig(prefix + '_qc_after.pdf', dpi=300, bbox_inches='tight')
-    plt.close()
-
 
     adata = clusterMarker(adata, rlst, prefix = prefix)
 
@@ -446,8 +518,6 @@ def main(
     print("!!!! Note: .X stored normalized data and .layers['counts'] is raw data !!!")
     # adata.X = adata.layers["counts"].copy() # Save the raw counts in the X attribute
     adata.write_h5ad(filename=prefix + '.h5ad', compression="gzip")
-
-    batchAnndata(adata, sample_key, batch_key, n_hvg, color_list, rlst, prefix)
 
 reporter = AnalysisReporter()
 main(
