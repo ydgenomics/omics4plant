@@ -1,5 +1,5 @@
 # [update] 2608
-# [image] scrublet-py--04
+# [image] scrublet-py--05
 # [note]
 
 
@@ -482,6 +482,11 @@ def main(
         os.chdir(original_dir)
 
         results[bio_val] = adata
+
+    # 当 unique biosample 数量 <= 1 时，无需进行多 biosample 的 concat 与全局联合分析
+    if len(group_to_indices) <= 1:
+        print(f"[main] Only one unique biosample: {list(group_to_indices.keys())}. Skip multi-biosample concat & global analysis.")
+        return
 
     adata = ad.concat(list(results.values()), label=None, join="outer")
     reporter.add("Total cells of all biosample: ", str(adata.n_obs))

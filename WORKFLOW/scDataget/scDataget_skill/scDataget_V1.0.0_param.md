@@ -42,8 +42,8 @@
 scDataget/
 ├── {prefix}_scrublet/                         # 仅经过质控和双细胞过滤的原始数据分析结果
 │   ├── {prefix}_scrublet.h5ad                 # 包含完整分析信息的 AnnData 对象文件
-│   ├── {prefix}_scrublet_qc.pdf               # 全局质控 UMAP 图 (PDF)
-│   ├── {prefix}_scrublet_qc.png               # 全局质控 UMAP 图 (PNG)
+│   ├── {prefix}_scrublet_qc.pdf               # 全局质控 UMAP 图 (PDF) [仅多 biosample 时]
+│   ├── {prefix}_scrublet_qc.png               # 全局质控 UMAP 图 (PNG) [仅多 biosample 时]
 │   ├── {prefix}_scrublet_leiden.pdf           # 各分辨率 Leiden 聚类 UMAP 图 (PDF)
 │   ├── {prefix}_scrublet_leiden.png           # 各分辨率 Leiden 聚类 UMAP 图 (PNG)
 │   ├── markers_{prefix}_scrublet/             # 标志基因输出子目录
@@ -81,6 +81,13 @@ scDataget/
     │   ├── {sample_value}_soupx_{rho}.pdf     # 纠正后的 UMAP 聚类图 (PDF)
     │   └── {sample_value}_soupx_{rho}.png     # 纠正后的 UMAP 聚类图 (PNG)
 ```
+
+> **单 biosample 场景**：当 `biosample_value` 中 unique 值数量 ≤ 1 时，`scrublet` 脚本会跳过“多 biosample 合并与全局联合分析”：
+>
+> - 不生成 `{prefix}_qc.pdf/png`（全局质控 UMAP 图）与根目录下的 `{prefix}.h5ad`；
+> - 仅生成 `{biosample}/` 子目录下的 `{biosample}.h5ad`、`{biosample}_qc_*`、`{biosample}_scatter.*`、`{biosample}_violin.*`、`{biosample}_leiden.*` 及 `markers_{biosample}/` 等全部单样本结果。
+>
+> 多 biosample 场景下，各 `{biosample}/` 子目录结果与全局合并结果（根目录 `{prefix}.h5ad`、`{prefix}_qc.*`）会同时产出。
 
 ---
 

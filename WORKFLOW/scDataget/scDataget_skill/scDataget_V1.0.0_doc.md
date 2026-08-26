@@ -28,6 +28,7 @@
 1. **分样本质控与双细胞预测**：在每个独立的 `biosample`（批次）内部，利用 `Scrublet` 算法进行高精度的双细胞预测，并根据设定的阈值过滤双细胞，避免了跨批次合并带来的全局坐标偏移和假阳性。
 2. **多样本智能合并**：使用 `anndata.concat(..., join="outer")` 将各样本的稀疏矩阵进行外连接合并。缺失基因自动填充为 `0`，既保留了样本特异性表达的稀疏关键基因，又避免了 `NaN` 值的引入。
 3. **全局联合分析**：对合并后的全局数据进行标准化、对数化、高变基因（HVG）筛选、PCA 降维、UMAP 可视化、Leiden 聚类以及各分辨率下的 Marker 基因 Wilcoxon 秩和检验鉴定。
+4. **单 biosample 优化**：当 `biosample_value` 中 unique 值数量 ≤ 1 时，流程自动跳过“多 biosample 合并与全局联合分析”，仅输出该单样本的完整分析结果，避免一次完全冗余的全量重计算。
 
 ---
 
@@ -37,9 +38,8 @@
 
 | 模块名称 | 核心工具/算法 | 功能描述 | 调用条件 |
 |----------|----------|----------|----------|
-| **repo** | Shell / Git | 从代码仓库中自动拉取并分发核心分析脚本 `decomination.R` 和 `scanpy_scrublet.py`。 | 始终执行 |
-| **soupx** | R / SoupX / Seurat | 接收配对的 `RawMatrix` 和 `FilterMatrix`，通过 Seurat 预聚类并利用 SoupX 自动估算污染率（Rho），调整并输出去背景后的表达矩阵。 | 始终执行 |
-| **scrublet** | Python / Scanpy / Scrublet | 1. 按 `biosample` 分组进行局部质控、双细胞预测与过滤。<br>2. 使用 `join="outer"` 合并各样本，执行全局标准化、降维、Leiden 聚类。<br>3. 鉴定各分辨率下的 Marker 基因并绘制 UMAP 与 Dotplot 图。 | 始终执行（分别对原始过滤矩阵和 SoupX 校正矩阵各运行一次） |
+| **soupx** | R / SoupX / Seurat | 接收配对的 `RawMatrix` 和 `FilterMatrix`，通过 Seurat 预聚类并利用 SoupX 自动估算污染率（Rho），调整并输出去背景后的表达矩阵。脚本直接调用镜像内绝对路径 `/omics4plant/WORKFLOW/scDataget/src/decomination.R`。 | 始终执行 |
+| **scrublet** | Python / Scanpy / Scrublet | 1. 按 `biosample` 分组进行局部质控、双细胞预测与过滤。<br>2. 使用 `join="outer"` 合并各样本，执行全局标准化、降维、Leiden 聚类（当 unique biosample 数量 ≤ 1 时跳过此步）。<br>3. 鉴定各分辨率下的 Marker 基因并绘制 UMAP 与 Dotplot 图。脚本直接调用镜像内绝对路径 `/omics4plant/WORKFLOW/scDataget/src/scanpy_scrublet.py`。 | 始终执行（分别对原始过滤矩阵和 SoupX 校正矩阵各运行一次） |
 | **result_scDataget** | Shell | 收集并整理 `soupx` 和 `scrublet` 的所有输出结果（包括 H5AD、PDF/PNG 图像、CSV 标志基因列表等），打包输出。 | 始终执行 |
 
 ---

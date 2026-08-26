@@ -17,11 +17,6 @@ workflow scDataget{
     Int mem_scDataget=32
     Float? doublet_threshold
   }
-  call repo{
-    input:
-    repo_name="omics4plant",
-    url="stereonote_hpc/yangdong_2e3d42a858094e788144860f22df9c33_private:latest"
-  }
   call scrublet{
     input:
       Matrix=FilterMatrix,
@@ -36,7 +31,6 @@ workflow scDataget{
       rlst=rlst,
       doublet_threshold=select_first([doublet_threshold, 2.0]),
       mem=mem_scDataget,
-      s1=repo.s2,
   }
   Int jobnn=length(RawMatrix)
   scatter(index in range(jobnn)){
@@ -50,7 +44,6 @@ workflow scDataget{
       tfidfMin=tfidfMin,
       roundToInt=roundToInt,
       mem=mem_scDataget,
-      s1=repo.s1,
     }
   }
   call scrublet as sscrublet{
@@ -67,7 +60,6 @@ workflow scDataget{
       rlst=rlst,
       doublet_threshold=select_first([doublet_threshold, 2.0]),
       mem=mem_scDataget,
-      s1=repo.s2,
   }
   call result_scDataget{
     input:
@@ -81,25 +73,6 @@ workflow scDataget{
   }
 }
 
-task repo{
-  input {
-    String repo_name
-    String url
-  }
-  command <<<
-    cp -a "/~{repo_name}" .
-  >>>
-  runtime {
-    docker_url: "~{url}"
-    req_cpu: 1
-    req_memory: "4Gi" 
-  }
-  output {
-    File s1 = "./~{repo_name}/WORKFLOW/scDataget/src/decomination.R"
-    File s2 = "./~{repo_name}/WORKFLOW/scDataget/src/scanpy_scrublet.py"
-  }
-}
-
 task soupx{
   input{
     File RawMatrix
@@ -110,11 +83,10 @@ task soupx{
     Float tfidfMin
     String roundToInt
     Int mem
-    File s1
   }
   command <<<
     mkdir ~{sample_value} && cd ~{sample_value}
-    Rscript "~{s1}" \
+    Rscript /omics4plant/WORKFLOW/scDataget/src/decomination.R \
     --raw_matrix "~{RawMatrix}" --filter_matrix "~{FilterMatrix}" --prefix "~{sample_value}" \
     --min_genes ~{min_genes} --min_cells ~{min_cells} --tfidfMin ~{tfidfMin} --roundToInt "~{roundToInt}" 
   >>>
@@ -123,7 +95,7 @@ task soupx{
     File result="~{sample_value}"
   }
   runtime{
-    docker_url: "stereonote_hpc/yangdong_bca0ae6099a24097b3ddd7aabcb511b2_private:latest"
+    docker_url: "stereonote_hpc/yangdong_860afb50b9bc49c4a74715167c5e18a4_private:latest"
     req_cpu: 4
     req_memory: "~{mem}Gi"
   }
@@ -143,12 +115,11 @@ task scrublet{
     Int n_hvg
     String rlst
     Int mem
-    File s1
   }
   command <<<
     mkdir ~{prefix} && cd ~{prefix}
 
-    python "~{s1}" \
+    python /omics4plant/WORKFLOW/scDataget/src/scanpy_scrublet.py \
     --filter_matrix '~{sep="," Matrix}' --velocity_matrix '~{sep="," Matrix}' \
     --sample_value '~{sep="," sample_value}' --batch_value '~{sep="," biosample_value}' \
     --prefix "~{prefix}" --sample_key "~{sample_key}" --batch_key "~{biosample_key}" \
@@ -160,7 +131,7 @@ task scrublet{
     Array[File]? h5ad=glob("./~{prefix}/*/*.h5ad")
   }
   runtime{
-    docker_url: "stereonote_hpc/yangdong_1791d26bbea94753bd84206bccc75bab_private:latest"
+    docker_url: "stereonote_hpc/yangdong_2f6968ae723a4ad38e2e5ee7f58da881_private:latest"
     req_cpu: 4
     req_memory: "~{mem}Gi"
   }
