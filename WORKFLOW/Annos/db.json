@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2024-01-15",
+    "species_count": 5
+  },
+  "species": {
+    "Arabidopsis_thaliana": {
+      "common_name": "拟南芥",
+      "tissues": {
+        "root": {
+          "cell_types": [
+            {
+              "name": "root_hair_cell",
+              "marker_genes": [
+                {
+                  "gene": "RHS1",
+                  "specificity_score": 0.95,
+                  "evidence": "scRNA-seq",
+                  "reference": "DOI:10.xxxx"
+                }
+              ],
+              "annotation_confidence": "high"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

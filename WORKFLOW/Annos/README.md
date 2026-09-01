@@ -31,6 +31,8 @@
 
 
 ## References
+- tips
+  - [2026|掌握这条基础规则后，细胞注释再也不会成为单细胞分析的限速步骤](https://mp.weixin.qq.com/s/EySwQGrFWu4m5z42gqYV1w)
 - [OMG Browser (Orthologous Marker Groups Browser)](https://www.omicsempower.com/blog/plant-single-cell-cell-type-annotation-omg-browser/)
 - https://omicverse.readthedocs.io/en/latest/tutorials/index_single_annotation.html#annotation
 - [Annos](https://github.com/ydgenomics/Annos)
