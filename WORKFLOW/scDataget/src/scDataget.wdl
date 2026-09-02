@@ -127,8 +127,8 @@ task scrublet{
   >>>
   output{
     File result="~{prefix}"
-    File all_h5ad=glob("./~{prefix}/*.h5ad")[0]
-    Array[File]? h5ad=glob("./~{prefix}/*/*.h5ad")
+    File? all_h5ad=glob("./~{prefix}/*.h5ad")[0]
+    Array[File] h5ad=glob("./~{prefix}/*/*.h5ad")
   }
   runtime{
     docker_url: "stereonote_hpc/yangdong_2f6968ae723a4ad38e2e5ee7f58da881_private:latest"
